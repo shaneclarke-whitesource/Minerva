@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://jira.rax.io/secure/RapidBoard.jspa?rapidView=3462&projectKey=MNRVA&view=planning&selectedIssue=MNRVA-18&epics=visible"
   },
-  "homepage": "https://github.com/racker/Minerva#readme"
+  "homepage": "https://github.com/racker/Minerva#readme",
+  "devDependencies": {
+    "gulp": "3.9.1"
+  }
 }
