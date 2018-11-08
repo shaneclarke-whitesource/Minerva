@@ -1,5 +1,6 @@
 function run () {
-    console.log('A simple sample.');
+    // A sample task for showing how to pipe
+    // tasks to the main gulpfile
 };
 
 module.exports.run = run;
