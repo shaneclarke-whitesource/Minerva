@@ -1,14 +1,67 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en"><!-- lang is necessary for screen reader compatibility -->
 <head>
-  <meta charset="utf-8">
-  <title>Minerva</title>
-  <base href="/">
+  <base href='/'>
+  <title>Rackspace Intelligence</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" href="favicon.ico" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- DO NOT BUNDLE: HelixUI Styles -->
+  <link rel="stylesheet" href="helix-ui/helix-ui.min.css" />
+  <!-- DO NOT COMPILE: Converts ES5 custom element constructor functions to ES6 classes -->
+  <script src="webcomponents/custom-elements-es5-adapter.js"></script>
+  <!-- DO NOT COMPILE: Appends polyfills to <head> if needed by user's browser. -->
+  <script src="webcomponents/webcomponents-loader.js"></script>
 </head>
-<body>
-  <app-root></app-root>
+<body class="hxHorizontal" id="top">
+  <!-- Accessibility: This link should be the first item in tab order. -->
+  <a href="#content">Skip to main content</a>
+
+  <header id="head">
+    <!-- Eyebrow Goes Here -->
+  </header>
+
+  <div id="app">
+      <div id="stage">
+        <nav id="nav" class="hxNav">
+            <!-- Product Navigation -->
+            <a href="#">Dashboard</a>
+            <a href="#">Your Resources</a>
+            <a href="#">Resource Groups</a>
+            <a href="#">New Resources</a>
+            <a href="#">Tickets</a>
+            <a href="#">Notifications</a>
+            <a href="#">Support</a>
+            <a href="#">Billing</a>
+            <a href="#">Account</a>
+            <a href="#">Monitoring</a>
+            <!-- end:Product Navigation -->
+          </nav>
+            
+          
+        <!-- Accessibility: [role="main"] must be present on main#content -->
+        <main role="main" id="content">
+          <hx-panel class="hxSpan-7-xs">
+            <hx-panelbody class="hxBox hxMd">
+              <app-root></app-root>  
+            </hx-panelbody>
+          </hx-panel>
+        </main>
+      </div>
+    </div>
+  <footer id="foot">
+    &copy; 2018 Rackspace US, Inc.
+    <nav>
+      <a href="https://www.rackspace.com/information/legal/websiteterms">Website Terms</a>
+      <a href="https://www.rackspace.com/information/legal/privacystatement">Privacy Policy</a>
+    </nav>
+  </footer>
+  <!--
+    DO NOT BUNDLE: ES5-compiled assets specifically for use in the browser.
+    Provides additional polyfills and automatically initializes HelixUI.
+  -->
+  <script src="helix-ui/helix-ui.browser.min.js"></script>
+  <a id="bottom"></a>
 </body>
 </html>
