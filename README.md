@@ -4,6 +4,8 @@ Welcome to Minerva!
 
 This is Rackspace's Intelligence UI for the Monitoriing & Metrics platform.
 
+Also see https://github.com/racker/hedwig
+
 ## Getting Started
 
 1. Clone this repository
