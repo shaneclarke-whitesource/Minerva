@@ -1,4 +1,4 @@
-# Minerva -Intelligence V2
+# Minerva - Intelligence V2
 
 Welcome to Minerva!  
 
