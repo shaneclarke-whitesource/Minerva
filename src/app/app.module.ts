@@ -16,6 +16,7 @@ import { PocDataCallComponent } from './poc-data-call/poc-data-call.component';
     AppRoutingModule,
     HttpClientModule
   ],
+  exports: [],
   providers: [],
   bootstrap: [ AppComponent ]
 })

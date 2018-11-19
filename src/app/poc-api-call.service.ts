@@ -19,7 +19,7 @@ export class PocApiCallService {
 
   constructor(private http: HttpClient) { }
 
-  url = 'http://a4a669c9ae6b911e894d7120f5312851-1083875506.us-east-1.elb.amazonaws.com/hybrid_1667601';
+  url = 'http://a12c0b018e86111e894d7120f5312851-822926222.us-east-1.elb.amazonaws.com/hybrid_1667601';
 
   post(data: any): Observable<any> {
     return this.http.post(this.url, data, httpOptions);
