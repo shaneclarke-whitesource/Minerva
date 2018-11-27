@@ -4,7 +4,9 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { PocApiCallMockService } from './poc-api-call.service.mock';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -22,6 +24,10 @@ export class PocApiCallService {
   url = 'http://a12c0b018e86111e894d7120f5312851-822926222.us-east-1.elb.amazonaws.com/hybrid_1667601';
 
   post(data: any): Observable<any> {
-    return this.http.post(this.url, data, httpOptions);
+    if (environment.mock) {
+      return of(new PocApiCallMockService().mock);
+    } else {
+      return this.http.post(this.url, data, httpOptions);
+    }
   }
 }

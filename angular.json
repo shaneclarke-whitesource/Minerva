@@ -59,6 +59,13 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "mock": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.mock.ts"
+                }]
             }
           }
         },
@@ -70,6 +77,9 @@
           "configurations": {
             "production": {
               "browserTarget": "minerva:build:production"
+            },
+            "mock": {
+              "browserTarget": "minerva:build:mock"
             }
           }
         },
@@ -81,6 +91,16 @@
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
+          "configurations": {
+            "mock": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.mock.ts"
+                }
+              ]
+            }
+          },
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
@@ -128,6 +148,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "minerva:serve:production"
+            },
+            "mock": {
+              "devServerTarget": "minerva:serve:mock"
             }
           }
         },
