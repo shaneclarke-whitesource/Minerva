@@ -1,5 +1,3 @@
-import { Mock } from "protractor/built/driverProviders";
-
 export class PocApiCallMockService {
     mock = [ 
         {
