@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PocApiCallService } from '../poc-api-call.service';
 import * as d3 from 'd3';
+import { LoggingService } from '../logging.service';
 
 @Component({
   selector: 'app-poc-data-call',
@@ -10,12 +11,14 @@ import * as d3 from 'd3';
 export class PocDataCallComponent implements OnInit {
 
   marshalledData = [];
+  logger = new LoggingService();
 
   constructor( private apiCall:PocApiCallService ) { 
-    
+
   }
 
   ngOnInit() {
+    
   }
 
   ngAfterContentInit() {
@@ -23,6 +26,7 @@ export class PocDataCallComponent implements OnInit {
   }
 
   fetchData(){
+    this.logger.log('Fetching data', this.logger.logLevels.info);
     this.apiCall.post({ "queryString":  "select * from agent_cpu where time > now() - 5m" })
     .subscribe(response => this.dataMarshaller(response));
   }
@@ -79,10 +83,11 @@ export class PocDataCallComponent implements OnInit {
   }
 
   dataMarshaller(data: any) {
+    this.logger.log({ message: 'returned data', data: data }, 1);
     for (let index in data[0].valuesCollection) {
       this.marshalledData.push({ time: data[0].valuesCollection[index][0], cpu_max_usage: data[0].valuesCollection[index][8] });
     }
-  
+    this.logger.log('Finished marshalling data', 1);
     this.visualize();
   }
 }
