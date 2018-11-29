@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PocApiCallService } from '../poc-api-call.service';
 import * as d3 from 'd3';
 import { LoggingService } from '../logging.service';
