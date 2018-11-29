@@ -27,6 +27,7 @@ export class LoggingService {
   localStorage: LocalStorage;
 
   constructor() {
+    this.logLevel = localStorage.getItem('LOG_LEVEL');
   }
 
   /**
@@ -42,6 +43,7 @@ export class LoggingService {
    * loggingService.setLeve(LogLevels.info);
    */
   setLevel(logLevel: LogLevels) {
+    this.logLevel = logLevel;
     localStorage.setItem('LOG_LEVEL', logLevel.toString())
   }
 
@@ -73,7 +75,7 @@ export class LoggingService {
    * LoggingService.log({ message: 'some message': data: someDataObj }, LogLevels.info);
    */
   log(message: any, logLevel: LogLevels): void {
-    var level = localStorage.getItem('LOG_LEVEL');
+    var level = this.logLevel;
     if (logLevel >= parseInt(level)){
       console.log({ level: LogLevels[logLevel], message: message });
     }
