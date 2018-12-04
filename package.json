@@ -17,7 +17,9 @@
     "start-mock": "ng serve -c mock",
     "build": "ng build --watch",
     "build-mock": "ng build --watch -c mock",
+    "build-deploy": "ng build",
     "test": "ng test -c mock",
+    "test-ci": "ng test -c mock --browsers=ChromeHeadlessCI --watch=false", 
     "lint": "ng lint",
     "e2e": "ng e2e -c mock",
     "docs": "gulp compudoc"
