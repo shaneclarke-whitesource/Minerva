@@ -82,6 +82,10 @@ ENV DISPLAY=:99
 RUN Xvfb :99 & \
 npm run test-ci
 
+## e2e test  failing right now
+RUN Xvfb :99 & \
+npm run e2e-ci
+
 FROM node10base AS build
 
 #FROM node:10-alpine AS build
@@ -91,9 +95,6 @@ FROM node10base AS build
 
 WORKDIR /app
 COPY . .
-
-# RUN chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage \
-# --no-sandbox
 
 # Run npm install
 RUN npm install
@@ -106,6 +107,3 @@ WORKDIR /usr/share/nginx/html
 
 COPY --from=build /app/dist .
 
-# # Run e2e tests
-# RUN npm run e2e
-# RUN npm run test:ci

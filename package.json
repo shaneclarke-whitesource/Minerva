@@ -22,6 +22,7 @@
     "test-ci": "ng test -c mock --browsers=ChromeHeadlessCI --watch=false", 
     "lint": "ng lint",
     "e2e": "ng e2e -c mock",
+    "e2e-ci": "ng e2e -c mock",
     "docs": "gulp compudoc"
   },
   "description": "Rackspace NextGen Intelligence",
