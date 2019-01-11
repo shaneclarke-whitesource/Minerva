@@ -1,5 +1,5 @@
 steps:
 - name: 'gcr.io/cloud-builders/npm'
   args: ["install"]
-- name: 'gcr.io/universal-monitoring-bus-dev/npm'
+- name: 'gcr.io/rackspace-intelligence-dev/npm-test-runner'
   args: ["test"]
