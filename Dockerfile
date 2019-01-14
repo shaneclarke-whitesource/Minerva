@@ -69,6 +69,8 @@ RUN npm install --unsafe-perm -g \
 # Set the working directory
 WORKDIR /workspace
 
+RUN npm install -g angular-cli
+
 COPY package.json .
 
 RUN npm install
