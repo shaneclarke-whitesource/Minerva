@@ -19,6 +19,7 @@
     "build-mock": "ng build --watch -c mock",
     "test": "ng test -c mock",
     "lint": "ng lint",
+    "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
     "e2e": "ng e2e -c mock",
     "docs": "gulp compudoc"
   },

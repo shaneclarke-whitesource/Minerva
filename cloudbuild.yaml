@@ -1,6 +1,23 @@
 steps:
-- name: 'gcr.io/cloud-builders/npm'
-  args: ["install"]
-- name: 'gcr.io/rackspace-intelligence-dev/npm-test-runner'
-  args: ["test"]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--no-cache', '-t', 'gcr.io/$PROJECT_ID/minerva-testing:latest', '.']
 
+- name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
+    entrypoint: '/bin/sh'
+    args:
+      - '-c'
+      - |
+        Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
+        sleep 20
+        npm run e2e
+
+- name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
+    entrypoint: '/bin/sh'
+    args:
+      - '-c'
+      - |
+        Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
+        sleep 20
+        npm run test-headless
+
+images: ['gcr.io/$PROJECT_ID/minerva-testing:latest']
