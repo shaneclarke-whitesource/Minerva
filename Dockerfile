@@ -67,7 +67,7 @@ RUN npm install --unsafe-perm -g \
     protractor-console
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /workspace
 
 COPY package.json .
 
@@ -76,7 +76,7 @@ RUN npm install
 #COPY /scripts/run-e2e-tests.sh /entrypoint.sh
 COPY . .
 # Set the HOME environment variable for the test project
-ENV HOME=/app
+ENV HOME=/workspace
 # Set the file access permissions (read, write and access) recursively for the new folders
 #RUN chmod -Rf 777 .
 
