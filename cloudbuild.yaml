@@ -15,7 +15,6 @@ steps:
       - |
         cd /app
         Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
-        sleep 20
         npm run e2e
 
   - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
@@ -25,7 +24,7 @@ steps:
       - |
         cd /app
         Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
-        sleep 20
+        sleep 20s
         npm run test-headless
 
 images: ['gcr.io/$PROJECT_ID/minerva-testing:latest']
