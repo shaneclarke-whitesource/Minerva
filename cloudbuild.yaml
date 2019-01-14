@@ -30,4 +30,5 @@ steps:
   #	      sleep 20s
   #	      npm run test-headless
 
+timeout: 1800s
 images: ['gcr.io/$PROJECT_ID/minerva-testing:latest']
