@@ -1,7 +1,7 @@
 steps:
 
-  #- name: 'gcr.io/cloud-builders/docker'
-  #  args: ['pull','gcr.io/$PROJECT_ID/minerva-testing:latest']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['pull','gcr.io/$PROJECT_ID/minerva-testing:latest']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [
@@ -11,24 +11,25 @@ steps:
       '.'
       ]
 
-  #	- name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
-  #	  entrypoint: '/bin/sh'
-  #	  args:
-  #	    - '-c'
-  #	    - |
-  #	      cd /app
-  #	      Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
-  #	      npm run e2e
+  - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
+    entrypoint: '/bin/sh'
+    args:
+      - '-c'
+      - |
+        cd /app
+        Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
+        sleep 20s
+        npm run e2e
 
-  #	- name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
-  #	  entrypoint: '/bin/sh'
-  #	  args:
-  #	    - '-c'
-  #	    - |
-  #	      cd /app
-  #	      Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
-  #	      sleep 20s
-  #	      npm run test-headless
+  - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
+    entrypoint: '/bin/sh'
+    args:
+      - '-c'
+      - |
+        cd /app
+        Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
+        sleep 20s
+        npm run test-headless
 
 timeout: 1800s
 images: ['gcr.io/$PROJECT_ID/minerva-testing:latest']
