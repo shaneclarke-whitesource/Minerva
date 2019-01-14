@@ -23,7 +23,7 @@ exports.config = {
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
+    defaultTimeoutInterval: (1000 * 60 * 60), // Default Timeout is one hour, because some tests are long-running
     print: function() {}
   },
   onPrepare() {
