@@ -11,6 +11,7 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome'
     chromeOptions: {
+      chromeDriver: path.join(paths.e2e, '../node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.36'),
       args: [
         '--headless',
         'no-sandbox',
