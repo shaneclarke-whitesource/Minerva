@@ -78,7 +78,7 @@ COPY . .
 # Set the HOME environment variable for the test project
 ENV HOME=/app
 # Set the file access permissions (read, write and access) recursively for the new folders
-RUN chmod -Rf 777 .
+#RUN chmod -Rf 777 .
 
 ENV DISPLAY=:10.0
 RUN npm install
