@@ -1,6 +1,9 @@
 steps:
 
   - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+
+  - name: 'gcr.io/cloud-builders/npm'
     args: ['run', 'e2e']
 
   - name: 'gcr.io/cloud-builders/docker'
