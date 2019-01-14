@@ -2,7 +2,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/minerva-testing:latest', '.']
 
-- name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
+  - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
     entrypoint: '/bin/sh'
     args:
       - '-c'
@@ -12,7 +12,7 @@ steps:
         sleep 20
         npm run e2e
 
-- name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
+  - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
     entrypoint: '/bin/sh'
     args:
       - '-c'
