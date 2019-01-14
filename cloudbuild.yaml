@@ -7,6 +7,7 @@ steps:
     args:
       - '-c'
       - |
+        cd /app
         Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
         sleep 20
         npm run e2e
@@ -16,6 +17,7 @@ steps:
     args:
       - '-c'
       - |
+        cd /app
         Xvfb :10 -screen 0 1920x1080x24 2>&1 >/dev/null
         sleep 20
         npm run test-headless
