@@ -16,7 +16,6 @@ steps:
     args:
       - '-c'
       - |
-        cd /app
         npm run e2e
 
   - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
@@ -24,7 +23,6 @@ steps:
     args:
       - '-c'
       - |
-        cd /app
         npm run test-headless
 
 timeout: 3600s
