@@ -1,62 +1,89 @@
-FROM node:10-alpine AS node10base
+FROM ubuntu:latest
 
-FROM node10base AS test
-
-ENV CHROME_BIN=/usr/bin/chromium-browser \
-    CHROME_PATH=/usr/lib/chromium/
-
-# Install needed packages for testing
-RUN apk update && apk upgrade \
-    && echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories \
-    && echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories \
-    && apk add --no-cache \
-    chromium@edge \
-    nss@edge \
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update -qqy \
+  && apt-get -qqy install \
     curl \
+    software-properties-common \
+    wget \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Nodejs 10 with npm install
+# https://github.com/nodesource/distributions#installation-instructions
+# Latest Google Chrome installation package
+RUN curl -sL https://deb.nodesource.com/setup_10.x | /bin/bash \
+        && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+        && sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+
+RUN apt-get update -qqy \
+  && apt-get -qqy install \
+    apt-utils \
+    build-essential \
+    fonts-ipafont-gothic \
+    libfontconfig \
+    libfreetype6 \
     xvfb \
-    && rm -rf /var/lib/apt/lists/* \
-    /var/cache/apk/* \
-    /usr/share/man \
-    /tmp/* \
-# Install @angular\cli
-    && npm install --verbose -g @angular/cli@7.0.7
+    google-chrome-stable \
+    default-jre \
+    ttf-ubuntu-font-family \
+    xfonts-100dpi \
+    xfonts-75dpi \
+    xfonts-cyrillic \
+    xfonts-scalable \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
+# Nodejs 10 with npm install
+# https://github.com/nodesource/distributions#installation-instructions
+RUN apt-get update -qqy && apt-get -qqy install nodejs
 
+# Latest Ubuntu Google Chrome, XVFB and JRE installs
+RUN apt-mark hold firefox
 
-WORKDIR /app
+# 1. Step to fixing the error for Node.js native addon build tool (node-gyp)
+# https://github.com/nodejs/node-gyp/issues/454
+# https://github.com/npm/npm/issues/2952
+RUN rm -fr /root/tmp
+# Jasmine and protractor global install
+# 2. Step to fixing the error for Node.js native addon build tool (node-gyp)
+# https://github.com/nodejs/node-gyp/issues/454
+# Get the latest Google Chrome driver
+# Get the latest WebDriver Manager
+RUN npm install --unsafe-perm --save-exact -g protractor \
+  && npm update \
+  && webdriver-manager update
 
-# Install npm modules
-COPY package*.json /app/
+# Set the path to the global npm install directory. This is vital for Jasmine Reporters
+# http://stackoverflow.com/questions/31534698/cannot-find-module-jasmine-reporters
+# https://docs.npmjs.com/getting-started/fixing-npm-permissions
+ENV NODE_PATH /usr/lib/node_modules
+# Global reporters for protractor
+RUN npm install --unsafe-perm -g \
+    jasmine-reporters \
+    jasmine-spec-reporter \
+    protractor-jasmine2-html-reporter \
+    jasmine-allure-reporter \
+    protractor-console
+
+# Set the working directory
+WORKDIR /workspace
+
+RUN npm install -g @angular/cli
+
+COPY package.json .
+
 RUN npm install
-
+# Copy the run sript/s from local folder to the container's related folder
+#COPY /scripts/run-e2e-tests.sh /entrypoint.sh
 COPY . .
-# Xvfb
-ENV DISPLAY=:99
-RUN Xvfb :99 & \
-npm run test-ci
+# Set the HOME environment variable for the test project
+ENV HOME=/workspace
+# Set the file access permissions (read, write and access) recursively for the new folders
+#RUN chmod -Rf 777 .
 
-## e2e test  failing right now
-RUN Xvfb :99 & \
-npm run e2e-ci
-
-FROM node10base AS build
-
-#FROM node:10-alpine AS build
-
-
-
-
-WORKDIR /app
-COPY . .
-
-# Run npm install
+ENV DISPLAY=:10.0
 RUN npm install
+RUN node ./node_modules/protractor/bin/webdriver-manager update
 
-RUN npm run build-deploy
-
-FROM nginx:stable-alpine
-
-WORKDIR /usr/share/nginx/html
-
-COPY --from=build /app/dist .
-
+RUN node --version

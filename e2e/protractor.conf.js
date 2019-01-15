@@ -13,16 +13,18 @@ exports.config = {
     chromeOptions: {
       args: [
         '--headless',
-        '--disable-gpu'
+        'no-sandbox',
+        '--disable-gpu',
+        '--disable-web-security'
       ]
-    },
+    }
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
+    defaultTimeoutInterval: (1000 * 60 * 60), // Default Timeout is one hour, because some tests are long-running
     print: function() {}
   },
   onPrepare() {
