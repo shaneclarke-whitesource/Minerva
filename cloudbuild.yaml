@@ -11,6 +11,9 @@ steps:
       '.'
       ]
 
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+
   - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
     entrypoint: '/bin/sh'
     args:
