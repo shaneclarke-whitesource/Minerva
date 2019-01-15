@@ -15,10 +15,10 @@ steps:
     args: ['install']
 
   - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
-    args: ['npm run test-headless']
+    args: ["npm", "run", "e2e"]
 
   - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
-    args: ['npm run test']
+    args: ["npm", "run", "test"]
 
 timeout: 3600s
 images: ['gcr.io/$PROJECT_ID/minerva-testing:latest']
