@@ -34,6 +34,14 @@ This  will install all the application and developer dependencies into your `nod
 npm install
 ```
 
+## Setup the proxy
+
+In order to run the application locally you will need to add the following to your `/etc/hosts` file
+
+```
+0.0.0.0 dev.i.rax.io
+```
+
 ## Run The App
 
 Running the application is quite simple, but there are a few options for us to take a look at
