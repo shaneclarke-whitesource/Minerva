@@ -1,6 +1,6 @@
 # Minerva - Intelligence V2
 
-Welcome to Minerva!  
+Welcome to Minerva!
 
 This is Rackspace's Intelligence UI for the Monitoriing & Metrics platform.
 
@@ -28,10 +28,11 @@ npm install -g @angular/cli
 
 ## NPM Install
 
-This  will install all the application and developer dependencies into your `node_modules` folder
+This  will install all the application and developer dependencies into the project's `node_modules` folders.
 
 ```
 npm install
+cd localenv && npm install
 ```
 
 ## Setup the proxy
@@ -48,7 +49,24 @@ Running the application is quite simple, but there are a few options for us to t
 
 ## Development server
 
-Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+The dev environment is setup to authenticate against staging or production, and is in part separated from the rest of the environment via the `localenv` folder. You have the option to use `--password` or `--apikey` to authenticate with.
+
+```
+cd localenv
+NODE_ENV=[dev, staging, or prod] npm run dev -- --username [username] --password [password]
+```
+
+or..
+
+```
+cd localenv
+NODE_ENV=[dev, staging, or prod] npm run dev -- --username [username] --apikey [apikey]
+```
+
+
+Your option for `NODE_ENV` will depend on which identity environment you're wanting to target.
+
+Once complete navigate to `http://dev.i.rax.io:3000/intelligence` to use `browsersync` switch to port `3001`.
 
 ## Code scaffolding
 

@@ -1,0 +1,16 @@
+{
+    "shared": {
+    },
+    "dev": {
+      "pilot": "https://staging.pilot.api.rackspacecloud.com/v1/cloud",
+      "identity": "https://staging.identity.api.rackspacecloud.com/v2.0"
+    },
+    "staging": {
+        "pilot": "https://staging.pilot.api.rackspacecloud.com/v1/cloud",
+        "identity": "https://staging.identity.api.rackspacecloud.com/v2.0"
+    },
+    "prod": {
+        "pilot": "https://prod.pilot.api.rackspacecloud.com/v1/cloud",
+        "identity": "https://identity.api.rackspacecloud.com/v2.0"
+    }
+  }
