@@ -62,11 +62,15 @@ Identity({'body': body}).then((response) => {
 
 }, breakChain).then(async (pilotResponse) => {
 
-        // after pilot success take Angular index file and add Pilot navigation
+    // after pilot success take Angular index file and add Pilot navigation
+    try {
         let indexFile = await fs.readFileSync(path.join(__dirname, '../dist/intelligence/index.html'));
         let parsedHTML = Parse(indexFile.toString('utf8'), pilotResponse, authInfo);
         return await fs.writeFileSync('../dist/intelligence/index.html', parsedHTML);
-
+    }
+    catch (e) {
+        return Promise.reject(e);
+    }
 }, breakChain).then(() => {
 
     // after successfully parsing and writing file to /dist folder create static site
