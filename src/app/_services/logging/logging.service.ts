@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LogLevels } from './log-levels.enum';
+import { LogLevels } from '../../_enums/log-levels.enum';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 
 @Injectable({
@@ -15,7 +15,7 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
  * 1. info
  * 2. warning
  * 3. error
- * 
+ *
  * This uses local storage to keep track of the current log level.
  * To change the log level, so that you may see different levels of messages,
  * simply alter the LOG_LEVEL value in local storage using browser dev tools.
@@ -65,7 +65,7 @@ export class LoggingService {
    * Logs a message to the console based on log level. The important thing to note here
    * is that messages will only be logged to a specific, specified, level.  If the set level is
    * greater than the level of the message it will not show up in the console.
-   * @param {any} message object that will represent the message of the log 
+   * @param {any} message object that will represent the message of the log
    * @param {LogLevels} logLevel the level at which you would like the message to be logged to
    * @example
    * var loggingService = new LoggingService();

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { PortalDataService } from './portal-data.service';
-import { AppModuleMock } from './app.module.mock';
+import { AppModuleMock } from '../../app.module.mock';
 
 Window['PORTAL_DATA'] = new AppModuleMock().mock
 

@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
 const gulp = require('gulp')
 const compodoc = require('@compodoc/gulp-compodoc');
- 
+
 function run (){
     gulp.src('src/**/*.ts')
     .pipe(compodoc({
@@ -11,7 +11,7 @@ function run (){
         serve: true,
         theme: 'readthedocs',
         watch: true
-    }))
+    }));
 }
 
 module.exports.run = run;
