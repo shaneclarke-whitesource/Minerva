@@ -1,0 +1,9 @@
+steps:
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['install']
+
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['run', 'ng', '--', 'build', '--prod']
+
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['rsync', '-r', 'dist/intelligence/', 'gs://mnrva-deploy.stage.monplat.rackspace.net']
