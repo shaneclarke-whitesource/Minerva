@@ -1,6 +1,6 @@
 'use strict';
 const request = require('request');
-const Settings = require('../config/index');
+const Settings = require('../../config/index');
 
 const config = new Settings();
 

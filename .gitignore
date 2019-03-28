@@ -68,3 +68,7 @@ docs
 
 #vscode config
 .vscode
+
+#created scripts for local dev
+localenv/scripts/*
+!scripts/.gitkeep

@@ -1,14 +1,15 @@
 'use strict';
 var path = require('path');
 var http = require('http');
-var fs = require('fs');
 var express = require('express');
 var bodyParser = require('body-parser');
-var args = require('./arguments');
-var Identity = require('./identity/token');
-var Pilot = require('./pilot/index');
-var Parse = require('./helpers/parse');
 var browserSync = require('browser-sync');
+var args = require('./arguments');
+var Identity = require('./services/identity/token');
+var Pilot = require('./services/pilot/index');
+var Portal = require('./helpers/portal');
+var PilotScript = require('./helpers/pilot');
+var exec = require('child_process').exec;
 var app = express();
 
 app.use(bodyParser.json());
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({'extended':'false'}));
 let body = {};
 var authInfo = {};
 const port = 3000;
+const env = process.env.NODE_ENV;
 
 if (args.apikey) {
     body = {
@@ -39,11 +41,25 @@ else {
     };
 }
 
-console.log(`Starting with mocked ${process.env.NODE_ENV} environment`);
+console.log(`Starting with mocked ${env} environment`);
 /* -- uncomment if wanting to debug all requests --
     const request = require('request');
     require('request-debug')(request);
 */
+
+if (env === 'dev') {
+
+    try {
+        Portal.createPortal();
+        PilotScript.createPilot();
+    }
+    catch (e) {
+        return Promise.reject(e);
+    }
+
+    CreateServer();
+}
+else {
 
 // Attempt to login against Rackspace Identity
 Identity({'body': body}).then((response) => {
@@ -62,21 +78,47 @@ Identity({'body': body}).then((response) => {
 
 }, breakChain).then(async (pilotResponse) => {
 
-    // after pilot success take Angular index file and add Pilot navigation
     try {
-        let indexFile = await fs.readFileSync(path.join(__dirname, '../dist/intelligence/index.html'));
-        let parsedHTML = Parse(indexFile.toString('utf8'), pilotResponse, authInfo);
-        return await fs.writeFileSync('../dist/intelligence/index.html', parsedHTML);
+        Portal.createPortal(authInfo);
+        PilotScript.createPilot(pilotResponse);
+        return;
     }
     catch (e) {
         return Promise.reject(e);
     }
+
 }, breakChain).then(() => {
 
+    CreateServer();
+});
+}
+/**
+ * @name breakChain
+ * @description function breaks the chain of promises
+ * @param {object} err
+ * @returns Promise rejected
+ */
+function breakChain(err) {
+    console.log('** Promise chain broken:\n ' + JSON.stringify(err));
+    return Promise.reject(err);
+}
+
+
+/**
+ * @name CreateServer
+ * @description function finalizes creating the server
+ */
+function CreateServer() {
     // after successfully parsing and writing file to /dist folder create static site
     app.use(express.static(path.join(__dirname, '../dist')));
     var server = http.createServer(app);
-    server.listen(port, 'dev.i.rax.io', () => {
+    // now that the script files have been created we'll build the Angular app
+    exec('npm run build-local',
+    function (err, stdout, stderr) {
+        if (err) {
+            console.log('** Error building Angular app: ' + err);
+       }
+       server.listen(port, 'dev.i.rax.io', () => {
         console.log(`\n \n 🚀 listening at http://dev.i.rax.io:${port}/intelligence \n\n`);
         browserSync({
             watch: true,
@@ -85,22 +127,11 @@ Identity({'body': body}).then((response) => {
                 '../dist/intelligence/**/*.{html,js,css}'
             ],
             online: true,
-            // this will open a new window each time the browser
-            open: true,
             port: port + 1,
             reloadOnRestart: true,
             proxy: 'dev.i.rax.io:' + port + '/intelligence',
             ui: false
         });
     });
-});
-
-/**
- * @name breakChain
- * @description function breaks the chain of promises
- * @param {object} err
- */
-function breakChain(err) {
-    console.log('** Promise chain broken:\n ' + JSON.stringify(err));
-    return Promise.reject(err);
+}).stdout.pipe(process.stdout);;
 }
