@@ -3,5 +3,5 @@ export interface IPortalData {
     domainId: string;
     userId: number;
     username: string;
-    tenants: [string];
+    tenants: string[];
 }
