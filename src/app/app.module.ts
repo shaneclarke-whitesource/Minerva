@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
-import { AppRoutingModule } from './app.routing.module';
-import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { localStorageProviders } from '@ngx-pwa/local-storage';
 import { environment } from 'src/environments/environment';
+import { AppRoutingModule } from './app.routing.module';
+import { AppComponent } from './app.component';
 
-import { AppModuleMock } from './app.module.mock';
 import { LoggingService } from './_services/logging/logging.service';
+import { PortalDataService } from './_services/portal/portal-data.service';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -41,9 +41,7 @@ import { LoggingService } from './_services/logging/logging.service';
 export class AppModule {}
 
 export function portalData(): any {
-  if (!environment.production) {
-    Window['PORTAL_DATA'] = new AppModuleMock().mock
-  }
+  new PortalDataService();
   return () => {};
 }
 

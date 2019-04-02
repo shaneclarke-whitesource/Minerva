@@ -65,7 +65,16 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.mock.ts"
-                }]
+                }],
+              "scripts": [
+                  "localenv/scripts/portaldata.js",
+                  "localenv/scripts/pilotdata.js"
+            ]},
+            "local": {
+              "scripts": [
+                  "localenv/scripts/portaldata.js",
+                  "localenv/scripts/pilotdata.js"
+              ]
             }
           }
         },
@@ -81,6 +90,9 @@
             },
             "mock": {
               "browserTarget": "minerva:build:mock"
+            },
+            "local": {
+              "browserTarget": "minerva:build:local"
             }
           }
         },
@@ -99,6 +111,9 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.mock.ts"
                 }
+              ],
+              "scripts": [
+                "localenv/scripts/portaldata.js"
               ]
             }
           },
