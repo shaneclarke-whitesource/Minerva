@@ -9,11 +9,15 @@ var Identity = require('./services/identity/token');
 var Pilot = require('./services/pilot/index');
 var Portal = require('./helpers/portal');
 var PilotScript = require('./helpers/pilot');
+var Api = require('./api');
 var exec = require('child_process').exec;
 var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'false'}));
+
+// this route is reserved for all api requests used in the app
+app.use('/api', Api);
 
 let body = {};
 var authInfo = {};
@@ -126,8 +130,10 @@ function CreateServer() {
                 '../dist/intelligence/*.{html,js,css}',
                 '../dist/intelligence/**/*.{html,js,css}'
             ],
+            host: 'dev.i.rax.io',
+            open:'external',
             online: true,
-            port: port + 1,
+            port: port,
             reloadOnRestart: true,
             proxy: 'dev.i.rax.io:' + port + '/intelligence',
             ui: false

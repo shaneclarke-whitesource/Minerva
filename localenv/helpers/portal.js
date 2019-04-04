@@ -18,7 +18,14 @@ var portal = {
         else {
             portalData = portalMock.data;
         }
-        // finally write file to path
+
+        let dir = path.join(__dirname, '../scripts');
+        // create directory if it doesn't exists
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+
+        // lastly write file to path
         fs.writeFileSync(path.join(__dirname, '../scripts/portaldata.js'), portalData);
     }
 };
