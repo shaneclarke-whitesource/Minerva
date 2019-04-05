@@ -29,6 +29,10 @@
     "ext": "ts,js,html",
     "ignore": [
       "scripts/*.js"
+    ],
+    "watch": [
+      ".",
+      "../src"
     ]
   }
 }

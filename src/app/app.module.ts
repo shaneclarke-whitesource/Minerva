@@ -2,8 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { localStorageProviders } from '@ngx-pwa/local-storage';
-import { environment } from 'src/environments/environment';
-import { AppRoutingModule } from './app.routing.module';
+import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 
 import { LoggingService } from './_services/logging/logging.service';
