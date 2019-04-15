@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'false'}));
 
 // this route is reserved for all api requests used in the app
-app.use('/api', Api);
+app.use('/intelligence/api', Api);
 
 let body = {};
 var authInfo = {};
@@ -36,12 +36,12 @@ if (args.apikey) {
 }
 else {
     body = {
-      auth: {
-        passwordCredentials: {
-          username: args.username,
-          password: args.password
+        auth: {
+            passwordCredentials: {
+                username: args.username,
+                password: args.password
+            }
         }
-      }
     };
 }
 
@@ -73,7 +73,7 @@ Identity({'body': body}).then((response) => {
 
     let body = {
         "primary-nav": {
-          "show": false
+            "show": false
         }
     };
 
@@ -117,12 +117,13 @@ function CreateServer() {
     app.use(express.static(path.join(__dirname, '../dist')));
     var server = http.createServer(app);
     // now that the script files have been created we'll build the Angular app
+
     exec('npm run build-local',
     function (err, stdout, stderr) {
         if (err) {
             console.log('** Error building Angular app: ' + err);
-       }
-       server.listen(port, 'dev.i.rax.io', () => {
+    }
+    server.listen(port, 'dev.i.rax.io', () => {
         console.log(`\n \n 🚀 listening at http://dev.i.rax.io:${port}/intelligence \n\n`);
         browserSync({
             watch: true,

@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  mock: true
+  mock: true,
+  api: {
+    salus: 'api/salus'
+  }
 };
 
 /*

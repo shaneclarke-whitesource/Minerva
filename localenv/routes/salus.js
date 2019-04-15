@@ -1,8 +1,22 @@
 var express = require('express');
+var path = require('path');
 var router = express.Router();
+var devEnv = process.env.NODE_ENV === 'dev';
+var mockPath = path.join(__dirname, '../../src/app/_mocks');
 
 router.get('/resources', (req, res) => {
-    res.send('Get Overview of resources');
+
+    if (devEnv) {
+        const data = require(`${mockPath}/resources/collection.json`);
+        res.json(data);
+    }
+
+    /*
+        TODO: since we're working with either a staging or prod env
+        make request here for Resources
+    */
+
 });
+
 
 module.exports = router;
