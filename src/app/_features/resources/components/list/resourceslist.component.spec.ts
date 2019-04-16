@@ -1,15 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { ResourcesComponent } from './resources.component';
-import { resourcesMock } from '../../../_mocks/resources/resources.service.mock'
+import { ResourcesListComponent } from './resourceslist.component';
+import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock'
 
-describe('ResourcesComponent', () => {
-  let component: ResourcesComponent;
-  let fixture: ComponentFixture<ResourcesComponent>;
+describe('ResourcesListComponent', () => {
+  let component: ResourcesListComponent;
+  let fixture: ComponentFixture<ResourcesListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResourcesComponent ],
+      declarations: [ ResourcesListComponent ],
       imports: [
         HttpClientModule
       ]
@@ -18,7 +18,7 @@ describe('ResourcesComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResourcesComponent);
+    fixture = TestBed.createComponent(ResourcesListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

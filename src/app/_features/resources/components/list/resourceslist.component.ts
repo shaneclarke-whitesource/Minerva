@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourcesService } from '../../../_services/resources/resources.service';
+import { ResourcesService } from '../../../../_services/resources/resources.service';
 
 
 @Component({
-  selector: 'app-resources',
-  templateUrl: './resources.component.html',
-  styleUrls: ['./resources.component.less']
+  selector: 'app-resourceslist',
+  templateUrl: './resourceslist.component.html',
+  styleUrls: ['./resourceslist.component.less']
 })
-export class ResourcesComponent implements OnInit {
+export class ResourcesListComponent implements OnInit {
 
   resources: any = [];
   constructor(private resourceService: ResourcesService) {
