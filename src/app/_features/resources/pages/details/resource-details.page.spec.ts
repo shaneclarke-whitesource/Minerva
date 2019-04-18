@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ActivatedRoute, Data } from '@angular/router';
+import { of } from 'rxjs';
 import { ResourceDetailsPage } from './resource-details.page';
 
 describe('ResourceDetailsPage', () => {
@@ -8,7 +9,15 @@ describe('ResourceDetailsPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResourceDetailsPage ]
+      declarations: [ ResourceDetailsPage ],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({id: 123})
+          }
+        }
+      ]
     })
     .compileComponents();
   }));
@@ -22,4 +31,9 @@ describe('ResourceDetailsPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have a route param', () => {
+      expect(component.id).toEqual(123);
+  });
+
 });
