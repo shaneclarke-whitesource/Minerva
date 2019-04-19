@@ -1,12 +1,11 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 import { localStorageProviders } from '@ngx-pwa/local-storage';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 
 import { LoggingService } from './_services/logging/logging.service';
 import { PortalDataService } from './_services/portal/portal-data.service';
+import { SharedModule } from './_shared/shared.module';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -14,9 +13,8 @@ import { PortalDataService } from './_services/portal/portal-data.service';
     AppComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    SharedModule.forRoot()
   ],
   exports: [],
   providers: [
