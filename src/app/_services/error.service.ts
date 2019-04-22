@@ -8,13 +8,13 @@ export class ErrorService {
 
   getClientErrorMessage(error: Error): string {
     return error.message ?
-           error.message :
-           error.toString();
+      error.message :
+      error.toString();
   }
 
   getServerErrorMessage(error: HttpErrorResponse): string {
     return navigator.onLine ?
-           error.message :
-           'No Internet Connection';
+      error.message :
+      'No Internet Connection';
   }
 }
