@@ -5,7 +5,6 @@ var devEnv = process.env.NODE_ENV === 'dev';
 var mockPath = path.join(__dirname, '../../src/app/_mocks');
 
 router.get('/resources', (req, res) => {
-
     if (devEnv) {
         const data = require(`${mockPath}/resources/collection.json`);
         res.json(data);
@@ -14,6 +13,20 @@ router.get('/resources', (req, res) => {
     /*
         TODO: since we're working with either a staging or prod env
         make request here for Resources
+    */
+
+});
+
+
+router.get('/resources/:id', (req, res) => {
+    if (devEnv) {
+        const data = require(`${mockPath}/resources/single.json`);
+        res.json(data);
+    }
+
+    /*
+        TODO: since we're working with either a staging or prod env
+        make request here for a Resource
     */
 
 });

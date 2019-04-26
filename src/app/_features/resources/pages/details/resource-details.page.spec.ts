@@ -2,6 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Data } from '@angular/router';
 import { of } from 'rxjs';
 import { ResourceDetailsPage } from './resource-details.page';
+import { HttpClientModule } from '@angular/common/http';
+import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock'
+//import { ResourcesService } from '../../../../_services/resources/resources.service';
 
 describe('ResourceDetailsPage', () => {
   let component: ResourceDetailsPage;
@@ -17,6 +20,9 @@ describe('ResourceDetailsPage', () => {
             params: of({id: 123})
           }
         }
+      ],
+      imports: [
+        HttpClientModule
       ]
     })
     .compileComponents();
@@ -36,4 +42,7 @@ describe('ResourceDetailsPage', () => {
       expect(component.id).toEqual(123);
   });
 
+  it('should set to a single resource', () => {
+      expect(component.resource).toEqual(new resourcesMock().single);
+  })
 });

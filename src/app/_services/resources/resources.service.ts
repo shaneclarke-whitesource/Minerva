@@ -19,7 +19,7 @@ const httpOptions = {
 export class ResourcesService {
 
   private _resources: {};
-  private collectionMockData = new resourcesMock().collection;
+  private resourcesMock = new resourcesMock();
 
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
@@ -33,7 +33,7 @@ export class ResourcesService {
 
   getResources(): Observable<any> {
     if (environment.mock) {
-      this.resources = this.collectionMockData;
+      this.resources = this.resourcesMock.collection;
       return of(this.resources);
     }
     else {
@@ -46,8 +46,20 @@ export class ResourcesService {
     }
   }
 
+  // TODO: establish interface for return data of individual
+  // resources
   getResource(id: number): Observable<any> {
-    return of();
+    if (environment.mock) {
+      return of(this.resourcesMock.single);
+    }
+    else {
+      return this.http.get(`${environment.api.salus}/resources/${id}`, httpOptions)
+      .pipe(
+        tap(data => {
+          this.logService.log(`Resource: ${data}`, LogLevels.info);
+        })
+      );
+    }
   }
 
   createResource(param:any): Observable<any> {
