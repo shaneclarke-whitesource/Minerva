@@ -2,7 +2,7 @@
     "id": 26,
     "resourceId": "development:0",
     "labels": {
-        "agent.discovered.hostname": "MS90HCG8WL",
+        "agent.discovered.hostname": "IOc8RLW2PV",
         "agent.discovered.os": "darwin",
         "agent.environment": "localdev",
         "pingable": "true",
