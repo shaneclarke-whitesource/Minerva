@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ResourcesService } from '../../_services/resources/resources.service';
 import { ResourcesListComponent } from './components/list/resourceslist.component';
 import { ResourcesPage } from './pages/resources/resources.page';
-import { ResourceDetailsPage } from './pages/details/resource-details.page'
-
+import { ResourceDetailsPage } from './pages/details/resource-details.page';
+import { SharedModule } from '../../_shared/shared.module';
 const routes: Routes = [
   {
       path: '',
@@ -18,13 +17,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [
     ResourcesListComponent,
     ResourcesPage,
     ResourceDetailsPage
   ],
   imports: [
-    CommonModule,
+    SharedModule,
     RouterModule.forChild(routes)
   ],
   providers: [

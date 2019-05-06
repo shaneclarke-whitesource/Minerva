@@ -1,7 +1,6 @@
 import { NgModule, ModuleWithProviders, ErrorHandler } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 import { GlobalErrorHandler } from './global-error.handler';
@@ -12,13 +11,11 @@ import {ServerErrorInterceptor } from '../_interceptors/server-error.interceptor
   imports: [
     CommonModule,
     HttpClientModule,
-    BrowserModule,
     FormsModule
   ],
   exports: [
     CommonModule,
     HttpClientModule,
-    BrowserModule,
     FormsModule
   ],
   providers: [

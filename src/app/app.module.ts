@@ -2,6 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core
 import { localStorageProviders } from '@ngx-pwa/local-storage';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { LoggingService } from './_services/logging/logging.service';
 import { PortalDataService } from './_services/portal/portal-data.service';
@@ -14,6 +15,7 @@ import { SharedModule } from './_shared/shared.module';
   ],
   imports: [
     AppRoutingModule,
+    BrowserModule,
     SharedModule.forRoot()
   ],
   exports: [],

@@ -1,4 +1,77 @@
-<p>
-  resources list here!
+<hx-checkbox-control>
+<div class="hxRow">
+  <div class="hxCol">
+    <hx-search
+        [placeholder]="searchPlaceholderText">
+    </hx-search>
+  </div>
+  <div class="hxCol resource-header hxOffset-1">
+<button class="hxBtn" disabled>
+  Delete
+</button>
 
-</p>
+<button class="hxBtn" disabled>
+  Create Multiple Checks
+</button>
+
+<button class="hxBtn" disabled>
+  Create Suppression
+</button>
+
+<button class="hxBtn hxPrimary">
+  Add Resource
+</button>
+  </div>
+</div>
+<table class="hxTable">
+  <thead>
+    <tr>
+      <th class="hxControl">
+          <hx-checkbox></hx-checkbox>
+      </th>
+      <th>RESOURCE NAME</th>
+      <th>CRITICAL</th>
+      <th>WARNING</th>
+      <th>OK</th>
+      <th>DISABLED</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let resource of resources">
+      <td class="hxControl">
+          <hx-checkbox></hx-checkbox>
+      </td>
+      <td><a [routerLink]="['/resources', resource.id]">{{resource.resourceId}}</a></td>
+      <td>--</td>
+      <td>3</td>
+      <td>8</td>
+      <td>--</td>
+      <td>Visualize</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="hxRow resource-paging">
+<div class="hxCol">
+<div class="hxPagination hxBtnGroup">
+  <button class="hxBtn" disabled>
+    <hx-icon type="angle-start"></hx-icon>
+  </button>
+  <button class="hxBtn" disabled>
+    <hx-icon type="angle-left"></hx-icon>
+  </button>
+  <button class="hxBtn" aria-current="true">1</button>
+  <button class="hxBtn">2</button>
+  <button class="hxBtn">3</button>
+  <button class="hxBtn">4</button>
+  <button class="hxBtn">5</button>
+  <button class="hxBtn">
+    <hx-icon type="angle-right"></hx-icon>
+  </button>
+  <button class="hxBtn">
+    <hx-icon type="angle-end"></hx-icon>
+  </button>
+</div>
+</div>
+</div>

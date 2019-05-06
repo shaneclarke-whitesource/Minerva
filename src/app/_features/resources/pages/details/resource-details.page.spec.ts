@@ -1,10 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Data } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { ResourceDetailsPage } from './resource-details.page';
 import { HttpClientModule } from '@angular/common/http';
-import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock'
-//import { ResourcesService } from '../../../../_services/resources/resources.service';
+import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock';
 
 describe('ResourceDetailsPage', () => {
   let component: ResourceDetailsPage;
