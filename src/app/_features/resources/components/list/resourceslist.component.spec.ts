@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourcesListComponent } from './resourceslist.component';
+import { ResourcesPage } from '../../pages/resources/resources.page';
+import { ResourceDetailsPage } from '../../pages/details/resource-details.page';
 import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock'
 
 describe('ResourcesListComponent', () => {
@@ -9,8 +13,10 @@ describe('ResourcesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResourcesListComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [ ResourcesListComponent, ResourcesPage, ResourceDetailsPage ],
       imports: [
+        RouterTestingModule,
         HttpClientModule
       ]
     })
@@ -27,11 +33,32 @@ describe('ResourcesListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('ngOnInit should resolve resources', () => {
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      expect(component.resources).toEqual(new resourcesMock().collection);
+  describe('setup defaults', () => {
+    it('ngOnInit should resolve resources', () => {
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.resources).toEqual(new resourcesMock().collection);
+      });
+    });
+
+    it('should assign total amount of resources', () => {
+      expect(component.total).toEqual(4);
+    });
+
+    it('should assign current page', () => {
+      expect(component.page).toEqual(0);
+    });
+
+    it('should create correct placeholder text', () => {
+      expect(component.searchPlaceholderText).toEqual('Search 4 Resources');
     });
   });
 
+  it('should destroy subscriptions', () => {
+    spyOn(component['ngUnsubscribe'], 'next');
+    spyOn(component['ngUnsubscribe'], 'complete');
+    component.ngOnDestroy();
+    expect(component['ngUnsubscribe'].next).toHaveBeenCalledTimes(1);
+    expect(component['ngUnsubscribe'].complete).toHaveBeenCalledTimes(1);
+  });
 });
