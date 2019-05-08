@@ -6,15 +6,15 @@
     </hx-search>
   </div>
   <div class="hxCol resource-header hxOffset-1">
-<button class="hxBtn" disabled>
+<button class="hxBtn" [disabled]="selectedResources.length === 0">
   Delete
 </button>
 
-<button class="hxBtn" disabled>
+<button class="hxBtn" [disabled]="selectedResources.length === 0">
   Create Multiple Monitors
 </button>
 
-<button class="hxBtn" disabled>
+<button class="hxBtn" [disabled]="selectedResources.length === 0">
   Create Suppression
 </button>
 
@@ -27,7 +27,7 @@
   <thead>
     <tr>
       <th class="hxControl">
-          <hx-checkbox></hx-checkbox>
+          <hx-checkbox id="chkColumn" (change)="checkColumn($event)"></hx-checkbox>
       </th>
       <th>RESOURCE NAME</th>
       <th>CRITICAL</th>
@@ -40,7 +40,8 @@
   <tbody>
     <tr *ngFor="let resource of resources">
       <td class="hxControl">
-          <hx-checkbox></hx-checkbox>
+          <hx-checkbox id="chk{{resource.id}}" (change)="selectResource(resource)"
+            [checked]="resource.checked"></hx-checkbox>
       </td>
       <td><a [routerLink]="['/resources', resource.id]">{{resource.resourceId}}</a></td>
       <td>--</td>

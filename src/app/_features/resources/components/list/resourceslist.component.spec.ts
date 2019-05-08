@@ -7,6 +7,26 @@ import { ResourcesPage } from '../../pages/resources/resources.page';
 import { ResourceDetailsPage } from '../../pages/details/resource-details.page';
 import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock'
 
+var mockResource = {
+  "id": 26,
+  "resourceId": "development:0",
+  "labels": {
+      "agent.discovered.hostname": "IOc8RLW2PV",
+      "agent.discovered.os": "darwin",
+      "agent.environment": "localdev",
+      "pingable": "true",
+      "agent.discovered.arch": "amd64"
+  },
+  "metadata": {
+      "ping_ip": "127.0.0.1"
+  },
+  "tenantId": "833544",
+  "presenceMonitoringEnabled": true,
+  "region": "DFW",
+  "created_at": 1401216889852,
+  "updated_at": 1436828769063
+};
+
 describe('ResourcesListComponent', () => {
   let component: ResourcesListComponent;
   let fixture: ComponentFixture<ResourcesListComponent>;
@@ -52,6 +72,36 @@ describe('ResourcesListComponent', () => {
     it('should create correct placeholder text', () => {
       expect(component.searchPlaceholderText).toEqual('Search 4 Resources');
     });
+  });
+
+  it('should add all resources', () => {
+    var checked = { target:{checked:true} };
+    component.checkColumn(checked);
+    component.selectedResources.forEach(e => {
+      e.checked = true;
+    });
+
+    expect(component.resources)
+    .toEqual(component.selectedResources);
+
+  });
+
+  it('should remove all resources', () => {
+    var unchecked = { target:{checked:false} };
+    component.checkColumn(unchecked);
+    expect(component.selectedResources).toEqual([]);
+  });
+
+  it('should select a resource', () => {
+    component.selectResource(mockResource);
+    expect(component.selectedResources[0]).toEqual(mockResource);
+  });
+
+  it('should remove a selected resource', () => {
+    component.selectResource(mockResource);
+    component.selectResource(mockResource);
+
+    expect(component.selectedResources.indexOf(mockResource)).toEqual(-1);
   });
 
   it('should destroy subscriptions', () => {

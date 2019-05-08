@@ -16,6 +16,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   total: number;
   page: number;
 
+  selectedResources: any = [];
   constructor(private resourceService: ResourcesService) { }
 
   ngOnInit() {
@@ -30,7 +31,30 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     });
   }
 
+  checkColumn(event) {
+    if (event.target.checked) {
+      this.selectedResources = this.resources.map(x => Object.assign({}, x));
+    }
+    else {
+      this.selectedResources = [];
+    }
+    this.resources.forEach(e => {
+        e.checked = event.target.checked;
+    });
+  }
+
+  selectResource(resource) {
+    if (this.selectedResources.indexOf(resource) === -1) {
+      this.selectedResources.push(resource);
+    } else {
+      this.selectedResources.splice(
+        this.selectedResources.indexOf(resource), 1
+      );
+    }
+  }
+
   ngOnDestroy() {
+    //unsubcribe once component is done
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
