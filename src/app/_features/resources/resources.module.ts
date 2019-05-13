@@ -5,7 +5,6 @@ import { ResourcesService } from '../../_services/resources/resources.service';
 import { ResourcesListComponent } from './components/list/resourceslist.component';
 import { ResourcesPage } from './pages/resources/resources.page';
 import { ResourceDetailsPage } from './pages/details/resource-details.page';
-import { MonitorslistComponent } from '../monitors/components/list/monitorslist.component';
 
 const routes: Routes = [
   {
@@ -22,7 +21,6 @@ const routes: Routes = [
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [
     ResourcesListComponent,
-    MonitorslistComponent,
     ResourcesPage,
     ResourceDetailsPage
   ],
