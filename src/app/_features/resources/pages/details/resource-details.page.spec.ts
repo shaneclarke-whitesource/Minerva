@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
 import { ResourceDetailsPage } from './resource-details.page';
 import { HttpClientModule } from '@angular/common/http';
@@ -11,6 +13,7 @@ describe('ResourceDetailsPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [ ResourceDetailsPage ],
       providers: [
         {
@@ -21,7 +24,8 @@ describe('ResourceDetailsPage', () => {
         }
       ],
       imports: [
-        HttpClientModule
+        HttpClientModule,
+        RouterTestingModule
       ]
     })
     .compileComponents();
@@ -38,10 +42,10 @@ describe('ResourceDetailsPage', () => {
   });
 
   it('should have a route param', () => {
-      expect(component.id).toEqual(123);
+    expect(component.id).toEqual(123);
   });
 
   it('should set to a single resource', () => {
-      expect(component.resource).toEqual(new resourcesMock().single);
+    expect(component.resource).toEqual(new resourcesMock().single['default']);
   })
 });

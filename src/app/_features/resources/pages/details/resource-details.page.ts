@@ -8,11 +8,11 @@ import { ResourcesService } from '../../../../_services/resources/resources.serv
   styleUrls: ['./resource-details.page.less']
 })
 export class ResourceDetailsPage implements OnInit {
-
   id: number;
   //TODO: create Interface for a single Resource - will be mapped to
   // service & response
   resource: any = {};
+  Object: Object = Object;
 
   constructor(private route: ActivatedRoute, private resourceService: ResourcesService) { }
 
@@ -22,7 +22,7 @@ export class ResourceDetailsPage implements OnInit {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
       this.resourceService.getResource(this.id).subscribe(data => {
-        this.resource = data;
+        this.resource = data.default;
       });
     });
   }
