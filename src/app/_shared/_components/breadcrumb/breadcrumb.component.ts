@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute } from '@angular/router';
 import { BreadCrumb } from '../../../_models/breadcrumb';
 @Component({
   selector: 'app-breadcrumb',

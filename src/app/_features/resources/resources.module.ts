@@ -1,10 +1,11 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SharedModule } from '../../_shared/shared.module';
 import { ResourcesService } from '../../_services/resources/resources.service';
 import { ResourcesListComponent } from './components/list/resourceslist.component';
 import { ResourcesPage } from './pages/resources/resources.page';
 import { ResourceDetailsPage } from './pages/details/resource-details.page';
-import { SharedModule } from '../../_shared/shared.module';
+
 const routes: Routes = [
   {
       path: '',

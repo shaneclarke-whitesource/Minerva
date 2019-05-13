@@ -1,3 +1,108 @@
-<p>
-  resource-details.page works!
-</p>
+<div class="hxRow resource-header">
+<div class="hxCol hxSpan-9">
+  <h2>{{resource.resourceId}}</h2>
+</div>
+<div class="hxCol hxSpan-3 cog-menu-div align-right">
+    <hx-disclosure class="hxBtn" aria-controls="basicMenuId">
+        <hx-icon type="cog"></hx-icon>
+        <span>Actions</span>
+        <hx-icon class="hxPrimary" type="angle-down"></hx-icon>
+    </hx-disclosure>
+    <hx-menu id="basicMenuId">
+      <section>
+        <header>Manage</header>
+        <hx-menuitem>Rename Entity</hx-menuitem>
+        <hx-menuitem>Add IP</hx-menuitem>
+        <hx-menuitem>Delete Entity</hx-menuitem>
+      </section>
+      <section>
+        <header>Monitor</header>
+        <hx-menuitem>Create Check...</hx-menuitem>
+        <hx-menuitem>Create Suppression...</hx-menuitem>
+      </section>
+    </hx-menu>
+</div>
+</div>
+
+<div class="hxRow hxSpan-9">
+  <div class="hxCol hxSpan-9">
+    <h3>Resource Details</h3>
+  </div>
+</div>
+
+<div class="hxRow hxSpan-9">
+  <div class="hxCol hxSpan-6">
+    <h4>Monitoring Agent</h4>
+    {{resource.presenceMonitoringEnabled === true ? 'Yes': 'No'}}
+  </div>
+  <div class="hxCol hxSpan-6">
+    <h4>Region</h4>
+    {{resource.region}}
+  </div>
+</div>
+
+<div class="hxRow hxSpan-9">
+  <div class="hxCol hxSpan-6">
+    <h4>Agent ID</h4>
+    <!--- TODO: Add service call for Envoy info -->
+  </div>
+  <div class="hxCol hxSpan-6">
+    <h4>Created Date</h4>
+    {{resource.created_at}}
+  </div>
+</div>
+
+<div class="hxRow hxSpan-9 last-item">
+  <div class="hxCol hxSpan-6">
+    <h4>Metadata</h4>
+    <div class="hxRow" *ngFor="let address of Object.keys(resource.metadata)">
+      <div class="hxCol">
+        {{address}}
+      </div>
+      <div class="hxCol">
+        {{resource.metadata[address]}}
+      </div>
+    </div>
+  </div>
+  <div class="hxCol hxSpan-6">
+    <h4>Last Updated</h4>
+    {{resource.created_at}}
+    <br/><br/>
+    <h4>Visual</h4>
+    <a [routerLink]="['']">Default Graphs <hx-icon type="monitoring"></hx-icon></a>
+  </div>
+</div>
+
+<div class="hxRow hxSpan-9">
+  <div class="hxCol">
+    <h3>Monitors</h3>
+  </div>
+</div>
+
+<div class="hxRow hxSpan-9">
+  <div class="hxCol">
+      <p>This section contains all of the entities being monitored, including all of your Rackspace cloud servers.
+          While non-Rackspace products can be monitored, Rackspace technical support may be limited.</p>
+  </div>
+</div>
+
+<div class="hxRow hxSpan-9 last-item">
+<pre><code>[Monitor Grid here]</code></pre>
+</div>
+
+
+<div class="hxRow hxSpan-9">
+    <div class="hxCol">
+      <h3>Suppressions</h3>
+    </div>
+  </div>
+<div class="hxRow hxSpan-9">
+    <div class="hxCol">
+        <p>A suppression temporarily mutes an alarm (it will still get triggered but you won't receive an alert).
+          E.g. a suppression would be useful when you are doing maintenance on a server.</p>
+    </div>
+</div>
+
+<div class="hxRow hxSpan-9 last-item">
+    <pre><code>[Monitor Grid here]</code></pre>
+</div>
