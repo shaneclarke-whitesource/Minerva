@@ -14,6 +14,7 @@ import { SharedModule } from './_shared/shared.module';
     AppComponent
   ],
   imports: [
+    BrowserModule,
     AppRoutingModule,
     BrowserModule,
     SharedModule.forRoot()

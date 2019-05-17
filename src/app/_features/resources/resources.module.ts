@@ -8,11 +8,17 @@ import { SharedModule } from '../../_shared/shared.module';
 const routes: Routes = [
   {
       path: '',
-      component: ResourcesPage
+      component: ResourcesPage,
+      data: {
+        breadcrumb: ''
+      }
   },
   {
       path: ':id',
-      component: ResourceDetailsPage
+      component: ResourceDetailsPage,
+      data: {
+        breadcrumb: 'DETAILS'
+      }
   }
 ];
 

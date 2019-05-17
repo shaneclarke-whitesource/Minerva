@@ -1,0 +1,12 @@
+<div class="hxRow">
+  <nav class="hxBreadcrumb">
+    <div *ngFor="let breadcrumb of breadcrumbs$; last as isLast;">
+      <a [ngClass]="{'active': isLast}" aria-current="page" *ngIf="!isLast; else lastRoute"
+        [routerLink]="[breadcrumb.url]" routerLinkActive="active">
+        {{ breadcrumb.label }}
+      </a>
+      <hx-icon *ngIf="!isLast;" class="delimiter" type="angle-right"></hx-icon>
+      <ng-template #lastRoute>{{ breadcrumb.label }}</ng-template>
+    </div>
+  </nav>
+</div>

@@ -1,22 +1,27 @@
-import { NgModule, ModuleWithProviders, ErrorHandler } from '@angular/core';
+import { NgModule, ModuleWithProviders, ErrorHandler, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { GlobalErrorHandler } from './global-error.handler';
 import {ServerErrorInterceptor } from '../_interceptors/server-error.interceptor';
+import { BreadcrumbComponent } from './_components/breadcrumb/breadcrumb.component';
 
 @NgModule({
-  declarations: [],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  declarations: [BreadcrumbComponent],
   imports: [
     CommonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   exports: [
     CommonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BreadcrumbComponent
   ],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
