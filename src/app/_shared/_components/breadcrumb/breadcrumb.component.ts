@@ -8,12 +8,12 @@ import { BreadCrumb } from '../../../_models/breadcrumb';
 })
 export class BreadcrumbComponent implements OnInit {
 
-  breadcrumbs$ : BreadCrumb[];
+  breadcrumbs : BreadCrumb[];
   @Input() routeDetails: string = "";
   constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.breadcrumbs$ = this.buildBreadCrumb(this.activatedRoute.root);
+    this.breadcrumbs = this.buildBreadCrumb(this.activatedRoute.root);
   }
 
   buildBreadCrumb(route: ActivatedRoute, url: string = '',

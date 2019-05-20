@@ -75,7 +75,7 @@ describe('BreadcrumbComponent', () => {
 
   it('should build Breadcrumbs', () => {
     const completedCrumbs = [{"label":"RESOURCES","url":"/resources/"}];
-    expect(component.breadcrumbs$).toEqual(completedCrumbs);
+    expect(component.breadcrumbs).toEqual(completedCrumbs);
   });
 
 });

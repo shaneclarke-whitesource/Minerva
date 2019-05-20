@@ -1,6 +1,6 @@
 <div class="hxRow">
   <nav class="hxBreadcrumb">
-    <div *ngFor="let breadcrumb of breadcrumbs$; last as isLast;">
+    <div *ngFor="let breadcrumb of breadcrumbs; last as isLast;">
       <a [ngClass]="{'active': isLast}" aria-current="page" *ngIf="!isLast; else lastRoute"
         [routerLink]="[breadcrumb.url]" routerLinkActive="active">
         {{ breadcrumb.label }}
