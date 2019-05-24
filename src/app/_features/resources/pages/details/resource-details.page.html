@@ -32,20 +32,8 @@
 
 <div class="hxRow hxSpan-9">
   <div class="hxCol hxSpan-6">
-    <h4>Resource ID</h4>
-    {{resource.id}}
-  </div>
-  <div class="hxCol hxSpan-6">
-    <h4>Product Type</h4>
-    <!-- TODO: Previously this was determined by examinng the resource
-      URI - a new way to go about this must be decided -->
-  </div>
-</div>
-
-<div class="hxRow hxSpan-9">
-  <div class="hxCol hxSpan-6">
     <h4>Monitoring Agent</h4>
-    {{resource.id}}
+    {{resource.presenceMonitoringEnabled === true ? 'Yes': 'No'}}
   </div>
   <div class="hxCol hxSpan-6">
     <h4>Region</h4>
@@ -66,10 +54,15 @@
 
 <div class="hxRow hxSpan-9 last-item">
   <div class="hxCol hxSpan-6">
-    <h4>IP Addresses</h4>
-    <p *ngFor="let address of Object.keys(resource.metadata)">
-      {{resource.metadata[address]}}
-    </p>
+    <h4>Metadata</h4>
+    <div class="hxRow" *ngFor="let address of Object.keys(resource.metadata)">
+      <div class="hxCol">
+        {{address}}
+      </div>
+      <div class="hxCol">
+        {{resource.metadata[address]}}
+      </div>
+    </div>
   </div>
   <div class="hxCol hxSpan-6">
     <h4>Last Updated</h4>
