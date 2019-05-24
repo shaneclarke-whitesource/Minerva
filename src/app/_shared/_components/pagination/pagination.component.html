@@ -1,0 +1,16 @@
+  <div class="hxPagination hxBtnGroup">
+    <button class="hxBtn" (click)="onPage(1)" [disabled]="page === 1">
+      <hx-icon type="angle-start"></hx-icon>
+    </button>
+    <button class="hxBtn" (click)="onPrev()" [disabled]="page ===1">
+      <hx-icon type="angle-left"></hx-icon>
+    </button>
+    <button class="hxBtn" *ngFor="let pageNum of getPages(); index as i" (click)="onPage(pageNum)"
+    [attr.aria-current]="(page-1) === i">{{ pageNum }}</button>
+    <button class="hxBtn" (click)="onNext(true)" [disabled]="lastPage()">
+      <hx-icon type="angle-right"></hx-icon>
+    </button>
+    <button class="hxBtn" (click)="onPage(totalPages())" [disabled]="page === totalPages()">
+      <hx-icon type="angle-end"></hx-icon>
+    </button>
+  </div>

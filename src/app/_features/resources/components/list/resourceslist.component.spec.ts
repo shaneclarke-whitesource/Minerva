@@ -66,7 +66,7 @@ describe('ResourcesListComponent', () => {
     });
 
     it('should assign current page', () => {
-      expect(component.page).toEqual(0);
+      expect(component.page).toEqual(1);
     });
 
     it('should create correct placeholder text', () => {
@@ -100,9 +100,25 @@ describe('ResourcesListComponent', () => {
   it('should remove a selected resource', () => {
     component.selectResource(mockResource);
     component.selectResource(mockResource);
-
     expect(component.selectedResources.indexOf(mockResource)).toEqual(-1);
   });
+
+  it('should goto page', () => {
+    component.goToPage(3);
+    expect(component.page).toEqual(3);
+  });
+
+  it('should goto next page', () => {
+    component.nextPage();
+    expect(component.page).toEqual(2);
+  });
+
+  it('should goto previous page', () => {
+    component.goToPage(3);
+    component.prevPage();
+    expect(component.page).toEqual(2);
+  });
+
 
   it('should destroy subscriptions', () => {
     spyOn(component['ngUnsubscribe'], 'next');

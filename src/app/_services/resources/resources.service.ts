@@ -31,13 +31,13 @@ export class ResourcesService {
     this._resources = value;
   }
 
-  getResources(): Observable<any> {
+  getResources(size: number, page: number): Observable<any> {
     if (environment.mock) {
       this.resources = this.resourcesMock.collection;
       return of(this.resources);
     }
     else {
-    return this.http.get(`${environment.api.salus}/resources`, httpOptions)
+    return this.http.get(`${environment.api.salus}/resources?size=${size}&page=${page}`, httpOptions)
     .pipe(
       tap(data =>
         { this.resources = data;

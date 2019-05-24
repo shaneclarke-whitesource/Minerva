@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourcesService } from './resources.service';
+import { environment } from '../../../environments/environment';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
 
 describe('ResourcesService', () => {
@@ -29,7 +30,7 @@ describe('ResourcesService', () => {
 
     it('should return collection', () => {
       const service: ResourcesService = TestBed.get(ResourcesService);
-      service.getResources().subscribe((data) => {
+      service.getResources(1, environment.pagination.pageSize).subscribe((data) => {
         expect(data).toEqual(new resourcesMock().collection);
       });
     });

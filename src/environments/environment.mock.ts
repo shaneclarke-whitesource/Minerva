@@ -7,6 +7,12 @@ export const environment = {
   mock: true,
   api: {
     salus: 'api/salus'
+  },
+  pagination: {
+    pageSize: 25,
+    resouces: {
+      pageSize: 25
+    }
   }
 };
 

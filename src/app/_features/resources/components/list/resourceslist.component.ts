@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { environment } from '../../../../../environments/environment';
 import { ResourcesService } from '../../../../_services/resources/resources.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs'
@@ -14,21 +15,29 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   searchPlaceholderText: string;
   resources: any = [];
   total: number;
-  page: number;
+  page: number = 1;
+  defaultAmount: number = environment.pagination.pageSize;
+  totalPages: number;
+  fetchResources: any;
 
   selectedResources: any = [];
   constructor(private resourceService: ResourcesService) { }
 
   ngOnInit() {
-    this.resourceService.getResources()
-    .pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe(data => {
-      this.resources = this.resourceService.resources.default.content;
-      this.total = this.resourceService.resources.default.totalElements;
-      this.page = this.resourceService.resources.default.number;
-      this.searchPlaceholderText = `Search ${this.total} Resources`;
-    });
+    this.fetchResources = () => {
+      return this.resourceService.getResources(this.defaultAmount, this.page)
+        .pipe(
+          takeUntil(this.ngUnsubscribe)
+        ).subscribe(data => {
+          this.resources = this.resourceService.resources.default.content;
+          this.total = this.resourceService.resources.default.totalElements;
+          // reapply once API logic is confirmed
+          //this.page = this.resourceService.resources.default.number + 1;
+          this.searchPlaceholderText = `Search ${this.total} Resources`;
+        });
+    }
+
+    this.fetchResources();
   }
 
   checkColumn(event) {
@@ -39,8 +48,23 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
       this.selectedResources = [];
     }
     this.resources.forEach(e => {
-        e.checked = event.target.checked;
+      e.checked = event.target.checked;
     });
+  }
+
+  goToPage(n: number): void {
+    this.page = n;
+    this.fetchResources();
+  }
+
+  nextPage(): void {
+    this.page++;
+    this.fetchResources();
+  }
+
+  prevPage(): void {
+    this.page--;
+    this.fetchResources();
   }
 
   selectResource(resource) {
