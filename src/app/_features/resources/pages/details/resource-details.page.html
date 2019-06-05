@@ -55,7 +55,7 @@
   </div>
 </div>
 
-<div class="hxRow hxSpan-9 last-item">
+<div class="hxRow hxSpan-9">
   <div class="hxCol hxSpan-6">
     <h4>Metadata</h4>
     <div class="hxRow" *ngFor="let address of Object.keys(resource.metadata)">
@@ -70,9 +70,24 @@
   <div class="hxCol hxSpan-6">
     <h4>Last Updated</h4>
     {{resource.created_at}}
-    <br/><br/>
+  </div>
+</div>
+
+<div class="hxRow hxSpan-9 last-item">
+  <div class="hxCol hxSpan-6">
+    <h4>Labels</h4>
+    <div class="hxRow" *ngFor="let label of Object.keys(resource.labels)">
+        <div class="hxCol hxSpan-6">
+          {{label}}
+        </div>
+        <div class="hxCol hxSpan-6">
+          {{resource.labels[label]}}
+        </div>
+      </div>
+  </div>
+  <div class="hxCol hxSpan-6">
     <h4>Visual</h4>
-    <a [routerLink]="['']">Default Graphs <hx-icon type="monitoring"></hx-icon></a>
+      <a [routerLink]="['']">Default Graphs <hx-icon type="monitoring"></hx-icon></a>
   </div>
 </div>
 
