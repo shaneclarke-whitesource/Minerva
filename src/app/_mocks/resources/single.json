@@ -14,6 +14,7 @@
     "tenantId": "833544",
     "presenceMonitoringEnabled": true,
     "region": "DFW",
+    "associatedWithEnvoy": "001293677",
     "created_at": 1401216889852,
     "updated_at": 1436828769063
 }

@@ -1,5 +1,8 @@
 <div class="hxRow resource-header">
-<div class="hxCol hxSpan-9">
+<div class="hxCol hxSpan-12">
+    <app-breadcrumb [routeDetails]="resource.resourceId"></app-breadcrumb>
+</div>
+<div class="hxCol hxSpan-9 resource-title">
   <h2>{{resource.resourceId}}</h2>
 </div>
 <div class="hxCol hxSpan-3 cog-menu-div align-right">
@@ -33,7 +36,7 @@
 <div class="hxRow hxSpan-9">
   <div class="hxCol hxSpan-6">
     <h4>Monitoring Agent</h4>
-    {{resource.presenceMonitoringEnabled === true ? 'Yes': 'No'}}
+    {{resource.presenceMonitoringEnabled == true ? 'Yes': 'No'}}
   </div>
   <div class="hxCol hxSpan-6">
     <h4>Region</h4>
@@ -44,7 +47,7 @@
 <div class="hxRow hxSpan-9">
   <div class="hxCol hxSpan-6">
     <h4>Agent ID</h4>
-    <!--- TODO: Add service call for Envoy info -->
+    {{resource.associatedWithEnvoy}}
   </div>
   <div class="hxCol hxSpan-6">
     <h4>Created Date</h4>
