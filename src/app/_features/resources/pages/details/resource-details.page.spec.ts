@@ -78,6 +78,10 @@ describe('ResourceDetailsPage', () => {
     expect(component.id).toEqual(123);
   });
 
+  it('should declare Object', () => {
+    expect(component.Object).toEqual(Object);
+  })
+
   it('should set to a single resource', () => {
     expect(component.resource).toEqual(new resourcesMock().single['default']);
   })
