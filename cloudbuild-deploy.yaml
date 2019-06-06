@@ -6,4 +6,4 @@ steps:
   args: ['run', 'ng', '--', 'build', '--prod']
 
 - name: 'gcr.io/cloud-builders/gsutil'
-  args: ['rsync', '-r', 'dist/intelligence/', 'gs://mnrva-deploy.dev.monplat.rackspace.net']
+  args: ['rsync', '-r', 'dist/', 'gs://mnrva-deploy.dev.monplat.rackspace.net']
