@@ -9,6 +9,7 @@ import { ResourcesService } from '../../../../_services/resources/resources.serv
 })
 export class ResourceDetailsPage implements OnInit {
   id: number;
+  meta: {};
   //TODO: create Interface for a single Resource - will be mapped to
   // service & response
   resource: any = {};
@@ -22,7 +23,7 @@ export class ResourceDetailsPage implements OnInit {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
       this.resourceService.getResource(this.id).subscribe(data => {
-        this.resource = data.default;
+        this.resource = data.default.content[0];
       });
     });
   }

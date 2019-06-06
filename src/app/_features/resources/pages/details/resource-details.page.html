@@ -36,22 +36,11 @@
 <div class="hxRow hxSpan-9">
   <div class="hxCol hxSpan-6">
     <h4>Monitoring Agent</h4>
-    {{resource.presenceMonitoringEnabled == true ? 'Yes': 'No'}}
+    {{resource.associatedWithEnvoy == true ? 'Yes': 'No'}}
   </div>
   <div class="hxCol hxSpan-6">
     <h4>Region</h4>
     {{resource.region}}
-  </div>
-</div>
-
-<div class="hxRow hxSpan-9">
-  <div class="hxCol hxSpan-6">
-    <h4>Agent ID</h4>
-    {{resource.associatedWithEnvoy}}
-  </div>
-  <div class="hxCol hxSpan-6">
-    <h4>Created Date</h4>
-    {{resource.created_at}}
   </div>
 </div>
 
@@ -68,8 +57,19 @@
     </div>
   </div>
   <div class="hxCol hxSpan-6">
+    <h4>Created Date</h4>
+    {{resource.createdTimestamp}}
+  </div>
+</div>
+
+<div class="hxRow hxSpan-9">
+  <div class="hxCol hxSpan-6">
     <h4>Last Updated</h4>
-    {{resource.created_at}}
+    {{resource.updatedTimestamp}}
+  </div>
+  <div class="hxCol hxSpan-6">
+    <h4>Visual</h4>
+      <a [routerLink]="['']">Default Graphs <hx-icon type="monitoring"></hx-icon></a>
   </div>
 </div>
 
@@ -84,10 +84,6 @@
           {{resource.labels[label]}}
         </div>
       </div>
-  </div>
-  <div class="hxCol hxSpan-6">
-    <h4>Visual</h4>
-      <a [routerLink]="['']">Default Graphs <hx-icon type="monitoring"></hx-icon></a>
   </div>
 </div>
 

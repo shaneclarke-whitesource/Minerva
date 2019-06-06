@@ -1,20 +1,25 @@
 {
-    "id": 26,
+    "content": [{
+    "tenantId": "833544",
     "resourceId": "development:0",
     "labels": {
+        "agent_discovered_arch": "amd64",
         "agent.discovered.hostname": "IOc8RLW2PV",
-        "agent.discovered.os": "darwin",
-        "agent.environment": "localdev",
-        "pingable": "true",
-        "agent.discovered.arch": "amd64"
+        "agent_environment": "localdev",
+        "agent_discovered_os": "darwin"
     },
     "metadata": {
         "ping_ip": "127.0.0.1"
     },
-    "tenantId": "833544",
-    "associatedWithEnvoy": "001293677",
     "presenceMonitoringEnabled": true,
     "region": "DFW",
-    "created_at": 1401216889852,
-    "updated_at": 1436828769063
+    "associatedWithEnvoy": true,
+    "createdTimestamp": "2019-06-06T15:44:11Z",
+    "updatedTimestamp": "2019-06-06T15:44:11Z"
+    }],
+    "number": 0,
+    "totalPages": 1,
+    "totalElements": 1,
+    "last": true,
+    "first": true
 }
