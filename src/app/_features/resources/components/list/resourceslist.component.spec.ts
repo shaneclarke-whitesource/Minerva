@@ -6,25 +6,24 @@ import { ResourcesListComponent } from './resourceslist.component';
 import { ResourcesPage } from '../../pages/resources/resources.page';
 import { ResourceDetailsPage } from '../../pages/details/resource-details.page';
 import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock'
+import { environment } from '../../../../../environments/environment';
 
 var mockResource = {
   "id": 26,
-  "resourceId": "development:0",
+  "resourceId": "development:1",
   "labels": {
-      "agent.discovered.hostname": "IOc8RLW2PV",
-      "agent.discovered.os": "darwin",
-      "agent.environment": "localdev",
-      "pingable": "true",
-      "agent.discovered.arch": "amd64"
+    "agent.discovered.hostname": "MS90HCG8WL",
+    "agent.discovered.os": "darwin",
+    "agent.environment": "localdev",
+    "pingable": "true",
+    "agent.discovered.arch": "amd64"
   },
   "metadata": {
-      "ping_ip": "127.0.0.1"
+    "ping_ip": "127.0.0.1"
   },
   "tenantId": "833544",
   "presenceMonitoringEnabled": true,
-  "region": "DFW",
-  "created_at": 1401216889852,
-  "updated_at": 1436828769063
+  "region": null
 };
 
 describe('ResourcesListComponent', () => {
@@ -57,20 +56,21 @@ describe('ResourcesListComponent', () => {
     it('ngOnInit should resolve resources', () => {
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        expect(component.resources).toEqual(new resourcesMock().collection);
+        expect(component.resources).toEqual(new resourcesMock().collection.content
+        .slice(0 * environment.pagination.resources.pageSize, 1 * environment.pagination.resources.pageSize));
       });
     });
 
     it('should assign total amount of resources', () => {
-      expect(component.total).toEqual(4);
+      expect(component.total).toEqual(54);
     });
 
     it('should assign current page', () => {
-      expect(component.page).toEqual(0);
+      expect(component.page).toEqual(1);
     });
 
     it('should create correct placeholder text', () => {
-      expect(component.searchPlaceholderText).toEqual('Search 4 Resources');
+      expect(component.searchPlaceholderText).toEqual('Search 54 Resources');
     });
   });
 
@@ -100,9 +100,25 @@ describe('ResourcesListComponent', () => {
   it('should remove a selected resource', () => {
     component.selectResource(mockResource);
     component.selectResource(mockResource);
-
     expect(component.selectedResources.indexOf(mockResource)).toEqual(-1);
   });
+
+  it('should goto page', () => {
+    component.goToPage(3);
+    expect(component.page).toEqual(3);
+  });
+
+  it('should goto next page', () => {
+    component.nextPage();
+    expect(component.page).toEqual(2);
+  });
+
+  it('should goto previous page', () => {
+    component.goToPage(3);
+    component.prevPage();
+    expect(component.page).toEqual(2);
+  });
+
 
   it('should destroy subscriptions', () => {
     spyOn(component['ngUnsubscribe'], 'next');
