@@ -10,7 +10,7 @@ export const environment = {
   },
   pagination: {
     pageSize: 25,
-    resouces: {
+    resources: {
       pageSize: 25
     }
   }

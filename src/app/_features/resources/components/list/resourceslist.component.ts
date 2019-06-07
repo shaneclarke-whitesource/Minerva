@@ -29,8 +29,8 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this.ngUnsubscribe)
         ).subscribe(data => {
-          this.resources = this.resourceService.resources.default.content;
-          this.total = this.resourceService.resources.default.totalElements;
+          this.resources = this.resourceService.resources.content;
+          this.total = this.resourceService.resources.totalElements;
           // reapply once API logic is confirmed
           //this.page = this.resourceService.resources.default.number + 1;
           this.searchPlaceholderText = `Search ${this.total} Resources`;

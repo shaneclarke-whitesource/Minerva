@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { PaginationComponent } from './pagination.component';
 
 describe('PaginationComponent', () => {
@@ -42,16 +43,26 @@ describe('PaginationComponent', () => {
     expect(component['goPage'].emit).toHaveBeenCalledTimes(1);
   });
 
-  it('should go to prev page', () => {
-    spyOn(component['goPrev'], 'emit');
-    component.onPrev();
-    expect(component['goPrev'].emit).toHaveBeenCalledTimes(1);
-  });
-
   it('should go to next page', () => {
     spyOn(component['goNext'], 'emit');
     component.onNext(true);
     expect(component['goNext'].emit).toHaveBeenCalledTimes(1);
+  });
+
+  it('should disable first button on our first page', () => {
+    let element = fixture.debugElement.query(By.css('button.firstPage')).nativeElement;
+    expect(element.getAttribute('disabled')).not.toBeNull();
+  });
+
+  it('should disable prev on our first page', () => {
+    let element = fixture.debugElement.query(By.css('button.prevPage')).nativeElement;
+    expect(element.getAttribute('disabled')).not.toBeNull();
+  });
+
+  it('should go to prev page', () => {
+    spyOn(component['goPrev'], 'emit');
+    component.onPrev();
+    expect(component['goPrev'].emit).toHaveBeenCalledTimes(1);
   });
 
   it('should calculate total pages', () => {
@@ -60,10 +71,9 @@ describe('PaginationComponent', () => {
 
   it('should return whether its the last page', () => {
     expect(component.lastPage()).toEqual(false);
-  })
+  });
 
   it('should get all pages', () => {
     expect(component.getPages()).toEqual([1,2,3]);
   });
-
 });

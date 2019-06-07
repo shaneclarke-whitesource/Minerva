@@ -19,7 +19,7 @@ const httpOptions = {
 export class ResourcesService {
 
   private _resources: {};
-  private resourcesMock = new resourcesMock();
+  private mockedResources = new resourcesMock();
 
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
@@ -33,7 +33,11 @@ export class ResourcesService {
 
   getResources(size: number, page: number): Observable<any> {
     if (environment.mock) {
-      this.resources = this.resourcesMock.collection;
+      let pageNumber = --page;
+      let mocks = Object.assign({}, this.mockedResources.collection);
+      let slicedData = [... mocks.content.slice(pageNumber * size, (pageNumber + 1) * size)];
+      this.resources = mocks;
+      this.resources.content = slicedData
       return of(this.resources);
     }
     else {
@@ -50,7 +54,7 @@ export class ResourcesService {
   // resources
   getResource(id: number): Observable<any> {
     if (environment.mock) {
-      return of(this.resourcesMock.single);
+      return of(this.mockedResources.single);
     }
     else {
       return this.http.get(`${environment.api.salus}/resources/${id}`, httpOptions)
