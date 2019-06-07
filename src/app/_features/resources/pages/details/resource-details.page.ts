@@ -23,7 +23,7 @@ export class ResourceDetailsPage implements OnInit {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
       this.resourceService.getResource(this.id).subscribe(data => {
-        this.resource = data.default.content[0];
+        this.resource = data.content[0];
       });
     });
   }

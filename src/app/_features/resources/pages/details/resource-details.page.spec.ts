@@ -83,6 +83,7 @@ describe('ResourceDetailsPage', () => {
   })
 
   it('should set to a single resource', () => {
-    expect(component.resource).toEqual(new resourcesMock().single['default']);
+    let mocked = new resourcesMock().single;
+    expect(component.resource).toEqual(mocked.content[0]);
   })
 });
