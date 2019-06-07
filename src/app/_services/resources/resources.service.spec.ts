@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourcesService } from './resources.service';
+import { environment } from '../../../environments/environment';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
 
 describe('ResourcesService', () => {
@@ -26,11 +27,14 @@ describe('ResourcesService', () => {
 
 
   describe('CRUD Operations', () => {
-
     it('should return collection', () => {
       const service: ResourcesService = TestBed.get(ResourcesService);
-      service.getResources().subscribe((data) => {
-        expect(data).toEqual(new resourcesMock().collection);
+      service.getResources(environment.pagination.resources.pageSize, 1).subscribe((data) => {
+        let mocked = new resourcesMock().collection;
+        let slicedArray = new resourcesMock().collection.content
+         .slice(0 * environment.pagination.resources.pageSize, 1 * environment.pagination.resources.pageSize);
+        mocked.content = slicedArray
+        expect(data).toEqual(mocked);
       });
     });
 
@@ -40,6 +44,5 @@ describe('ResourcesService', () => {
         expect(data).toEqual(new resourcesMock().single);
       });
     });
-
   });
 });

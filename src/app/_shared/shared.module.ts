@@ -7,10 +7,11 @@ import { RouterModule } from '@angular/router';
 import { GlobalErrorHandler } from './global-error.handler';
 import {ServerErrorInterceptor } from '../_interceptors/server-error.interceptor';
 import { BreadcrumbComponent } from './_components/breadcrumb/breadcrumb.component';
+import { PaginationComponent } from './_components/pagination/pagination.component';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  declarations: [BreadcrumbComponent],
+  declarations: [BreadcrumbComponent, PaginationComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -21,7 +22,8 @@ import { BreadcrumbComponent } from './_components/breadcrumb/breadcrumb.compone
     CommonModule,
     HttpClientModule,
     FormsModule,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    PaginationComponent
   ],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandler },

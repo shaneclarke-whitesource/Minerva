@@ -1,4 +1,3 @@
-<hx-checkbox-control>
 <div class="hxRow">
   <div class="hxCol">
     <hx-search
@@ -52,27 +51,17 @@
     </tr>
   </tbody>
 </table>
-
 <div class="hxRow resource-paging">
-<div class="hxCol">
-<div class="hxPagination hxBtnGroup">
-  <button class="hxBtn" disabled>
-    <hx-icon type="angle-start"></hx-icon>
-  </button>
-  <button class="hxBtn" disabled>
-    <hx-icon type="angle-left"></hx-icon>
-  </button>
-  <button class="hxBtn" aria-current="true">1</button>
-  <button class="hxBtn">2</button>
-  <button class="hxBtn">3</button>
-  <button class="hxBtn">4</button>
-  <button class="hxBtn">5</button>
-  <button class="hxBtn">
-    <hx-icon type="angle-right"></hx-icon>
-  </button>
-  <button class="hxBtn">
-    <hx-icon type="angle-end"></hx-icon>
-  </button>
-</div>
+  <div class="hxCol">
+<app-pagination
+[total]="total"
+[page]="page"
+[perPage]="defaultAmount"
+[pagesToShow]="5"
+(goPrev)="prevPage()"
+(goNext)="nextPage()"
+(goPage)="goToPage($event)">
+</app-pagination>
+
 </div>
 </div>

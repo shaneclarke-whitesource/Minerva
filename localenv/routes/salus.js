@@ -6,6 +6,8 @@ var mockPath = path.join(__dirname, '../../src/app/_mocks');
 
 router.get('/resources', (req, res) => {
     if (devEnv) {
+        let page = req.query.page;
+        let take = req.query.size;
         const data = require(`${mockPath}/resources/collection.json`);
         res.json(data);
     }
