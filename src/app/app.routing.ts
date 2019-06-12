@@ -7,6 +7,11 @@ const routes: Routes = [
       breadcrumb: 'RESOURCES'
     }
   },
+  { path: 'monitors', loadChildren: './_features/monitors/monitors.module#MonitorsModule',
+    data: {
+      breadcrumb: 'RESOURCES'
+    }
+  },
   { path: '', redirectTo: '/resources', pathMatch: 'full'},
   { path: '**', redirectTo: '/resources'}
 ];
