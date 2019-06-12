@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../_shared/shared.module';
-import { MonitorslistComponent } from './components/list/monitorslist.component';
+//import { MonitorslistComponent } from './components/list/monitorslist.component';
 import { MonitorsPage } from './pages/monitors/monitors.page';
 
 const routes: Routes = [
@@ -20,7 +20,7 @@ const routes: Routes = [
   ],
   declarations: [
     MonitorsPage,
-    MonitorslistComponent
+    //MonitorslistComponent
   ],
   imports: [
     SharedModule,
