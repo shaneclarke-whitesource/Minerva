@@ -7,9 +7,9 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should have <router-outlet> present', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Rackspace Intelligence');
+    expect(page.getRouter().isPresent()).toBe(true);
   });
 
   it('should display Helix UI', () => {
