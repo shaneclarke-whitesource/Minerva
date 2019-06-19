@@ -1,0 +1,60 @@
+<div class="hxRow">
+<div class="hxCol monitors-header">
+<button class="hxBtn hxPrimary">
+  Create Multiple Checks
+</button>
+
+<button class="hxBtn" [disabled]="selectedMonitors.length === 0">
+  Create Suppression
+</button>
+
+<button class="hxBtn" [disabled]="selectedMonitors.length === 0">
+  Copy Check
+</button>
+</div>
+
+<div class="hxCol">
+  <hx-search
+    [placeholder]="searchPlaceholderText">
+  </hx-search>
+</div>
+</div>
+<table class="hxTable">
+  <thead>
+    <tr>
+      <th class="hxControl">
+          <hx-checkbox id="chkColumn" (change)="checkColumn($event)"></hx-checkbox>
+      </th>
+      <th>CHECK NAME</th>
+      <th>ALARM STATUS</th>
+      <th>LABELS</th>
+      <th>DETAILS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let monitor of monitors">
+      <td class="hxControl">
+          <hx-checkbox id="monitor-{{monitor.id}}" (change)="selectMonitors(monitor)"
+            [checked]="monitor.checked"></hx-checkbox>
+      </td>
+      <td><a [routerLink]="['/monitors', monitor.id]">{{monitor.name}}</a></td>
+      <td>--</td>
+      <td><hx-status *ngFor="let label of Object.keys(monitor.labelSelector)">
+        {{monitor.labelSelector[label]}}</hx-status></td>
+      <td>{{monitor.details.message}}</td>
+    </tr>
+  </tbody>
+</table>
+<div class="hxRow monitor-paging">
+  <div class="hxCol">
+<app-pagination
+[total]="total"
+[page]="page"
+[perPage]="defaultAmount"
+[pagesToShow]="5"
+(goPrev)="prevPage()"
+(goNext)="nextPage()"
+(goPage)="goToPage($event)">
+</app-pagination>
+</div>
+</div>

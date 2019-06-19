@@ -12,6 +12,9 @@ export const environment = {
     pageSize: 25,
     resources: {
       pageSize: 25
+    },
+    monitors: {
+      pageSize: 25
     }
   }
 };
