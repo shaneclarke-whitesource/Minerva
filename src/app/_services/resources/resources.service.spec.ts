@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourcesService } from './resources.service';
 import { environment } from '../../../environments/environment';
-import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
+import { ResourcesMock } from '../../_mocks/resources/resources.service.mock';
 
 describe('ResourcesService', () => {
   beforeEach(() => {
@@ -30,8 +30,8 @@ describe('ResourcesService', () => {
     it('should return collection', () => {
       const service: ResourcesService = TestBed.get(ResourcesService);
       service.getResources(environment.pagination.resources.pageSize, 1).subscribe((data) => {
-        let mocked = new resourcesMock().collection;
-        let slicedArray = new resourcesMock().collection.content
+        let mocked = new ResourcesMock().collection;
+        let slicedArray = new ResourcesMock().collection.content
          .slice(0 * environment.pagination.resources.pageSize, 1 * environment.pagination.resources.pageSize);
         mocked.content = slicedArray
         expect(data).toEqual(mocked);
@@ -41,7 +41,7 @@ describe('ResourcesService', () => {
     it('should return single resource', () => {
       const service: ResourcesService = TestBed.get(ResourcesService);
       service.getResource(5).subscribe((data) => {
-        expect(data).toEqual(new resourcesMock().single);
+        expect(data).toEqual(new ResourcesMock().single);
       });
     });
   });

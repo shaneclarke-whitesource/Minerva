@@ -7,29 +7,30 @@ import { of } from 'rxjs';
 import { ResourcesPage } from '../resources/resources.page';
 import { ResourceDetailsPage } from './resource-details.page';
 import { ResourcesListComponent } from '../../components/list/resourceslist.component';
-import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock';
+import { ResourcesMock } from '../../../../_mocks/resources/resources.service.mock';
 import { SharedModule } from '../../../../_shared/shared.module';
 
 const routes = [
-  { path: 'resources',
+  {
+    path: 'resources',
     data: {
-      breadcrumb: 'RESOURCES'
+      breadcrumb: 'RESOURCES',
     },
     children: [{
       path: '',
       component: ResourcesPage,
       data: {
-        breadcrumb: ''
-      }
+        breadcrumb: '',
+      },
+    },
+      {
+        path: ':id',
+        component: ResourceDetailsPage,
+        data: {
+          breadcrumb: 'DETAILS',
+        },
+      }],
   },
-  {
-      path: ':id',
-      component: ResourceDetailsPage,
-      data: {
-        breadcrumb: 'DETAILS'
-      }
-  }]
-  }
 ];
 
 describe('ResourceDetailsPage', () => {
@@ -42,26 +43,26 @@ describe('ResourceDetailsPage', () => {
       declarations: [
         ResourcesListComponent,
         ResourcesPage,
-        ResourceDetailsPage
+        ResourceDetailsPage,
       ],
       providers: [
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({id: 123}),
+            params: of({ id: 123 }),
             root: {
-              routeConfig : routes[0]
-            }
-          }
-        }
+              routeConfig: routes[0],
+            },
+          },
+        },
       ],
       imports: [
         SharedModule,
         HttpClientModule,
-        RouterTestingModule
-      ]
+        RouterTestingModule,
+      ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -80,10 +81,10 @@ describe('ResourceDetailsPage', () => {
 
   it('should declare Object', () => {
     expect(component.Object).toEqual(Object);
-  })
+  });
 
   it('should set to a single resource', () => {
-    let mocked = new resourcesMock().single;
+    let mocked = new ResourcesMock().single;
     expect(component.resource).toEqual(mocked.content[0]);
-  })
+  });
 });

@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ResourcesListComponent } from './resourceslist.component';
 import { ResourcesPage } from '../../pages/resources/resources.page';
 import { ResourceDetailsPage } from '../../pages/details/resource-details.page';
-import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock'
+import { ResourcesMock } from '../../../../_mocks/resources/resources.service.mock'
 import { environment } from '../../../../../environments/environment';
 
 var mockResource = {
@@ -56,7 +56,7 @@ describe('ResourcesListComponent', () => {
     it('ngOnInit should resolve resources', () => {
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        expect(component.resources).toEqual(new resourcesMock().collection.content
+        expect(component.resources).toEqual(new ResourcesMock().collection.content
         .slice(0 * environment.pagination.resources.pageSize, 1 * environment.pagination.resources.pageSize));
       });
     });

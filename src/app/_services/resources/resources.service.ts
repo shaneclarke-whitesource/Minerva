@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
-import { resourcesMock } from '../../_mocks/resources/resources.service.mock'
+import { ResourcesMock } from '../../_mocks/resources/resources.service.mock'
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,7 +19,7 @@ const httpOptions = {
 export class ResourcesService {
 
   private _resources: {};
-  private mockedResources = new resourcesMock();
+  private mockedResources = new ResourcesMock();
 
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
