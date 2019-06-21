@@ -54,13 +54,13 @@
 <div class="hxRow resource-paging">
   <div class="hxCol">
 <app-pagination
-[total]="total"
-[page]="page"
-[perPage]="defaultAmount"
-[pagesToShow]="5"
-(goPrev)="prevPage()"
-(goNext)="nextPage()"
-(goPage)="goToPage($event)">
+  [total]="total"
+  [page]="page"
+  [perPage]="defaultAmount"
+  [pagesToShow]="5"
+  (goPrev)="prevPage()"
+  (goNext)="nextPage()"
+  (goPage)="goToPage($event)">
 </app-pagination>
 
 </div>
