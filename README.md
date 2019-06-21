@@ -40,7 +40,7 @@ cd localenv && npm install
 In order to run the application locally you will need to add the following to your `/etc/hosts` file
 
 ```
-0.0.0.0 dev.i.rax.io
+127.0.0.1 dev.i.rax.io
 ```
 
 ## Run The App

@@ -7,6 +7,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { LoggingService } from './_services/logging/logging.service';
 import { PortalDataService } from './_services/portal/portal-data.service';
 import { SharedModule } from './_shared/shared.module';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -17,7 +19,8 @@ import { SharedModule } from './_shared/shared.module';
     BrowserModule,
     AppRoutingModule,
     BrowserModule,
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    environment.production ? [] : AkitaNgDevtools.forRoot()
   ],
   exports: [],
   providers: [
