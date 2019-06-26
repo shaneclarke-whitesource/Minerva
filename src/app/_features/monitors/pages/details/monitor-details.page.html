@@ -1,0 +1,86 @@
+<div class="hxRow monitor-header">
+  <div class="hxCol hxSpan-12">
+      <app-breadcrumb [routeDetails]="monitor.name"></app-breadcrumb>
+  </div>
+  <div class="hxCol hxSpan-9 monitor-title">
+    <h2>{{monitor.name}}</h2>
+  </div>
+  <div class="hxCol hxSpan-3 cog-menu-div align-right">
+      <hx-disclosure class="hxBtn" aria-controls="basicMenuId">
+          <hx-icon type="cog"></hx-icon>
+          <span>Actions</span>
+          <hx-icon class="hxPrimary" type="angle-down"></hx-icon>
+      </hx-disclosure>
+      <hx-menu id="basicMenuId">
+        <section>
+          <header>Identity</header>
+          <hx-menuitem>Rename Check</hx-menuitem>
+        </section>
+        <section>
+          <header>Manage Alarms</header>
+          <hx-menuitem>Add Alarm</hx-menuitem>
+        </section>
+        <section>
+          <header>Manage Check</header>
+          <hx-menuitem>Modify Status</hx-menuitem>
+          <hx-menuitem>Modify Parameters</hx-menuitem>
+          <hx-menuitem>Modify Options</hx-menuitem>
+          <hx-menuitem>Create Suppression</hx-menuitem>
+          <hx-menuitem>Delete Check</hx-menuitem>
+        </section>
+      </hx-menu>
+  </div>
+  </div>
+
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol hxSpan-9">
+      <h3>Monitor Details</h3>
+    </div>
+  </div>
+
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol hxSpan-6">
+      <h4>Status</h4>
+      Active
+    </div>
+    <div class="hxCol hxSpan-6">
+      <h4>Labels</h4>
+      <hx-status *ngFor="let label of Object.keys(monitor.labelSelector)">
+        {{monitor.labelSelector[label]}}</hx-status>
+    </div>
+  </div>
+
+
+
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol">
+      <h3>Monitoring Alarms</h3>
+    </div>
+  </div>
+
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol">
+        <p>Set up alarms to get notified when certain metric data criteria in this check.</p>
+    </div>
+  </div>
+
+  <div class="hxRow hxSpan-9 last-item">
+  <pre><code>[Monitoring Alarms Grid here]</code></pre>
+  </div>
+
+
+  <div class="hxRow hxSpan-9">
+      <div class="hxCol">
+        <h3>Suppressions</h3>
+      </div>
+    </div>
+  <div class="hxRow hxSpan-9">
+      <div class="hxCol">
+          <p>A suppression temporarily mutes an alarm (it will still get triggered but you won't receive an alert).
+            E.g. a suppression would be useful when you are doing maintenance on a server.</p>
+      </div>
+  </div>
+
+  <div class="hxRow hxSpan-9 last-item">
+      <pre><code>[Suppressions Grid here]</code></pre>
+  </div>
