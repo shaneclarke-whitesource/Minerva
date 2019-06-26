@@ -3,7 +3,7 @@ steps:
   args: ['install']
 
 - name: 'gcr.io/cloud-builders/npm'
-  args: ['run', 'ng', '--', 'build', '--prod']
+  args: ['run', 'build-deploy', '--prod']
 
 - name: 'gcr.io/cloud-builders/gsutil'
-  args: ['rsync', '-r', 'dist/intelligence/', 'gs://mnrva-deploy.dev.monplat.rackspace.net']
+  args: ['rsync', '-d', '-r', 'dist/intelligence/', 'gs://mnrva-deploy.dev.monplat.rackspace.net/intelligence']
