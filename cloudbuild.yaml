@@ -11,6 +11,9 @@ steps:
       '.'
       ]
 
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['rsync', '-r', 'gs://artifacts.rackspace-intelligence-dev.appspot.com/test_scripts/', '/workspace/localenv/']
+
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
 
