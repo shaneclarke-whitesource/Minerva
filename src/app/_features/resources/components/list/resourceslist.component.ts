@@ -7,7 +7,7 @@ import { Subject } from 'rxjs'
 @Component({
   selector: 'app-resourceslist',
   templateUrl: './resourceslist.component.html',
-  styleUrls: ['./resourceslist.component.less']
+  styleUrls: ['./resourceslist.component.scss']
 })
 export class ResourcesListComponent implements OnInit, OnDestroy {
 

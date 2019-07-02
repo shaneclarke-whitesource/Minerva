@@ -5,7 +5,7 @@ import { ResourcesService } from '../../../../_services/resources/resources.serv
 @Component({
   selector: 'app-resource-details.page',
   templateUrl: './resource-details.page.html',
-  styleUrls: ['./resource-details.page.less']
+  styleUrls: ['./resource-details.page.scss']
 })
 export class ResourceDetailsPage implements OnInit {
   id: number;

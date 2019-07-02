@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.less']
+  styleUrls: ['./pagination.component.scss']
 })
 export class PaginationComponent {
 
