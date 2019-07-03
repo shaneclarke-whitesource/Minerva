@@ -1,0 +1,16 @@
+{
+    "id": "10YN3Q45",
+    "name": "CPU Check",
+    "labelSelector": {
+        "additionalProp1": "LinuxOS",
+        "additionalProp2": "Prod",
+        "additionalProp3": "Load Balancer",
+        "additionalProp4": "amd64",
+        "additionalProp5": "Docker"
+
+    },
+    "type": "CPU",
+    "details": {
+        "message": "dns1.stabletransit.com (IPv4):53"
+    }
+}

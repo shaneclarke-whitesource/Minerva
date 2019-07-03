@@ -54,7 +54,7 @@ export class MonitorService {
   // monitors
   getMonitor(id: number): Observable<any> {
     if (environment.mock) {
-      return of();
+      return of(this.mockedMonitors.single);
     }
     else {
       return this.http.get(`${environment.api.salus}/monitors/${id}`, httpOptions)

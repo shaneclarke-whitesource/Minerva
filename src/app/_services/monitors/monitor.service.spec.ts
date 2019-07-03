@@ -33,5 +33,13 @@ describe('MonitorService', () => {
         expect(data).toEqual(mocked);
       });
     });
+
+    it('should return single monitor', () => {
+      const service: MonitorService = TestBed.get(MonitorService);
+      service.getMonitor(7).subscribe((data) => {
+        expect(data).toEqual(new monitorsMock().single);
+      });
+    });
+
   });
 });
