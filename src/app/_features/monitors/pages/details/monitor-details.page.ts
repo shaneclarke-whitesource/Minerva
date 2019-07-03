@@ -5,7 +5,7 @@ import { MonitorService } from '../../../../_services/monitors/monitor.service';
 @Component({
   selector: 'app-monitor-detail',
   templateUrl: './monitor-details.page.html',
-  styleUrls: ['./monitor-details.page.less']
+  styleUrls: ['./monitor-details.page.scss']
 })
 export class MonitorDetailsPage implements OnInit {
   id: number;
