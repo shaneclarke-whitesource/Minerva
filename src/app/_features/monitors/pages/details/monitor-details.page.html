@@ -1,0 +1,69 @@
+<div class="hxRow monitor-header">
+  <div class="hxCol hxSpan-12">
+      <app-breadcrumb [routeDetails]="monitor.name"></app-breadcrumb>
+  </div>
+  <div class="hxCol hxSpan-9 monitor-title">
+    <h2>{{monitor.name}}</h2>
+  </div>
+  <div class="hxCol hxSpan-3 cog-menu-div align-right">
+      <hx-disclosure class="hxBtn" aria-controls="basicMenuId">
+          <hx-icon type="cog"></hx-icon>
+          <span>Actions</span>
+          <hx-icon class="hxPrimary" type="angle-down"></hx-icon>
+      </hx-disclosure>
+      <hx-menu id="basicMenuId">
+        <section>
+          <header>Identity</header>
+          <hx-menuitem>Rename Monitor</hx-menuitem>
+        </section>
+        <section>
+          <header>Manage Monitor</header>
+          <hx-menuitem>Modify Status</hx-menuitem>
+          <hx-menuitem>Modify Parameters</hx-menuitem>
+          <hx-menuitem>Modify Options</hx-menuitem>
+          <hx-menuitem>Delete Monitor</hx-menuitem>
+        </section>
+      </hx-menu>
+  </div>
+  </div>
+
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol hxSpan-9">
+      <h3>Monitor Details</h3>
+    </div>
+  </div>
+
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol hxSpan-6">
+      <h4>Status</h4>
+      Active
+    </div>
+    <div class="hxCol hxSpan-6">
+      <h4>Labels</h4>
+      <hx-status *ngFor="let label of Object.keys(monitor.labelSelector)">
+        {{monitor.labelSelector[label]}}</hx-status>
+    </div>
+  </div>
+
+  <div class="hxRow hxSpan-9 last-item">
+    <div class="hxCol hxSpan-6">
+      <h4>Monitor Type</h4>
+      {{monitor.type}}
+    </div>
+  </div>
+
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol">
+      <h3>Events</h3>
+    </div>
+  </div>
+
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol">
+        <p>These are events related to this measurement on the basis of label</p>
+    </div>
+  </div>
+
+  <div class="hxRow hxSpan-9 last-item">
+  <pre><code>[Events Grid here]</code></pre>
+  </div>
