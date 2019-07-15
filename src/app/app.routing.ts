@@ -12,6 +12,11 @@ const routes: Routes = [
       breadcrumb: 'MONITORS'
     }
   },
+  { path: 'visualize', loadChildren: './_features/visualize/visualize.module#VisualizeModule',
+    data: {
+      breadcrumb: 'VISUALIZE'
+    }
+  },
   { path: '', redirectTo: '/resources', pathMatch: 'full'},
   { path: '**', redirectTo: '/resources'}
 ];
