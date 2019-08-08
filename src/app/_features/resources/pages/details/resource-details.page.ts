@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ResourcesService } from '../../../../_services/resources/resources.service';
 
+declare const window: any;
 @Component({
   selector: 'app-resource-details.page',
   templateUrl: './resource-details.page.html',
@@ -13,7 +14,7 @@ export class ResourceDetailsPage implements OnInit {
   //TODO: create Interface for a single Resource - will be mapped to
   // service & response
   resource: any = {};
-  Object: Object = Object;
+  Object = window.Object;
 
   constructor(private route: ActivatedRoute, private resourceService: ResourcesService) { }
 
