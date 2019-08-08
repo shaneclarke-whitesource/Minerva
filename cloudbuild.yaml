@@ -1,26 +1,33 @@
 steps:
 
   - name: 'gcr.io/cloud-builders/docker'
+    id: PULL_DOWN_DOCKER_CACHE
     args: ['pull','gcr.io/$PROJECT_ID/minerva-testing:latest']
 
   - name: 'gcr.io/cloud-builders/docker'
+    id: BUILD_TEST_CONTAINER
     args: [
       'build',
       '-t', 'gcr.io/$PROJECT_ID/minerva-testing:latest',
       '--cache-from', 'gcr.io/$PROJECT_ID/minerva-testing:latest',
+      '-f', 'Dockerfile-test',
       '.'
       ]
 
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['rsync', '-r', 'gs://artifacts.rackspace-intelligence-dev.appspot.com/test_scripts/', '/workspace/localenv/']
+    id: PULL_DOWN_LOCALENV
+    args: ['rsync', '-r', 'gs://minerva-test-scripts/', '/workspace/localenv/']
 
   - name: 'gcr.io/cloud-builders/npm'
+    id: NPM_INSTALL
     args: ['install']
 
   - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
+    id: E2E
     args: ["npm", "run", "e2e"]
 
   - name: 'gcr.io/$PROJECT_ID/minerva-testing:latest'
+    id: TEST
     args: ["npm", "run", "test"]
 
 timeout: 3600s

@@ -1,0 +1,15 @@
+FROM alpine:edge
+RUN apk add --update nodejs nodejs-npm chromium git \
+        && export CHROME_BIN=/usr/bin/chromium-browser \
+                  CHROME_PATH=/usr/lib/chromium/
+
+WORKDIR /testAlpine
+RUN cd /testAlpine
+COPY package.json .
+
+RUN npm install
+ADD . .
+
+RUN node ./node_modules/protractor/bin/webdriver-manager update
+RUN ng e2e
+
