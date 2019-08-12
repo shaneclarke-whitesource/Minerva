@@ -19,6 +19,16 @@ app.use(bodyParser.urlencoded({'extended':'false'}));
 // this route is reserved for all api requests used in the app
 app.use('/intelligence/api', Api);
 
+// all unmatched requests to this path, with no file extension, redirect to index
+app.use('/intelligence', function ( req, res, next ) {
+    // uri has a forward slash followed any number of any characters except full stops (up until the end of the string)
+    if (/\/[^.]*$/.test(req.url)) {
+        res.sendFile((path.join(__dirname, '../dist/intelligence/index.html')));
+    } else {
+        next();
+    }
+});
+
 let body = {};
 var authInfo = {};
 const port = 3000;

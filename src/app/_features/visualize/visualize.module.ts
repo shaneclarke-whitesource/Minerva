@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../_shared/shared.module';
 import { GraphsComponent } from './components/graphs/graphs.component';
 import { VisualizePage } from './pages/visualize.page/visualize.page.component';
-import { VisualizeService } from '../../_services/visualize/visualize.service';
+import { MetricsService } from '../../_services/metrics/metrics.service';
+import { InfluxService } from '../../_services/influx/influx.service';
 
 const routes: Routes = [
   {
@@ -23,7 +24,8 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   providers: [
-    VisualizeService
+    MetricsService,
+    InfluxService
   ]
 })
 export class VisualizeModule { }
