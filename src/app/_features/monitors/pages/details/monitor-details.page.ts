@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MonitorService } from '../../../../_services/monitors/monitor.service';
 
+declare const window: any;
+
 @Component({
   selector: 'app-monitor-detail',
   templateUrl: './monitor-details.page.html',
@@ -13,7 +15,7 @@ export class MonitorDetailsPage implements OnInit {
   //TODO: create Interface for a single Monitor - will be mapped to
   // service & response
   monitor: any = {};
-  Object: Object = Object;
+  Object = window.Object;
 
   constructor(private route: ActivatedRoute, private monitorService: MonitorService) { }
 
