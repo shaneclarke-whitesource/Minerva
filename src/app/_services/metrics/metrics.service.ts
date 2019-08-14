@@ -10,46 +10,39 @@ import { LoggingService } from '../../_services/logging/logging.service';
 import { metricMocks } from '../../_mocks/metrics/metrics.service.mock';
 import { InfluxService } from '../influx/influx.service';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-};
-
 @Injectable({
   providedIn: 'root'
 })
 export class MetricsService {
 
-  sensorSystems: string[] = [];
+  // private fields
   private mocks = new metricMocks()
   private readonly db: string = `CORE-${this.portalDataService.portalData.domainId}`;
   private readonly metricsURL:string = environment.api.metrics;
-
   // metricFields will act as an BehaviorSubject that notes any change in
   // in metricFields
   private metricFields = new BehaviorSubject<IMetricField[] | null>(null);
-  metricFields$():Observable<IMetricField[]> {
-    return this.metricFields.asObservable();
-  }
-
   // metricMeasurements will act as a BehaviorSubject that notes any change in
   // in measurements
   private metricMeasurements = new BehaviorSubject<IMeasurement[] | null>(null);
-  metricMeasurements$():Observable<IMeasurement[]> {
-    return this.metricMeasurements.asObservable();
-  }
-
   // metricDevices will act as a BehaviorSubject that notes any change in
   // in devices
   private metricDevices = new BehaviorSubject<IDevices[] | null>(null);
-  metricDevices$():Observable<IDevices[]> {
-    return this.metricDevices.asObservable();
-  }
-
   // metricDevices will act as a BehaviorSubject that notes any change in
   // in devices
   private metrics = new BehaviorSubject<IMetrics[] | null>(null);
+
+  //public fields
+  sensorSystems: string[] = [];
+  metricFields$():Observable<IMetricField[]> {
+    return this.metricFields.asObservable();
+  }
+  metricMeasurements$():Observable<IMeasurement[]> {
+    return this.metricMeasurements.asObservable();
+  }
+  metricDevices$():Observable<IDevices[]> {
+    return this.metricDevices.asObservable();
+  }
   metrics$():Observable<IMetrics[]> {
     return this.metrics.asObservable();
   }
@@ -57,6 +50,9 @@ export class MetricsService {
   constructor(private http:HttpClient, private logService: LoggingService,
     private portalDataService: PortalDataService, private influxService: InfluxService) { }
 
+    /**
+     * @returns Observable array of available measurements
+     */
   getMeasurements(): Observable<IMeasurement[]> {
     const params = {
       db: this.db,
@@ -68,7 +64,9 @@ export class MetricsService {
     }
     else {
       return this.http.get<IMeasurement[]>(`${this.metricsURL}`, {
-        headers: httpOptions.headers,
+        headers: new HttpHeaders({
+          'Accept': 'application/json'
+        }),
         params
       })
         .pipe(
@@ -79,6 +77,10 @@ export class MetricsService {
     }
   }
 
+  /**
+   * @param field {string}
+   * @returns Observable array of available metric fields
+   */
   getMetricFields(field:string): Observable<IMetricField[]> {
     const params = {
       db: this.db,
@@ -90,7 +92,9 @@ export class MetricsService {
     }
     else {
       return this.http.get<IMetricField[]>(`${this.metricsURL}`, {
-        headers: httpOptions.headers,
+        headers: new HttpHeaders({
+          'Accept': 'application/json'
+        }),
         params
       })
         .pipe(
@@ -101,6 +105,16 @@ export class MetricsService {
     }
   }
 
+  /**
+   *
+   * @param field {string} field to query for
+   * @param measurement {string} which measurement to query
+    * @param startTime {string} start time of query
+   * @param endTime {string} end time of query
+   * @returns Observable array of devices based on the measurement
+   *  TODO: verify date format, this data type could change to
+   *  possibly a number
+   */
   getDevices(field:string, measurement:string,
     startTime: string, endTime: string): Observable<IDevices[]> {
     const params = {
@@ -113,7 +127,9 @@ export class MetricsService {
     }
     else {
       return this.http.get<IDevices[]>(`${this.metricsURL}`, {
-        headers: httpOptions.headers,
+        headers: new HttpHeaders({
+          'Accept': 'application/json'
+        }),
         params
       })
         .pipe(
@@ -124,7 +140,15 @@ export class MetricsService {
     }
   }
 
-
+  /**
+   *
+   * @param field {string} field to query for
+   * @param measurement {string} which measurement to query
+    * @param startTime {string} start time of query
+   * @param endTime {string} end time of query
+   * @param device {string} specific device to query against
+   * @returns Observable array of devices based on the measurement
+   */
   getMetrics(field:string, measurement:string,
     startTime: string, endTime: string, device: string): Observable<IMetrics[]> {
     const params = {
@@ -137,7 +161,9 @@ export class MetricsService {
     }
     else {
       return this.http.get<IMetrics[]>(`${this.metricsURL}`, {
-        headers: httpOptions.headers,
+        headers: new HttpHeaders({
+          'Accept': 'application/json'
+        }),
         params
       })
         .pipe(
