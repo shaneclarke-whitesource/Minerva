@@ -12,6 +12,7 @@ router.get('/resources', (req, res) => {
         res.json(data);
     }
 
+    res.send({});
     /*
         TODO: since we're working with either a staging or prod env
         make request here for Resources

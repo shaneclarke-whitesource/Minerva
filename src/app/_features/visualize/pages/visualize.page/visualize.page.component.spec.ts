@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { VisualizePage } from './visualize.page.component';
 
 describe('VisualizePage', () => {
@@ -8,7 +9,9 @@ describe('VisualizePage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VisualizePage ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [ VisualizePage ],
+      imports: [HttpClientModule]
     })
     .compileComponents();
   }));
