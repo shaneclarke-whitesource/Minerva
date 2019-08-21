@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { tap, map, switchMap } from 'rxjs/operators';
 import { PortalDataService } from '../portal/portal-data.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
 import { IMetrics, IMetricField, IMeasurement, IDevices } from 'src/app/_models/metrics';
@@ -59,8 +59,12 @@ export class MetricsService {
       q: this.influxService.influxShowMeasurements()
     }
     if (environment.mock) {
-      let mocks = Object.assign({}, this.mocks.measurements);
-      return of(mocks);
+      let mocks = this.mocks.measurements;
+      return of(mocks)
+      .pipe(
+      tap( data => {
+        this.uniqueSystem(data, this)
+      }));
     }
     else {
       return this.http.get<IMeasurement[]>(`${this.metricsURL}`, {
@@ -73,7 +77,8 @@ export class MetricsService {
           tap(data => {
             this.metricMeasurements.next(data)
             this.logService.log(data, LogLevels.info);
-          }));
+          }),
+          map(item => new this.uniqueSystem(item, this)))
     }
   }
 
@@ -174,5 +179,17 @@ export class MetricsService {
     }
   }
 
-
+  /**
+   *
+   * @param measurement each legit system measurement
+   */
+  private uniqueSystem(measurement:IMeasurement[], self:MetricsService) {
+    measurement.forEach(el => {
+      let system = el.name.substring(0, el.name.indexOf("_"));
+      const index = self.sensorSystems.findIndex((item) => item === system);
+      if (index === -1) {
+        self.sensorSystems.push(system);
+      }
+    });
+  }
 }

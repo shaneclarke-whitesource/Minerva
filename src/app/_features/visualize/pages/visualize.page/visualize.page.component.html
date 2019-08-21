@@ -1,4 +1,15 @@
-<p>
-  visualize.page works!
-</p>
+<div class="hxRow">
+  <div class="hxCol hxSpan-12">
+    <app-breadcrumb></app-breadcrumb>
+</div>
+</div>
 
+<div class="hxRow">
+    <div class="hxCol hxSpan-4">
+      <app-visualize-selections [system]="system" [measurement]="measurement"
+      [device]="device" [start]="start" [end]="end"></app-visualize-selections>
+    </div>
+    <div class="hxCol hxSpan-8">
+      <app-graphs></app-graphs>
+    </div>
+</div>
