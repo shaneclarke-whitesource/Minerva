@@ -66,7 +66,7 @@ describe('MetricsService', () => {
   describe('- Requests', () => {
     it('should getMeasurements()', () => {
       service.getMeasurements().subscribe((measurements) => {
-        expect(measurements).toEqual(Object.assign({}, new metricMocks().measurements));
+        expect(measurements).toEqual(new metricMocks().measurements);
       });
     });
 
@@ -115,6 +115,4 @@ describe('MetricsService', () => {
       expect(spy).toHaveBeenCalled();
     });
   });
-
-
 });
