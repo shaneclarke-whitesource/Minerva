@@ -8,10 +8,17 @@ import { GlobalErrorHandler } from './global-error.handler';
 import {ServerErrorInterceptor } from '../_interceptors/server-error.interceptor';
 import { BreadcrumbComponent } from './_components/breadcrumb/breadcrumb.component';
 import { PaginationComponent } from './_components/pagination/pagination.component';
+import { MeasurementNamePipe } from './pipes/measurement-name.pipe';
+import { DeviceNamePipe } from './pipes/device-name.pipe';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  declarations: [BreadcrumbComponent, PaginationComponent],
+  declarations: [
+    BreadcrumbComponent,
+    PaginationComponent,
+    MeasurementNamePipe,
+    DeviceNamePipe
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -23,7 +30,9 @@ import { PaginationComponent } from './_components/pagination/pagination.compone
     HttpClientModule,
     FormsModule,
     BreadcrumbComponent,
-    PaginationComponent
+    PaginationComponent,
+    MeasurementNamePipe,
+    DeviceNamePipe
   ],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandler },

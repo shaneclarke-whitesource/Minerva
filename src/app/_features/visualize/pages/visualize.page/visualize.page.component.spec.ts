@@ -1,8 +1,9 @@
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterTestingModule } from '@angular/router/testing';
 import { VisualizePage } from './visualize.page.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { SharedModule } from '../../../../_shared/shared.module';
@@ -15,7 +16,7 @@ const routes = [
     }
   }, {
     queryParams: {
-      system: 'zenoss',
+      system: 'ZENOSS',
       measurement: 'cpu_check',
       device: '466255362',
       start: '328833',
@@ -37,22 +38,9 @@ describe('VisualizePage', () => {
       providers: [{
         provide: ActivatedRoute,
         useValue: {
-          queryParamMap: of({
-            get: (query: string) => {
-              switch (query) {
-                case 'system':
-                  return routes[1].queryParams.system;
-                case 'measurement':
-                  return routes[1].queryParams.measurement;
-                case 'device':
-                  return routes[1].queryParams.device;
-                case 'start':
-                  return routes[1].queryParams.start;
-                case 'end':
-                  return routes[1].queryParams.end;
-              }
-            }
-          }),
+          snapshot: {
+            ...routes[1]
+          },
           root: {
             routeConfig: routes[0]
           }
@@ -60,7 +48,8 @@ describe('VisualizePage', () => {
       }],
       imports: [
         SharedModule,
-        HttpClientModule
+        HttpClientModule,
+        RouterTestingModule
       ]
     })
       .compileComponents();
@@ -110,6 +99,24 @@ describe('VisualizePage', () => {
   it('should be present', () => {
     expect(fixture.debugElement.query(By.css('app-graphs'))
     .componentInstance).not.toBe(null);
+  });
+
+  describe('- change selected parameters', () => {
+    it('should update subjects', () => {
+
+    });
+  });
+
+  it('should setup intial graph', () => {
+
+  });
+
+  it('should add all subscriptions', () => {
+
+  });
+
+  it('should destroy subscriptions', () => {
+
   });
 
 });

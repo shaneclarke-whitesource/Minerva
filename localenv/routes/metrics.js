@@ -1,10 +1,12 @@
 var express = require('express');
 var path = require('path');
 var axios = require('axios');
-var config = require('../config');
+const Settings = require('../config/index');
 var router = express.Router();
 var devEnv = process.env.NODE_ENV === 'dev';
 var mockPath = path.join(__dirname, '../../src/app/_mocks');
+
+const config = new Settings();
 
 router.get('/', (req, res) => {
     let db = req.query.db;
@@ -70,7 +72,6 @@ function findQuery(string) {
     if (string.includes('SELECT mean(')) {
         return 'metrics';
     }
-
 }
 
 

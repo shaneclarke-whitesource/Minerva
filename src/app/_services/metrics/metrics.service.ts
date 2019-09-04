@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { tap, map, switchMap, flatMap } from 'rxjs/operators';
 import { PortalDataService } from '../portal/portal-data.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
-import { IMetrics, IMetricField, IMeasurement, IDevices } from 'src/app/_models/metrics';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { IMetric, IMetricField, IMeasurement, IDevice } from 'src/app/_models/metrics';
+import { Observable, of, BehaviorSubject, from } from 'rxjs';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { metricMocks } from '../../_mocks/metrics/metrics.service.mock';
 import { InfluxService } from '../influx/influx.service';
+import { DeviceNamePipe } from '../../_shared/pipes/device-name.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -27,43 +28,102 @@ export class MetricsService {
   private metricMeasurements = new BehaviorSubject<IMeasurement[] | null>(null);
   // metricDevices will act as a BehaviorSubject that notes any change in
   // in devices
-  private metricDevices = new BehaviorSubject<IDevices[] | null>(null);
+  private metricDevices = new BehaviorSubject<IDevice[] | null>(null);
   // metricDevices will act as a BehaviorSubject that notes any change in
   // in devices
-  private metrics = new BehaviorSubject<IMetrics[] | null>(null);
+  private metrics = new BehaviorSubject<IMetric[] | null>(null);
+
+  // All selected items that can then be observed
+  private selectedSystem = new BehaviorSubject<string | null>(null);
+  private selectedMeasurement = new BehaviorSubject<string | null>(null);
+  private selectedField = new BehaviorSubject<string | null>(null);
+  private selectedDevice = new BehaviorSubject<string| null>(null);
+
+  private selectedStart = new BehaviorSubject<string | null>(null);
+  private selectedEnd = new BehaviorSubject<string | null>(null);
 
   //public fields
   sensorSystems: string[] = [];
+  initialSystem: string;
   metricFields$():Observable<IMetricField[]> {
     return this.metricFields.asObservable();
-  }
+  };
+
   metricMeasurements$():Observable<IMeasurement[]> {
     return this.metricMeasurements.asObservable();
   }
-  metricDevices$():Observable<IDevices[]> {
+  metricDevices$():Observable<IDevice[]> {
     return this.metricDevices.asObservable();
   }
-  metrics$():Observable<IMetrics[]> {
+  metrics$():Observable<IMetric[]> {
     return this.metrics.asObservable();
+  }
+
+  // change selected items
+  changeSelectedSystem(system:string | null) {
+    this.selectedSystem.next(system);
+  }
+
+  changeSelectedMeasurement(measurement: string | null) {
+    this.selectedMeasurement.next(measurement);
+  }
+
+  changeSelectedField(field: string) {
+      this.selectedField.next(field);
+  }
+  changeSelectedDevice(device: string | null) {
+    this.selectedDevice.next(device);
+  }
+
+  changeSelectedStart(start: string | null) {
+    this.selectedStart.next(start);
+  }
+
+  changeSelectedEnd(end: string | null) {
+    this.selectedEnd.next(end);
+  }
+
+  // return selected items
+  selectedSystem$(): Observable<string> {
+    return this.selectedSystem.asObservable();
+  }
+  selectedByMeasurement$() : Observable<string> {
+    return this.selectedMeasurement.asObservable();
+  }
+  selectedField$(): Observable<string> {
+    return this.selectedField.asObservable();
+  }
+  selectedDevice$(): Observable<string> {
+    return this.selectedDevice.asObservable();
+  }
+
+  selectedStart$(): Observable<string> {
+    return this.selectedStart.asObservable();
+  }
+
+  selectedEnd$(): Observable<string> {
+    return this.selectedEnd.asObservable();
   }
 
   constructor(private http:HttpClient, private logService: LoggingService,
     private portalDataService: PortalDataService, private influxService: InfluxService) { }
 
-    /**
-     * @returns Observable array of available measurements
-     */
-  getMeasurements(): Observable<IMeasurement[]> {
+  /**
+    * @returns Observable array of available measurements
+  */
+  getMeasurements(system:boolean): Observable<IMeasurement[]> {
     const params = {
       db: this.db,
       q: this.influxService.influxShowMeasurements()
     }
+
     if (environment.mock) {
       let mocks = this.mocks.measurements;
       return of(mocks)
       .pipe(
       tap( data => {
-        this.uniqueSystem(data, this)
+        this.uniqueSystem(data, system, this);
+        this.metricMeasurements.next(data);
       }));
     }
     else {
@@ -75,10 +135,10 @@ export class MetricsService {
       })
         .pipe(
           tap(data => {
-            this.metricMeasurements.next(data)
+            this.uniqueSystem(data, system, this);
+            this.metricMeasurements.next(data);
             this.logService.log(data, LogLevels.info);
-          }),
-          map(item => new this.uniqueSystem(item, this)))
+          }))
     }
   }
 
@@ -92,8 +152,11 @@ export class MetricsService {
       q: this.influxService.influxShowFields(field)
     }
     if (environment.mock) {
-      let mocks = Object.assign({}, this.mocks.fields)
-      return of(mocks);
+      let mocks = this.mocks.fields;
+      return of(mocks).pipe(
+        tap(data => {
+          this.metricFields.next(data);
+        }));
     }
     else {
       return this.http.get<IMetricField[]>(`${this.metricsURL}`, {
@@ -104,7 +167,7 @@ export class MetricsService {
       })
         .pipe(
           tap(data => {
-            this.metricFields.next(data)
+            this.metricFields.next(data);
             this.logService.log(data, LogLevels.info);
           }));
     }
@@ -121,23 +184,27 @@ export class MetricsService {
    *  possibly a number
    */
   getDevices(field:string, measurement:string,
-    startTime: string, endTime: string): Observable<IDevices[]> {
+    startTime: string, endTime: string): Observable<IDevice[]> {
     const params = {
       db: this.db,
       q: this.influxService.influxDevices(field, measurement, startTime, endTime)
     }
     if (environment.mock) {
-      let mocks = Object.assign({}, this.mocks.devices)
-      return of(mocks);
+      let mocks = this.mocks.devices;
+      this.metricDevices.next(mocks);
+      return of(mocks).pipe(
+        map(devices => this.stripQuotes(devices))
+      );
     }
     else {
-      return this.http.get<IDevices[]>(`${this.metricsURL}`, {
+      return this.http.get<IDevice[]>(`${this.metricsURL}`, {
         headers: new HttpHeaders({
           'Accept': 'application/json'
         }),
         params
       })
         .pipe(
+          map(devices => this.stripQuotes(devices)),
           tap(data => {
             this.metricDevices.next(data)
             this.logService.log(data, LogLevels.info);
@@ -155,17 +222,21 @@ export class MetricsService {
    * @returns Observable array of devices based on the measurement
    */
   getMetrics(field:string, measurement:string,
-    startTime: string, endTime: string, device: string): Observable<IMetrics[]> {
+    startTime: string, endTime: string, device: string): Observable<IMetric[]> {
     const params = {
       db: this.db,
       q: this.influxService.influxMetrics(field, measurement, startTime, endTime, device)
     }
     if (environment.mock) {
-      let mocks = Object.assign({}, this.mocks.metrics)
-      return of(mocks);
+      let mocks = this.mocks.metrics;
+      return of(mocks).pipe(
+        tap(data => {
+          this.metrics.next(data);
+        })
+      );
     }
     else {
-      return this.http.get<IMetrics[]>(`${this.metricsURL}`, {
+      return this.http.get<IMetric[]>(`${this.metricsURL}`, {
         headers: new HttpHeaders({
           'Accept': 'application/json'
         }),
@@ -179,11 +250,55 @@ export class MetricsService {
     }
   }
 
+/**
+ * @description intializes defaults graphs bases on first items in array
+ * @returns observable
+ * TODO: create constants for start & end times
+ */
+  getInitialGraph(system: string) {
+    let field: string;
+    let measurement: string;
+    let start: string;
+    let end: string;
+    let initSys:boolean = system === null;
+    return this.getMeasurements(initSys).pipe(
+      flatMap(res => {
+        // if measurement was captured in URL it will be saved into Observable here
+        measurement = this.selectedMeasurement.value;
+        // if measurement is null let's grab the first measurement from array of requests and select
+        if (!measurement) {
+          measurement = res[0].name;
+          this.selectedMeasurement.next(measurement);
+        }
+        return this.getMetricFields(measurement);
+      }),
+      flatMap(res => {
+        // select the first fieldKey so that we can query for devices
+        // the query for devices requires any fieldkey that matches the measurement
+        field = res[0].fieldKey;
+        start = this.selectedStart.value || "24h";
+        end = this.selectedEnd.value || "now()";
+        // select this field and send to subscribers
+        this.selectedField.next(field);
+        return this.getDevices(field, measurement, start, end);
+      }),
+      flatMap(res => {
+        // if devices was caputured in URL it will be saved into Observable here
+        // if not select the first device from the returned requests
+        let device = this.selectedDevice.value || new DeviceNamePipe().transform(res[0].device);
+        // then we send this selected device ID to the subscribers
+        this.selectedDevice.next(device);
+        return this.getMetrics(field, measurement, start,
+        end, device);
+      })
+    );
+  }
+
   /**
    *
-   * @param measurement each legit system measurement
+   * @param measurement array of measurements used to identify unique systems
    */
-  private uniqueSystem(measurement:IMeasurement[], self:MetricsService) {
+  private uniqueSystem(measurement:IMeasurement[], initSys:boolean, self:MetricsService): void {
     measurement.forEach(el => {
       let system = el.name.substring(0, el.name.indexOf("_"));
       const index = self.sensorSystems.findIndex((item) => item === system);
@@ -191,5 +306,24 @@ export class MetricsService {
         self.sensorSystems.push(system);
       }
     });
+
+    if (initSys) {
+      this.initialSystem = self.sensorSystems[0];
+      this.selectedSystem.next(this.initialSystem);
+    }
   }
+
+  /**
+   *
+   * @param devices array of devices that will be stripped from quotes
+   */
+  private stripQuotes(devices:IDevice[]): IDevice[] {
+    devices.map((d) => {
+      d.deviceLabel = new DeviceNamePipe().transform(d.deviceLabel);
+      d.device = new DeviceNamePipe().transform(d.device);
+    });
+    return devices;
+  }
+
+
 }

@@ -29,8 +29,8 @@ readonly influxShowFields = (measurement) => {
  * @param endTime end time of query
 */
   readonly influxDevices = (field:string, measurement, startTime, endTime) => {
-    return `SELECT "${field}", "deviceLabel", "device" FROM "${measurement}"
-    WHERE time >= ${endTime} - ${startTime}`;
+    return `SELECT "${field}", "deviceLabel", "device" FROM "${measurement}" ` +
+    `WHERE time >= ${endTime} - ${startTime}`;
   };
 
 /**
@@ -43,8 +43,8 @@ readonly influxShowFields = (measurement) => {
 */
   readonly influxMetrics = (metric:string, table:string, startTime:string,
   endTime:string, device:string) => {
-    return `SELECT mean("${metric}") FROM "${table}"
-    WHERE time >= ${endTime} - ${startTime} AND device = "${device}"
-    GROUP BY time(1m) fill(null)`;
+    return `SELECT mean("${metric}") FROM "${table}" ` +
+    `WHERE time >= ${endTime} - ${startTime} AND device = "${device}" ` +
+    `GROUP BY time(1m) fill(null)`;
 };
 }

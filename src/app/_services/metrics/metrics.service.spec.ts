@@ -65,21 +65,21 @@ describe('MetricsService', () => {
 
   describe('- Requests', () => {
     it('should getMeasurements()', () => {
-      service.getMeasurements().subscribe((measurements) => {
+      service.getMeasurements(true).subscribe((measurements) => {
         expect(measurements).toEqual(new metricMocks().measurements);
       });
     });
 
     it('should call query params from influxShowMeasurements()', () => {
       let spy = spyOn(influxService, 'influxShowMeasurements');
-      service.getMeasurements().subscribe();
+      service.getMeasurements(true).subscribe();
       expect(spy).toHaveBeenCalled();
     })
 
 
     it('should getMetricFields()', () => {
       service.getMetricFields('MAAS_http').subscribe((fields) => {
-        expect(fields).toEqual(Object.assign({}, new metricMocks().fields));
+        expect(fields).toEqual(new metricMocks().fields);
       });
     });
 
@@ -92,7 +92,7 @@ describe('MetricsService', () => {
     it('should getDevices()', () => {
       service.getDevices('http', 'MAAS_http', '6h', 'now()')
       .subscribe((devices) => {
-        expect(devices).toEqual(Object.assign({}, new metricMocks().devices));
+        expect(devices).toEqual(new metricMocks().devices);
       });
     });
 
@@ -105,7 +105,7 @@ describe('MetricsService', () => {
     it('should getMetrics()', () => {
       service.getMetrics('http', 'MAAS_http', '6h', 'now()', '588372')
       .subscribe((metrics) => {
-        expect(metrics).toEqual(Object.assign({}, new metricMocks().metrics));
+        expect(metrics).toEqual(new metricMocks().metrics);
       });
     });
 

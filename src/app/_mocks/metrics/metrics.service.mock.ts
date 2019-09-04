@@ -4,15 +4,15 @@ import { default as metrics } from './metrics.json';
 import { default as metricMeasurements } from './measurements.json';
 
 import {
-    IDevices,
+    IDevice,
     IMeasurement,
     IMetricField,
-    IMetrics
+    IMetric
 } from '../../_models/metrics';
 
 export class metricMocks {
-    devices: IDevices[] = metricsDevices;
+    devices: IDevice[] = metricsDevices;
     fields: IMetricField[] = metricsFields;
-    metrics: IMetrics[] = metrics;
+    metrics: IMetric[] = metrics;
     measurements: IMeasurement[] = metricMeasurements;
 }

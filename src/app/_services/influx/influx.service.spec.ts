@@ -31,14 +31,14 @@ describe('InfluxService', () => {
 
   it('should return influxDevices query', () => {
     let query = service.influxDevices('http', 'MAAS_http', '6h', 'now()');
-    expect(query).toEqual(`SELECT "http", "deviceLabel", "device" FROM "MAAS_http"
-    WHERE time >= now() - 6h`);
+    expect(query).toEqual(`SELECT "http", "deviceLabel", "device" FROM "MAAS_http" ` +
+    `WHERE time >= now() - 6h`);
   });
 
   it('should return influxMetrics query', () => {
     let query = service.influxMetrics('http', 'MAAS_http', '6h', 'now()', '588372');
-    expect(query).toEqual(`SELECT mean("http") FROM "MAAS_http"
-    WHERE time >= now() - 6h AND device = "588372"
-    GROUP BY time(1m) fill(null)`);
+    expect(query).toEqual(`SELECT mean("http") FROM "MAAS_http" ` +
+    `WHERE time >= now() - 6h AND device = "588372" ` +
+    `GROUP BY time(1m) fill(null)`);
   });
 });

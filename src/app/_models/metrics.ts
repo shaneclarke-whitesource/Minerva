@@ -1,4 +1,4 @@
-export interface IMetrics {
+export interface IMetric {
     name: string;
     mean: number;
     time: number;
@@ -14,8 +14,8 @@ export interface IMeasurement {
     name: string;
 }
 
-export interface IDevices {
+export interface IDevice {
     name: string;
-    deviceLable: string;
+    deviceLabel: string;
     device: string;
 }

@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MetricsService } from '../../../../_services/metrics/metrics.service';
-import { GraphEngine } from 'hedwig-monitoring-library';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-visualize.page',
   templateUrl: './visualize.page.component.html',
   styleUrls: ['./visualize.page.component.scss']
 })
-export class VisualizePage implements OnInit {
+export class VisualizePage implements OnInit, OnDestroy {
 
   // private fields
   private system: string;
@@ -17,25 +17,85 @@ export class VisualizePage implements OnInit {
   private start: string;
   private end: string;
 
-
   // public fields
   loading: boolean;
-  constructor(private metricService: MetricsService, private route: ActivatedRoute) { }
+  subManager = new Subscription();
 
-  ngOnInit() {
+  constructor(private metricService: MetricsService, private router: Router,
+    private route: ActivatedRoute) { }
+
+  async ngOnInit() {
 
     this.loading = true;
 
-    this.route.queryParamMap.subscribe(queryParams => {
-      this.system = queryParams.get('system');
-      this.measurement = queryParams.get('measurement');
-      this.device = queryParams.get('device');
-      this.start = queryParams.get('start');
-      this.end = queryParams.get('end');
+    this.system = this.route.snapshot.queryParams['system'] ?
+      this.route.snapshot.queryParams['system'].toUpperCase() : null;
+    this.measurement = this.route.snapshot.queryParams['measurement'];
+    this.device = this.route.snapshot.queryParams['device'];
+    this.start = this.route.snapshot.queryParams['start'];
+    this.end = this.route.snapshot.queryParams['end'];
+
+    // if there are URL parameters for these properties, notify the service
+    this.metricService.changeSelectedSystem(this.system);
+    this.metricService.changeSelectedMeasurement(this.measurement);
+    this.metricService.changeSelectedDevice(this.device);
+    this.metricService.changeSelectedStart(this.start);
+    this.metricService.changeSelectedEnd(this.end);
+
+    // being setup for the default graphs
+    this.metricService.getInitialGraph(this.system).subscribe();
+
+    // susbscribe to the user selected items and update URL accordingly
+    let systemSub = this.metricService.selectedSystem$().subscribe((system) => {
+      if (system) {
+        this.system = system;
+        this.updateQueryParams();
+      }
     });
 
-    this.metricService.getMeasurements().subscribe();
+    let measurementSub = this.metricService.selectedByMeasurement$().subscribe((measurement) =>
+    {
+      if (measurement) {
+        this.measurement = measurement;
+        this.updateQueryParams();
+      }
+    });
 
+    let deviceSub = this.metricService.selectedDevice$().subscribe((device) => {
+      if (device) {
+        this.device = device;
+        this.updateQueryParams();
+      }
+    });
+
+    // add all subscriptions to one manager for cleaner organization
+    this.subManager.add(systemSub);
+    this.subManager.add(measurementSub);
+    this.subManager.add(deviceSub);
   }
 
+  ngOnDestroy() {
+    // unsubscribe all subscriptions from the manager
+    this.subManager.unsubscribe();
+  }
+
+  /**
+   * @description this function updates the URL query params
+   * @return void
+   */
+  private updateQueryParams() {
+    const params = {
+      ...(this.system  && { system: this.system }),
+      ...(this.measurement && { measurement : this.measurement }),
+      ...(this.device && {device: this.device}),
+      ...(this.start && { start: this.start }),
+      ...(this.end && {end: this.end })
+    };
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: params,
+      queryParamsHandling: 'merge'
+    });
+  }
 }
