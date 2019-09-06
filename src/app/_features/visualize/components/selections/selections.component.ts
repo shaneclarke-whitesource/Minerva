@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MetricsService } from '../../../../_services/metrics/metrics.service';
 import { IMeasurement, IMetricField, IDevice } from '../../../../_models/metrics';
 import { Subscription } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-visualize-selections',
@@ -70,7 +71,12 @@ export class SelectionsComponent implements OnInit {
 
   selectMeasurement(event: any) {
     this.measurement = event.target.value;
-    this.metricService.getMetricFields(this.measurement).subscribe();
+    this.metricService.getMetricFields(this.measurement).pipe(
+      flatMap(fields => {
+        return this.metricService.getDevices(fields[0].fieldKey, this.measurement,
+          '6h', 'now()');
+      })
+    ).subscribe();
     this.metricService.changeSelectedMeasurement(this.measurement);
   };
 

@@ -29,9 +29,13 @@ export class MetricsService {
   // metricDevices will act as a BehaviorSubject that notes any change in
   // in devices
   private metricDevices = new BehaviorSubject<IDevice[] | null>(null);
+  private metricStart = new BehaviorSubject<string | null>(null);
+
+  private metricEnd = new BehaviorSubject<string | null>(null);
   // metricDevices will act as a BehaviorSubject that notes any change in
   // in devices
   private metrics = new BehaviorSubject<IMetric[] | null>(null);
+
 
   // All selected items that can then be observed
   private selectedSystem = new BehaviorSubject<string | null>(null);
@@ -55,6 +59,15 @@ export class MetricsService {
   metricDevices$():Observable<IDevice[]> {
     return this.metricDevices.asObservable();
   }
+
+  metricStart$(): Observable<string> {
+    return this.metricStart.asObservable();
+  }
+
+  metricEnd$(): Observable<string> {
+    return this.metricEnd.asObservable();
+  }
+
   metrics$():Observable<IMetric[]> {
     return this.metrics.asObservable();
   }
