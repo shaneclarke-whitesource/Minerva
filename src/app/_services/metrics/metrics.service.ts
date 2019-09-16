@@ -100,7 +100,7 @@ export class MetricsService {
   selectedSystem$(): Observable<string> {
     return this.selectedSystem.asObservable();
   }
-  selectedByMeasurement$() : Observable<string> {
+  selectedMeasurement$() : Observable<string> {
     return this.selectedMeasurement.asObservable();
   }
   selectedField$(): Observable<string> {

@@ -1,12 +1,12 @@
-import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { VisualizePage } from './visualize.page.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { MetricsService } from 'src/app/_services/metrics/metrics.service';
 import { SharedModule } from '../../../../_shared/shared.module';
+import { By } from '@angular/platform-browser';
 
 const routes = [
   {
@@ -28,6 +28,7 @@ const routes = [
 describe('VisualizePage', () => {
   let component: VisualizePage;
   let fixture: ComponentFixture<VisualizePage>;
+  let metricService: MetricsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,6 +59,7 @@ describe('VisualizePage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(VisualizePage);
     component = fixture.componentInstance;
+    metricService = TestBed.get(MetricsService);
     fixture.detectChanges();
   });
 
@@ -108,15 +110,25 @@ describe('VisualizePage', () => {
   });
 
   it('should setup intial graph', () => {
+    let spy = spyOn(metricService, 'getInitialGraph');
 
   });
 
-  it('should add all subscriptions', () => {
-
+  it('should add all subscriptions', async() => {
+    let spy = spyOn(component.subManager, 'add');
+    fixture.ngZone.run(() => {
+      component.ngOnInit();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(spy).toHaveBeenCalledTimes(3);
+      });
+    });
   });
 
   it('should destroy subscriptions', () => {
-
+    spyOn(component.subManager, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component.subManager.unsubscribe).toHaveBeenCalled();
   });
 
 });

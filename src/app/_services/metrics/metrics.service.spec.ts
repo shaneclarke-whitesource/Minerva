@@ -8,6 +8,7 @@ describe('MetricsService', () => {
   let injector: TestBed;
   let service: MetricsService;
   let influxService: InfluxService;
+  let metricsMocks: metricMocks = new metricMocks();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,7 +16,7 @@ describe('MetricsService', () => {
         HttpClientTestingModule
       ],
       providers: [MetricsService, InfluxService]
-    })
+    });
 
     injector = getTestBed();
     service = injector.get(MetricsService);
@@ -66,7 +67,7 @@ describe('MetricsService', () => {
   describe('- Requests', () => {
     it('should getMeasurements()', () => {
       service.getMeasurements(true).subscribe((measurements) => {
-        expect(measurements).toEqual(new metricMocks().measurements);
+        expect(measurements).toEqual(metricsMocks.measurements);
       });
     });
 
@@ -79,7 +80,7 @@ describe('MetricsService', () => {
 
     it('should getMetricFields()', () => {
       service.getMetricFields('MAAS_http').subscribe((fields) => {
-        expect(fields).toEqual(new metricMocks().fields);
+        expect(fields).toEqual(metricsMocks.fields);
       });
     });
 
@@ -92,7 +93,7 @@ describe('MetricsService', () => {
     it('should getDevices()', () => {
       service.getDevices('http', 'MAAS_http', '6h', 'now()')
       .subscribe((devices) => {
-        expect(devices).toEqual(new metricMocks().devices);
+        expect(devices).toEqual(metricsMocks.devices);
       });
     });
 
@@ -105,7 +106,7 @@ describe('MetricsService', () => {
     it('should getMetrics()', () => {
       service.getMetrics('http', 'MAAS_http', '6h', 'now()', '588372')
       .subscribe((metrics) => {
-        expect(metrics).toEqual(new metricMocks().metrics);
+        expect(metrics).toEqual(metricsMocks.metrics);
       });
     });
 
@@ -113,6 +114,23 @@ describe('MetricsService', () => {
       let spy = spyOn(influxService, 'influxMetrics');
       service.getMetrics('http', 'MAAS_http', '6h', 'now()', '588372');
       expect(spy).toHaveBeenCalled();
+    });
+
+
+    it('should return unique systems', () => {
+      let systems: string[] = [];
+      metricsMocks.measurements.forEach(el => {
+        let system = el.name.substring(0, el.name.indexOf("_"));
+        const index = systems.findIndex((item) => item === system);
+        if (index === -1) {
+          systems.push(system);
+        }
+      });
+
+      service.getMeasurements(false).subscribe((measurement) => {
+        expect(service.sensorSystems).toEqual(systems);
+      });
+
     });
   });
 });

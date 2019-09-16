@@ -7,37 +7,33 @@
         </button>
   </div>
 </div>
+
 <div class="hxRow" *ngIf="systems.length > 0">
   <div class="hxCol hxSpan-12">
-    <hx-select-control>
-      <select [ngModel]="measurement" (change)="selectMeasurement($event)"
-        id="selMeasurement">
-        <option *ngFor="let measurement of filteredMeasurements"
-        [value]="measurement.name">
-          {{measurement.name | measurementName}}
-        </option>
-      </select>
-      <hx-select></hx-select>
-      <label
-        for="selDemo">
-        Choose a measurement
-      </label>
-    </hx-select-control>
+    <hx-radio-set>
+        <hx-radio-control *ngFor="let m of filteredMeasurements; index as i">
+          <input type="radio" id="rd{{m.name}}{{i + 1}}" name="radioSet"
+          value="measurement" [checked]="m.name == measurement" (change)="selectMeasurement(m)"/>
+          <label for="rd{{m.name}}{{i + 1}}">
+            <hx-radio></hx-radio>
+            {{m.name | measurementName}}
+          </label>
+        </hx-radio-control>
+    </hx-radio-set>
   </div>
 </div>
 
 <div class="hxRow">
   <div class="hxCol hxSpan-12">
-    <hx-select-control>
-      <select [ngModel]="device" (change)="selectDevice($event)" id="selDevice">
-        <option *ngFor="let device of selectedDevices" [value]="device.device">
-          {{device.deviceLabel | deviceName}}
-        </option>
-      </select>
-      <hx-select></hx-select>
-      <label for="selDevice">
-        Choose a device
-      </label>
-    </hx-select-control>
+    <hx-text-control>
+    <input list="list-devices" type="text" [(ngModel)]="device" id="selDevice" name="selDevice"
+    (change)="selectDevice($event)" />
+    <label for="selDevice">Choose a Resource:</label>
+  </hx-text-control>
+  <datalist id="list-devices">
+      <option *ngFor="let device of selectedDevices" [value]="device.device" >
+        {{device.deviceLabel | deviceName}}
+      </option>
+    </datalist>
   </div>
 </div>

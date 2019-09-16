@@ -38,7 +38,7 @@ describe('InfluxService', () => {
   it('should return influxMetrics query', () => {
     let query = service.influxMetrics('http', 'MAAS_http', '6h', 'now()', '588372');
     expect(query).toEqual(`SELECT mean("http") FROM "MAAS_http" ` +
-    `WHERE time >= now() - 6h AND device = "588372" ` +
-    `GROUP BY time(1m) fill(null)`);
+    `WHERE time >= now() - 6h AND "device" = '"588372"' ` +
+    `GROUP BY time(1m), "device" fill(null)`);
   });
 });

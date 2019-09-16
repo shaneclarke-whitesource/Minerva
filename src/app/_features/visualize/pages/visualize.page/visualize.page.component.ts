@@ -53,7 +53,7 @@ export class VisualizePage implements OnInit, OnDestroy {
       }
     });
 
-    let measurementSub = this.metricService.selectedByMeasurement$().subscribe((measurement) =>
+    let measurementSub = this.metricService.selectedMeasurement$().subscribe((measurement) =>
     {
       if (measurement) {
         this.measurement = measurement;
@@ -81,7 +81,7 @@ export class VisualizePage implements OnInit, OnDestroy {
 
   /**
    * @description this function updates the URL query params
-   * @return void
+   * @return {void}
    */
   private updateQueryParams() {
     const params = {

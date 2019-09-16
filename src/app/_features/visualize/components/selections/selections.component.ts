@@ -23,7 +23,6 @@ export class SelectionsComponent implements OnInit {
   selectedFields: IMetricField[];
   selectedDevices: IDevice[];
   selectedField: string;
-  selectedDevice: string;
   filteredMeasurements: IMeasurement[];
 
   // manage subscriptions
@@ -49,30 +48,42 @@ export class SelectionsComponent implements OnInit {
         }
     });
 
-    let subFields = this.metricService.metricFields$().subscribe(
-      fields => this.selectedFields = fields
-    );
-
     let subDevices = this.metricService.metricDevices$().subscribe(
       devices => this.selectedDevices = devices
     );
 
+    let subField = this.metricService.selectedField$().subscribe(
+      field => this.selectedField = field
+    );
+
     // consolidate all subscriptions to one for cleaner management
     this.subManager.add(subMeasurements);
-    this.subManager.add(subFields);
     this.subManager.add(subDevices);
+    this.subManager.add(subField);
   }
 
-  selectSystem(system:string) {
+  /**
+   * @description function for behavior once system is selected
+   * @param {string} system represents chosen system
+   * @returns void
+   */
+  selectSystem(system:string): void {
     this.system = system;
     this.filterMeasurements(this.measurements);
     this.metricService.changeSelectedSystem(system);
+    this.selectMeasurement(this.filteredMeasurements[0]);
   };
 
-  selectMeasurement(event: any) {
-    this.measurement = event.target.value;
+  /**
+   * @description function for behavior once measurement selected
+   * @param {IMeasurement} measurement
+   */
+  selectMeasurement(measurement: IMeasurement): void {
+    this.measurement = measurement.name;
+    // based on the selected metric we want to get the fields associated and the devices
     this.metricService.getMetricFields(this.measurement).pipe(
       flatMap(fields => {
+        this.selectedFields = fields;
         return this.metricService.getDevices(fields[0].fieldKey, this.measurement,
           '6h', 'now()');
       })
@@ -80,13 +91,23 @@ export class SelectionsComponent implements OnInit {
     this.metricService.changeSelectedMeasurement(this.measurement);
   };
 
-  selectDevice(event:any) {
-    this.selectedDevice = event.target.value;
-    this.metricService.getMetrics(this.selectedField, this.measurement, '6h', 'now()',
-    this.selectedDevice).subscribe();
-    this.metricService.changeSelectedDevice(this.selectedDevice)
+  /**
+   * @description function for behavior once device is selected
+   * @param {any} event select event
+   */
+  selectDevice(event:any): void {
+    this.device = event.target.value;
+    let field = (this.selectedField || this.selectedFields[0].fieldKey)
+    this.metricService.getMetrics(field, this.measurement, '6h', 'now()',
+    this.device).subscribe();
+    this.metricService.changeSelectedDevice(this.device)
   }
 
+  /**
+   * @name filterMeasurements
+   * @param {IMeasurement[]} measurements an array of Imeasurement[]
+   * @returns void
+   */
   private filterMeasurements(measurements:IMeasurement[]):void {
     // get the system either from attribute or from the assigned default
     let sys = this.system || this.initialSys;
