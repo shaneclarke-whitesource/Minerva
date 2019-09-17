@@ -4,6 +4,7 @@ import { IMeasurement, IMetricField, IDevice } from '../../../../_models/metrics
 import { Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+
 @Component({
   selector: 'app-visualize-selections',
   templateUrl: './selections.component.html',
@@ -27,6 +28,10 @@ export class SelectionsComponent implements OnInit {
 
   // manage subscriptions
   subManager = new Subscription();
+
+  // TODO: Link the start & end dates to right column widget
+  private readonly startConst: string = '6h';
+  private readonly endConst: string = 'now()';
 
   // getters will allow for binding values
   get systems(): string[] {
@@ -85,7 +90,7 @@ export class SelectionsComponent implements OnInit {
       flatMap(fields => {
         this.selectedFields = fields;
         return this.metricService.getDevices(fields[0].fieldKey, this.measurement,
-          '6h', 'now()');
+          this.startConst, this.endConst);
       })
     ).subscribe();
     this.metricService.changeSelectedMeasurement(this.measurement);
@@ -98,7 +103,7 @@ export class SelectionsComponent implements OnInit {
   selectDevice(event:any): void {
     this.device = event.target.value;
     let field = (this.selectedField || this.selectedFields[0].fieldKey)
-    this.metricService.getMetrics(field, this.measurement, '6h', 'now()',
+    this.metricService.getMetrics(field, this.measurement, this.startConst, this.endConst,
     this.device).subscribe();
     this.metricService.changeSelectedDevice(this.device)
   }
