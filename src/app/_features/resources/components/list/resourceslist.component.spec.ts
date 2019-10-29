@@ -66,7 +66,7 @@ describe('ResourcesListComponent', () => {
     });
 
     it('should assign current page', () => {
-      expect(component.page).toEqual(1);
+      expect(component.page).toEqual(0);
     });
 
     it('should create correct placeholder text', () => {
@@ -104,13 +104,13 @@ describe('ResourcesListComponent', () => {
   });
 
   it('should goto page', () => {
-    component.goToPage(3);
-    expect(component.page).toEqual(3);
+    component.goToPage(2);
+    expect(component.page).toEqual(2);
   });
 
   it('should goto next page', () => {
     component.nextPage();
-    expect(component.page).toEqual(2);
+    expect(component.page).toEqual(1);
   });
 
   it('should goto previous page', () => {

@@ -33,18 +33,17 @@ export class ResourcesService {
 
   getResources(size: number, page: number): Observable<any> {
     if (environment.mock) {
-      let pageNumber = --page;
       let mocks = Object.assign({}, this.mockedResources.collection);
-      let slicedData = [... mocks.content.slice(pageNumber * size, (pageNumber + 1) * size)];
+      let slicedData = [... mocks.content.slice(page * size, (page + 1) * size)];
       this.resources = mocks;
-      this.resources.content = slicedData
+      this.resources.content = slicedData;
       return of(this.resources);
     }
     else {
     return this.http.get(`${environment.api.salus}/resources?size=${size}&page=${page}`, httpOptions)
     .pipe(
       tap(data =>
-        { this.resources = data.content;
+        { this.resources = data;
           this.logService.log(this.resources, LogLevels.info);
         }));
     }

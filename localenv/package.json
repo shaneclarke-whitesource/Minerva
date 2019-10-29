@@ -33,5 +33,8 @@
       ".",
       "../src"
     ]
+  },
+  "dependencies": {
+    "axios-debug-log": "^0.6.2"
   }
 }

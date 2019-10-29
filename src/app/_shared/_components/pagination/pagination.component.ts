@@ -22,11 +22,11 @@ export class PaginationComponent {
   constructor() { }
 
   getMin(): number {
-    return ((this.perPage * this.page) - this.perPage) + 1;
+    return ((this.perPage * (this.page + 1)) - this.perPage) + 1;
   }
 
   getMax(): number {
-    let max = this.perPage * this.page;
+    let max = this.perPage * (this.page + 1);
     if (max > this.total) {
       max = this.total;
     }
@@ -50,7 +50,7 @@ export class PaginationComponent {
   }
 
   lastPage(): boolean {
-    return this.perPage * this.page > this.total;
+    return this.perPage * (this.page + 1) > this.total;
   }
 
   getPages(): number[] {

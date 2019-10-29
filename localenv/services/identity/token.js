@@ -4,7 +4,10 @@ const request = require('request');
 const Settings = require('../../config/index');
 
 const config = new Settings();
-var _authInfo = {};
+var _authInfo = {
+    token: '',
+    user: ''
+};
 var Authenticate = {};
 
 Authenticate.info = function() {

@@ -19,7 +19,7 @@ describe('PaginationComponent', () => {
     fixture = TestBed.createComponent(PaginationComponent);
     component = fixture.componentInstance;
     // mock for a result set of 54 items returning 25 a page
-    component.page = 1;
+    component.page = 0;
     component.total = 54;
     component.perPage = 25;
     fixture.detectChanges();

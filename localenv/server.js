@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'false'}));
 
 // this route is reserved for all api requests used in the app
-app.use('/intelligence/api', Api);
+app.use('/api', Api);
 
 // all unmatched requests to this path, with no file extension, redirect to index
 app.use('/intelligence', function ( req, res, next ) {

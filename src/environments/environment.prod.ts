@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   mock: false,
   api: {
-    salus: 'api/salus',
+    salus: 'https://api/salus',
     metrics: 'api/metrics'
   },
   pagination: {

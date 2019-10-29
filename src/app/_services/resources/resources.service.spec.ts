@@ -29,11 +29,11 @@ describe('ResourcesService', () => {
   describe('CRUD Operations', () => {
     it('should return collection', () => {
       const service: ResourcesService = TestBed.get(ResourcesService);
-      service.getResources(environment.pagination.resources.pageSize, 1).subscribe((data) => {
+      service.getResources(environment.pagination.resources.pageSize, 0).subscribe((data) => {
         let mocked = new resourcesMock().collection;
         let slicedArray = new resourcesMock().collection.content
          .slice(0 * environment.pagination.resources.pageSize, 1 * environment.pagination.resources.pageSize);
-        mocked.content = slicedArray
+        mocked.content = slicedArray;
         expect(data).toEqual(mocked);
       });
     });

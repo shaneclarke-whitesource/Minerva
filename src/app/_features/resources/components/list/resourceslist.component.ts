@@ -15,7 +15,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   searchPlaceholderText: string;
   resources: any = [];
   total: number;
-  page: number = 1;
+  page: number = 0;
   defaultAmount: number = environment.pagination.pageSize;
   totalPages: number;
   fetchResources: any;
@@ -31,8 +31,6 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
         ).subscribe(data => {
           this.resources = this.resourceService.resources.content;
           this.total = this.resourceService.resources.totalElements;
-          // reapply once API logic is confirmed
-          //this.page = this.resourceService.resources.default.number + 1;
           this.searchPlaceholderText = `Search ${this.total} Resources`;
         });
     }
