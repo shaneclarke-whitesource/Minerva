@@ -48,7 +48,7 @@ describe('ResourceDetailsPage', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({id: 123}),
+            params: of({id: "uniqueId"}),
             root: {
               routeConfig : routes[0]
             }
@@ -75,7 +75,7 @@ describe('ResourceDetailsPage', () => {
   });
 
   it('should have a route param', () => {
-    expect(component.id).toEqual(123);
+    expect(component.id).toEqual("uniqueId");
   });
 
   it('should declare Object', () => {
@@ -84,6 +84,9 @@ describe('ResourceDetailsPage', () => {
 
   it('should set to a single resource', () => {
     let mocked = new resourcesMock().single;
-    expect(component.resource).toEqual(mocked.content[0]);
+    component.resource$.subscribe((resource) => {
+      expect(resource).toEqual(mocked);
+    })
+
   })
 });

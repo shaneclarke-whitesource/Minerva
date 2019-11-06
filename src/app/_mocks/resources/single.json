@@ -1,5 +1,4 @@
 {
-    "content": [{
     "tenantId": "833544",
     "resourceId": "development:0",
     "labels": {
@@ -16,10 +15,4 @@
     "associatedWithEnvoy": true,
     "createdTimestamp": "2019-06-06T15:44:11Z",
     "updatedTimestamp": "2019-06-06T15:44:11Z"
-    }],
-    "number": 0,
-    "totalPages": 1,
-    "totalElements": 1,
-    "last": true,
-    "first": true
 }

@@ -41,8 +41,9 @@ router.get('/resources/:id', (req, res) => {
         res.json(data);
     }
     else {
+        let id = req.params.id;
         axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`, {
-            'x-auth-token':  Identity.info().token.id
+            headers: { 'x-auth-token':Identity.info().token.id }
         })
         .then((data) => {
             res.send(data.data);

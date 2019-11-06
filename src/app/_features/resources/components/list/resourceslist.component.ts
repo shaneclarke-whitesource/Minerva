@@ -3,6 +3,7 @@ import { environment } from '../../../../../environments/environment';
 import { ResourcesService } from '../../../../_services/resources/resources.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs'
+import { Resource } from 'src/app/_models/resources';
 
 @Component({
   selector: 'app-resourceslist',
@@ -13,7 +14,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject();
   searchPlaceholderText: string;
-  resources: any = [];
+  resources: Resource[];
   total: number;
   page: number = 0;
   defaultAmount: number = environment.pagination.pageSize;
@@ -46,7 +47,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
       this.selectedResources = [];
     }
     this.resources.forEach(e => {
-      e.checked = event.target.checked;
+      e["checked"] = event.target.checked;
     });
   }
 

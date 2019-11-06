@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ResourcesService } from './resources.service';
 import { environment } from '../../../environments/environment';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
+import { Resources } from 'src/app/_models/resources';
 
 describe('ResourcesService', () => {
   beforeEach(() => {
@@ -21,8 +22,15 @@ describe('ResourcesService', () => {
 
   it('should set & get resources', () => {
     const service: ResourcesService = TestBed.get(ResourcesService);
-    service.resources = {type: "legit"};
-    expect(service.resources.type).toEqual("legit");
+    service.resources = {
+      content: [],
+      totalPages: 3,
+      totalElements: 6,
+      last: true,
+      first: true,
+      number: 0
+    };
+    expect(service.resources.last).toEqual(true);
   });
 
 
@@ -40,7 +48,7 @@ describe('ResourcesService', () => {
 
     it('should return single resource', () => {
       const service: ResourcesService = TestBed.get(ResourcesService);
-      service.getResource(5).subscribe((data) => {
+      service.getResource("linuxResource").subscribe((data) => {
         expect(data).toEqual(new resourcesMock().single);
       });
     });

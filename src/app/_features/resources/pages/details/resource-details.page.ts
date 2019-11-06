@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ResourcesService } from '../../../../_services/resources/resources.service';
+import { Observable } from 'rxjs';
+import { Resource } from 'src/app/_models/resources';
 
 declare const window: any;
 @Component({
@@ -9,11 +11,11 @@ declare const window: any;
   styleUrls: ['./resource-details.page.scss']
 })
 export class ResourceDetailsPage implements OnInit {
-  id: number;
+  id: string;
   meta: {};
   //TODO: create Interface for a single Resource - will be mapped to
   // service & response
-  resource: any = {};
+  resource$: Observable<Resource>;
   Object = window.Object;
 
   constructor(private route: ActivatedRoute, private resourceService: ResourcesService) { }
@@ -22,10 +24,8 @@ export class ResourceDetailsPage implements OnInit {
   // to making the request within the component
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      this.resourceService.getResource(this.id).subscribe(data => {
-        this.resource = data.content[0];
-      });
+      this.id = params['id'];
+      this.resource$ = this.resourceService.getResource(this.id);
     });
   }
 
