@@ -10,7 +10,9 @@ export interface Resource {
     tenantId: string;
     resourceId: string;
     labels: Labels;
-    metadata: any;
+    metadata: {
+        [x: string]: any;
+    }
     presenceMonitoringEnabled: boolean;
     associatedWithEnvoy: boolean;
     createdTimestamp: Date;
