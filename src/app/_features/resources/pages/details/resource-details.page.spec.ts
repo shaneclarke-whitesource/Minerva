@@ -11,7 +11,8 @@ import { resourcesMock } from '../../../../_mocks/resources/resources.service.mo
 import { SharedModule } from '../../../../_shared/shared.module';
 
 const routes = [
-  { path: 'resources',
+  {
+    path: 'resources',
     data: {
       breadcrumb: 'RESOURCES'
     },
@@ -21,16 +22,43 @@ const routes = [
       data: {
         breadcrumb: ''
       }
-  },
-  {
+    },
+    {
       path: ':id',
       component: ResourceDetailsPage,
       data: {
         breadcrumb: 'DETAILS'
       }
-  }]
+    }]
   }
 ];
+
+const keyPair = {
+  keysandvalues: [
+  {
+    key: 'newkey',
+    value: 'newpair'
+  },
+  {
+    key: 'likelykey',
+    value: 'likelypair'
+  },
+  {
+    key: 'somekey',
+    value: 'somepair'
+  },
+  {
+    key: 'fourthkey',
+    value: 'fourthpair'
+  }
+]};
+
+const formattedKeyPair = {
+  newkey: 'newpair',
+  likelykey: 'likelypair',
+  somekey: 'somepair',
+  fourthkey: 'fourthpair'
+}
 
 describe('ResourceDetailsPage', () => {
   let component: ResourceDetailsPage;
@@ -74,19 +102,35 @@ describe('ResourceDetailsPage', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should setup defaults', () => {
+    expect(component.resource$).toBeDefined();
+    expect(component.Object).toEqual(Object);
+    expect(component.metaLoading).toEqual(false);
+    expect(component.labelsLoading).toEqual(false);
+    expect(component.metaPopPencil).toBeDefined();
+    expect(component.labelPopPencil).toBeDefined()
+    expect(component.subManager).toBeDefined();
+  });
+
   it('should have a route param', () => {
     expect(component.id).toEqual("uniqueId");
   });
 
-  it('should declare Object', () => {
-    expect(component.Object).toEqual(Object);
-  })
+  it('should update and format meta values', () => {
+    component.metaValueUpdated(keyPair);
+    expect(component.updatedMetaFields).toEqual(formattedKeyPair);
+  });
+
+  it('should update & format label values', () => {
+    component.labelsUpdated(keyPair);
+    expect(component.updatedLabelFields).toEqual(formattedKeyPair);
+  });
 
   it('should set to a single resource', () => {
     let mocked = new resourcesMock().single;
     component.resource$.subscribe((resource) => {
       expect(resource).toEqual(mocked);
-    })
+    });
 
   })
 });

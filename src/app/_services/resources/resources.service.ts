@@ -20,6 +20,7 @@ const httpOptions = {
 export class ResourcesService {
 
   private _resources: Resources;
+  private _resource: Resource;
   private mockedResources = new resourcesMock();
 
   constructor(private http:HttpClient, private logService: LoggingService) { }
@@ -32,6 +33,20 @@ export class ResourcesService {
     this._resources = value;
   }
 
+  get resource(): Resource {
+    return this._resource;
+  }
+
+  set resource(value: Resource) {
+    this._resource = value;
+  }
+
+  /**
+   * Gets a list of Resources
+   * @param size
+   * @param page
+   * @returns Observable<Resources>
+   */
   getResources(size: number, page: number): Observable<Resources> {
     if (environment.mock) {
       let mocks = Object.assign({}, this.mockedResources.collection);
@@ -44,14 +59,17 @@ export class ResourcesService {
     return this.http.get<Resources>(`${environment.api.salus}/resources?size=${size}&page=${page}`, httpOptions)
     .pipe(
       tap(data =>
-        { this.resources = data;
+        { this._resources = data;
           this.logService.log(this.resources, LogLevels.info);
         }));
     }
   }
 
-  // TODO: establish interface for return data of individual
-  // resources
+  /**
+   * Gets a single Resource
+   * @param id
+   * @returns Observable<Resource>
+   */
   getResource(id: string): Observable<Resource> {
     if (environment.mock) {
       return of<Resource>(this.mockedResources.single);
@@ -59,9 +77,11 @@ export class ResourcesService {
     else {
       return this.http.get<Resource>(`${environment.api.salus}/resources/${id}`)
       .pipe(
-        tap(data => {
-          this.logService.log(`Resource: ${data}`, LogLevels.info);
-        })
+        tap(data =>
+          {
+            this._resource = data;
+            this.logService.log(`Resource: ${data}`, LogLevels.info);
+          })
       );
     }
   }
@@ -70,8 +90,26 @@ export class ResourcesService {
     return of();
   }
 
-  updateResource(id:number): Observable<any> {
-    return of();
+  /**
+   * Updates a resource
+   * @param id string
+   * @param updatedData {[key: string]: any}
+   * @returns Observable<Resource>
+   */
+  updateResource(id:string, updatedData: {[key: string]: any}): Observable<Resource> {
+    if (environment.mock) {
+      return of<Resource>(this.mockedResources.single);
+    }
+    else {
+      return this.http.put<Resource>(`${environment.api.salus}/resources/${id}`,
+      updatedData)
+      .pipe(
+        tap(data => {
+          this._resource = data,
+          this.logService.log(`Resource: ${data}`, LogLevels.info);
+        })
+      )
+    }
   }
 
 }

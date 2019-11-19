@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders, ErrorHandler, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { GlobalErrorHandler } from './global-error.handler';
@@ -10,6 +10,7 @@ import { BreadcrumbComponent } from './_components/breadcrumb/breadcrumb.compone
 import { PaginationComponent } from './_components/pagination/pagination.component';
 import { MeasurementNamePipe } from './pipes/measurement-name.pipe';
 import { DeviceNamePipe } from './pipes/device-name.pipe';
+import { AddFieldsComponent } from './_components/add-fields/add-fields.component';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -17,20 +18,24 @@ import { DeviceNamePipe } from './pipes/device-name.pipe';
     BreadcrumbComponent,
     PaginationComponent,
     MeasurementNamePipe,
-    DeviceNamePipe
+    DeviceNamePipe,
+    AddFieldsComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule
   ],
   exports: [
     CommonModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     BreadcrumbComponent,
     PaginationComponent,
+    AddFieldsComponent,
     MeasurementNamePipe,
     DeviceNamePipe
   ],

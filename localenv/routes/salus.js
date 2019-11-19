@@ -52,8 +52,26 @@ router.get('/resources/:id', (req, res) => {
             res.sendStatus(500).json(err);
         });
     }
-
 });
+
+router.put('/resources/:id', (req, res) => {
+    if (devEnv) {
+        const data = require(`${mockPath}/resources/single.json`);
+        res.json(data);
+    }
+    else {
+        let id = req.params.id;
+        let updated = req.body;
+        axios.put(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`,
+        updated, { headers: { 'x-auth-token':Identity.info().token.id }})
+        .then((data) => {
+            res.send(data.data);
+        })
+        .catch((err) => {
+            res.sendStatus(500).json(err);
+        });
+    }
+})
 
 
 module.exports = router;

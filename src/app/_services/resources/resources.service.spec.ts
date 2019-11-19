@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ResourcesService } from './resources.service';
 import { environment } from '../../../environments/environment';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
-import { Resources } from 'src/app/_models/resources';
+import { Resources, Resource } from 'src/app/_models/resources';
 
 describe('ResourcesService', () => {
   beforeEach(() => {
@@ -49,6 +49,14 @@ describe('ResourcesService', () => {
     it('should return single resource', () => {
       const service: ResourcesService = TestBed.get(ResourcesService);
       service.getResource("linuxResource").subscribe((data) => {
+        expect(data).toEqual(new resourcesMock().single);
+      });
+    });
+
+    it('should update a single resource metadata or labels', () => {
+      const service: ResourcesService = TestBed.get(ResourcesService);
+      let updated = {labels: {'newkey': 'newVal', 'somekey':'someVal'}};
+      service.updateResource("linuxResource", updated).subscribe((data:Resource) => {
         expect(data).toEqual(new resourcesMock().single);
       });
     });

@@ -15,7 +15,7 @@
     <hx-menu id="basicMenuId">
       <section>
         <header>Manage</header>
-        <hx-menuitem>Rename Entity</hx-menuitem>
+        <hx-menuitem>Rename Resource</hx-menuitem>
         <hx-menuitem>Add IP</hx-menuitem>
         <hx-menuitem>Delete Entity</hx-menuitem>
       </section>
@@ -43,7 +43,8 @@
 
 <div class="hxRow hxSpan-9">
   <div class="hxCol hxSpan-6">
-    <h4>Metadata</h4>
+    <h4 class="inline-icon">Metadata</h4><hx-disclosure aria-controls="metaPopover" #metapop id="metapop" class="editclick">
+      <hx-icon type="pencil"></hx-icon></hx-disclosure>
     <div *ngIf="resource.metadata">
      <div class="hxRow" *ngFor="let address of Object.keys(resource.metadata)">
       <div class="hxCol">
@@ -53,8 +54,25 @@
         {{resource.metadata[address]}}
       </div>
     </div>
+  <hx-popover id="metaPopover" position="bottom-right">
+    <header>
+      Metadata fields
+    </header>
+    <hx-div>
+      <app-add-fields [initialData]="resource.metadata" [validateForm]="metaSubmit.asObservable()"
+      (formValuesChanged)="metaValueUpdated($event)" (formValid)="metaFormSubmit.next($event)">
+      </app-add-fields>
+    </hx-div>
+    <footer>
+      <button class="hxBtn hxPrimary" [disabled]="metaLoading" (click)="metaLoading = true; metaSubmit.next()">
+        <hx-busy class="popover-busy" *ngIf="metaLoading"></hx-busy>
+        Submit</button>
+      <button class="hxBtn" (click)="metaPopPencil.nativeElement.click()" aria-controls="metaPopover">Cancel</button>
+    </footer>
+  </hx-popover>
     </div>
   </div>
+
   <div class="hxCol hxSpan-6">
     <h4>Created Date</h4>
     {{resource.createdTimestamp |  date:'MM/dd/yyyy'}}
@@ -74,7 +92,8 @@
 
 <div class="hxRow hxSpan-9 last-item">
   <div class="hxCol hxSpan-6">
-    <h4>Labels</h4>
+    <h4 class="inline-icon">Labels</h4><hx-disclosure aria-controls="labelPopover" #labelpop id="labelpop" class="editclick">
+        <hx-icon type="pencil"></hx-icon></hx-disclosure>
     <div *ngIf="resource.labels">
     <div class="hxRow" *ngFor="let label of Object.keys(resource.labels)">
         <div class="hxCol hxSpan-6">
@@ -84,6 +103,23 @@
           {{resource.labels[label]}}
         </div>
       </div>
+  <hx-popover id="labelPopover" position="bottom-right">
+      <header>
+        Labels
+      </header>
+      <hx-div>
+        <app-add-fields [initialData]="resource.labels" [validateForm]="labelsSubmit.asObservable()"
+        [labelContraints]="true" (formValuesChanged)="labelsUpdated($event)" (formValid)="labelFormSubmit.next($event)">
+        </app-add-fields>
+      </hx-div>
+      <footer>
+        <button class="hxBtn hxPrimary" [disabled]="labelsLoading" (click)="labelsLoading = true; labelsSubmit.next()">
+          <hx-busy class="popover-busy" *ngIf="labelsLoading"></hx-busy>
+          Submit</button>
+        <button class="hxBtn" [disabled]="labelsLoading" (click)="labelPopPencil.nativeElement.click()" aria-controls="metaPopover">Cancel</button>
+      </footer>
+    </hx-popover>
+
     </div>
   </div>
 </div>
