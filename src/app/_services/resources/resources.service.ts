@@ -72,6 +72,7 @@ export class ResourcesService {
    */
   getResource(id: string): Observable<Resource> {
     if (environment.mock) {
+      this._resource = this.mockedResources.single;
       return of<Resource>(this.mockedResources.single);
     }
     else {
@@ -98,6 +99,7 @@ export class ResourcesService {
    */
   updateResource(id:string, updatedData: {[key: string]: any}): Observable<Resource> {
     if (environment.mock) {
+      this._resource = this.mockedResources.single
       return of<Resource>(this.mockedResources.single);
     }
     else {

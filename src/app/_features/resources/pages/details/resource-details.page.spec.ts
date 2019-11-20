@@ -1,14 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
 import { ResourcesPage } from '../resources/resources.page';
 import { ResourceDetailsPage } from './resource-details.page';
 import { ResourcesListComponent } from '../../components/list/resourceslist.component';
 import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock';
 import { SharedModule } from '../../../../_shared/shared.module';
+import { ResourcesService } from 'src/app/_services/resources/resources.service';
+import { of, Observable } from 'rxjs';
 
 const routes = [
   {
@@ -61,8 +62,10 @@ const formattedKeyPair = {
 }
 
 describe('ResourceDetailsPage', () => {
+  let injector: TestBed;
   let component: ResourceDetailsPage;
   let fixture: ComponentFixture<ResourceDetailsPage>;
+  let resourceService: ResourcesService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -81,7 +84,8 @@ describe('ResourceDetailsPage', () => {
               routeConfig : routes[0]
             }
           }
-        }
+        },
+        ResourcesService
       ],
       imports: [
         SharedModule,
@@ -93,8 +97,10 @@ describe('ResourceDetailsPage', () => {
   }));
 
   beforeEach(() => {
+    injector = getTestBed();
     fixture = TestBed.createComponent(ResourceDetailsPage);
     component = fixture.componentInstance;
+    resourceService = injector.get(ResourcesService);
     fixture.detectChanges();
   });
 
@@ -121,9 +127,29 @@ describe('ResourceDetailsPage', () => {
     expect(component.updatedMetaFields).toEqual(formattedKeyPair);
   });
 
+  it('should finalize update of meta values finalizeMeta()', (done) => {
+
+    let spy = spyOn(resourceService, 'updateResource')
+    .and.returnValue(of(new resourcesMock().single));;
+    resourceService.resource = new resourcesMock().single;
+    component.metaValueUpdated(keyPair);
+    component.finalizeMeta();
+    expect(spy).toHaveBeenCalled();
+    done();
+  });
+
   it('should update & format label values', () => {
     component.labelsUpdated(keyPair);
     expect(component.updatedLabelFields).toEqual(formattedKeyPair);
+  });
+
+  it('should finalize update of label values finalizeLabels()', (done) => {
+    let spy = spyOn(resourceService, 'updateResource').and.returnValue(of(new resourcesMock().single));
+    resourceService.resource = new resourcesMock().single;
+    component.labelsUpdated(keyPair);
+    component.finalizeLabels();
+    expect(spy).toHaveBeenCalled();
+    done();
   });
 
   it('should set to a single resource', () => {
@@ -132,5 +158,5 @@ describe('ResourceDetailsPage', () => {
       expect(resource).toEqual(mocked);
     });
 
-  })
+  });
 });

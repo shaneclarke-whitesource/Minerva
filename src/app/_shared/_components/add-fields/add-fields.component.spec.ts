@@ -30,6 +30,7 @@ describe('AddFieldsComponent', () => {
     component = fixture.componentInstance;
     component.initialData = { ping_ip: '127.0.0.1', mount: '/'};
     component.validateForm = submitSubject.asObservable();
+    onChange();
     fixture.detectChanges();
   });
 
@@ -45,12 +46,12 @@ describe('AddFieldsComponent', () => {
   });
 
   it('should return length of initial form array', () => {
-    expect(component.metaPairs.length).toEqual(1);
+    component.ngOnInit();
+    expect(component.metaPairs.length).toEqual(3);
   });
 
   it('should emit formvaluesChanged', () => {
     spyOn(component.formValuesChanged, 'emit');
-    onChange();
     component.ngOnInit();
     component.getGroupControl(1, 'key').patchValue('forever');
     expect(component.formValuesChanged.emit).toHaveBeenCalled();
@@ -58,7 +59,6 @@ describe('AddFieldsComponent', () => {
 
   it('should emit form submitted and valid', () => {
     spyOn(component.formValid, 'emit');
-    onChange();
     component.ngOnInit();
     submitSubject.next();
     expect(component.formValid.emit).toHaveBeenCalledWith(true);
@@ -66,7 +66,6 @@ describe('AddFieldsComponent', () => {
 
   it('should emit form submitted and invalid', () => {
     spyOn(component.formValid, 'emit');
-    onChange();
     component.ngOnInit();
     component.getGroupControl(1, 'key').patchValue('');
     submitSubject.next();
@@ -76,34 +75,30 @@ describe('AddFieldsComponent', () => {
 
   it('should add a row to form', () => {
     component.addRow();
-    expect(component.metaPairs.length).toEqual(2);
+    expect(component.metaPairs.length).toEqual(4);
   });
 
   it('should remove a row from form', () => {
-    component.addRow();
     component.removeRow(0);
-    expect(component.metaPairs.length).toEqual(1);
+    expect(component.metaPairs.length).toEqual(2);
   });
 
   it('should update form on changes', () => {
-    onChange();
     component.ngOnInit();
     expect(component.metaPairs.length).toEqual(3);
   });
 
   it('should create a row for form', () => {
     component.metaPairs.push(component.createItem());
-    expect(component.metaPairs.length).toEqual(2);
+    expect(component.metaPairs.length).toEqual(4);
   });
 
   it('should return control from index and fieldname', () => {
-    onChange();
     component.ngOnInit();
     expect(component.getGroupControl(1, 'key').value).toEqual('mount');
   });
 
   it('should return total items', () => {
-    onChange();
     component.ngOnInit();
     expect(component.totalItems()).toEqual(3);
   });
