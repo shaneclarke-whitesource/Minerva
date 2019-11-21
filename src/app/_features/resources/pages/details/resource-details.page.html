@@ -15,9 +15,10 @@
     <hx-menu id="basicMenuId">
       <section>
         <header>Manage</header>
-        <hx-menuitem>Rename Resource</hx-menuitem>
-        <hx-menuitem>Add IP</hx-menuitem>
-        <hx-menuitem>Delete Entity</hx-menuitem>
+        <hx-menuitem (click)="metaPopPencil.nativeElement.click()">Add Metadata</hx-menuitem>
+        <hx-menuitem (click)="labelPopPencil.nativeElement.click()">Add Labels</hx-menuitem>
+        <hx-menuitem><hx-disclosure #delResLink
+          aria-controls="delResModal">Delete Resource</hx-disclosure></hx-menuitem>
       </section>
       <section>
         <header>Monitor</header>
@@ -123,6 +124,34 @@
     </div>
   </div>
 </div>
+<hx-modal class="hxSm"
+  id="delResModal">
+  <header>
+    <h2>Delete {{resource.resourceId}}</h2>
+  </header>
+  <hx-div>
+    Are you sure you'd like to delete this Resource?
+  </hx-div>
+  <footer>
+    <button class="hxBtn hxPrimary" (click)="deleteResource(resource.resourceId)">
+        <hx-busy class="popover-busy" *ngIf="deleteLoading"></hx-busy>Confirm</button>
+    <button class="hxBtn" (click)="delResource.nativeElement.click()">Cancel</button>
+  </footer>
+</hx-modal>
+
+<hx-disclosure aria-controls="delErrorModal" #delResourcepop id="delRespop" class="nodisplaClick"></hx-disclosure>
+<hx-modal class="hxSm"
+  id="delErrorModal">
+  <header>
+    <h2>Delete for {{resource.resourceId}} failed</h2>
+  </header>
+  <hx-div>
+    <h4>Please try again</h4>
+  </hx-div>
+  <footer>
+    <button class="hxBtn hxPrimary" (click)="delResourcePop.nativeElement.click()">Close</button>
+  </footer>
+</hx-modal>
 </div>
 <div class="hxRow hxSpan-9">
   <div class="hxCol">

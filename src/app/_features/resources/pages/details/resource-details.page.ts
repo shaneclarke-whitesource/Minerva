@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResourcesService } from '../../../../_services/resources/resources.service';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Resource } from 'src/app/_models/resources';
@@ -15,6 +15,8 @@ export class ResourceDetailsPage implements OnInit {
 
   @ViewChild('metapop') metaPopPencil:ElementRef;
   @ViewChild('labelpop') labelPopPencil:ElementRef;
+  @ViewChild('delResLink') delResource:ElementRef;
+  @ViewChild('delResourcepop') delResourcePop: ElementRef;
   id: string;
 
   resource$: Observable<Resource>;
@@ -27,10 +29,12 @@ export class ResourceDetailsPage implements OnInit {
   Object = window.Object;
   metaLoading:boolean = false;
   labelsLoading:boolean = false;
+  deleteLoading:boolean = false;
   updatedMetaFields: {[key: string] : any};
   updatedLabelFields: any;
 
-  constructor(private route: ActivatedRoute, private resourceService: ResourcesService) { }
+  constructor(private route: ActivatedRoute, private router: Router,
+    private resourceService: ResourcesService) { }
 
   // TODO(optional): attempt to move this logic to a route resolve as opposed
   // to connecting the subscription to the request within the component
@@ -117,6 +121,22 @@ export class ResourceDetailsPage implements OnInit {
       }
     });
     return paired;
+  }
+
+  /**
+   * @description Delete the resource after confirmation
+   * @param id string
+   */
+  deleteResource(id: string):void {
+    this.deleteLoading = true;
+    this.resourceService.deleteResource(id).subscribe(() => {
+        this.deleteLoading = false;
+        this.router.navigate(['/resources']);
+    }, () => {
+      this.deleteLoading = false;
+      this.delResource.nativeElement.click();
+      this.delResourcePop.nativeElement.click();
+    });
   }
 
   ngOnDestroy() {

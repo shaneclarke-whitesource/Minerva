@@ -113,8 +113,10 @@ describe('ResourceDetailsPage', () => {
     expect(component.Object).toEqual(Object);
     expect(component.metaLoading).toEqual(false);
     expect(component.labelsLoading).toEqual(false);
+    expect(component.deleteLoading).toEqual(false);
     expect(component.metaPopPencil).toBeDefined();
-    expect(component.labelPopPencil).toBeDefined()
+    expect(component.labelPopPencil).toBeDefined();
+    expect(component.delResource).toBeDefined();
     expect(component.subManager).toBeDefined();
   });
 
@@ -157,6 +159,12 @@ describe('ResourceDetailsPage', () => {
     component.resource$.subscribe((resource) => {
       expect(resource).toEqual(mocked);
     });
-
   });
+
+  it('should delete a resource', (done) => {
+    let spy = spyOn(resourceService, 'deleteResource').and.returnValue(of());
+    component.deleteResource('resourceToDelete');
+    expect(spy).toHaveBeenCalled();
+    done();
+  })
 });

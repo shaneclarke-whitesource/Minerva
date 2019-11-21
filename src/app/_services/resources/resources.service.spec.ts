@@ -1,27 +1,32 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourcesService } from './resources.service';
 import { environment } from '../../../environments/environment';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
 import { Resources, Resource } from 'src/app/_models/resources';
+import { executeInitAndContentHooks } from '@angular/core/src/render3/instructions';
 
 describe('ResourcesService', () => {
+  let injector: TestBed;
+  let service: ResourcesService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule
       ],
-      providers: []
-    })
+      providers: [ResourcesService]
+    });
+
+    injector = getTestBed();
+    service = injector.get(ResourcesService);
   });
 
   it('should be created', () => {
-    const service: ResourcesService = TestBed.get(ResourcesService);
     expect(service).toBeTruthy();
   });
 
   it('should set & get resources', () => {
-    const service: ResourcesService = TestBed.get(ResourcesService);
     service.resources = {
       content: [],
       totalPages: 3,
@@ -36,7 +41,6 @@ describe('ResourcesService', () => {
 
   describe('CRUD Operations', () => {
     it('should return collection', () => {
-      const service: ResourcesService = TestBed.get(ResourcesService);
       service.getResources(environment.pagination.resources.pageSize, 0).subscribe((data) => {
         let mocked = new resourcesMock().collection;
         let slicedArray = new resourcesMock().collection.content
@@ -47,18 +51,23 @@ describe('ResourcesService', () => {
     });
 
     it('should return single resource', () => {
-      const service: ResourcesService = TestBed.get(ResourcesService);
       service.getResource("linuxResource").subscribe((data) => {
         expect(data).toEqual(new resourcesMock().single);
       });
     });
 
     it('should update a single resource metadata or labels', () => {
-      const service: ResourcesService = TestBed.get(ResourcesService);
       let updated = {labels: {'newkey': 'newVal', 'somekey':'someVal'}};
       service.updateResource("linuxResource", updated).subscribe((data:Resource) => {
         expect(data).toEqual(new resourcesMock().single);
       });
     });
+
+    it('should delete a Resource', () => {
+      service.deleteResource('resourceID').subscribe((data) => {
+        expect(data).toEqual(true);
+      });
+    });
+
   });
 });

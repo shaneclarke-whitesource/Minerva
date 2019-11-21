@@ -71,7 +71,24 @@ router.put('/resources/:id', (req, res) => {
             res.sendStatus(500).json(err);
         });
     }
-})
+});
+
+router.delete('/resources/:id', (req, res) => {
+    if (devEnv) {
+        res.json(true);
+    }
+    else {
+        let id = req.params.id;
+        axios.delete(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`,
+        { headers: { 'x-auth-token':Identity.info().token.id }})
+        .then(() => {
+            res.send(true)
+        })
+        .catch((err) => {
+            res.sendStatus(500).json(err);
+        });
+    }
+});
 
 
 module.exports = router;

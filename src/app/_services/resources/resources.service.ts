@@ -114,4 +114,18 @@ export class ResourcesService {
     }
   }
 
+  deleteResource(id:string) {
+    if (environment.mock) {
+      return of<boolean>(true);
+    }
+    else {
+      return this.http.delete(`${environment.api.salus}/resources/${id}`)
+      .pipe(
+        tap(data => {
+          this.logService.log(`Resource deleted: ${id}`, LogLevels.info);
+        })
+      )
+    }
+  }
+
 }
