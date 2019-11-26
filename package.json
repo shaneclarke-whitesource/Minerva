@@ -48,7 +48,7 @@
     "chromedriver": "2.45.0",
     "core-js": "2.5.4",
     "hedwig-monitoring-library": "https://github.com/racker/Hedwig/archive/v1.0.0.tar.gz",
-    "helix-ui": "0.17.0",
+    "helix-ui": "0.18.0-rc.2",
     "rxjs": "6.3.3",
     "zone.js": "0.8.26"
   },

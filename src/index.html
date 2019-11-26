@@ -8,9 +8,7 @@
   <link rel="shortcut icon" href="favicon.ico" />
 
   <!-- DO NOT BUNDLE: HelixUI Styles -->
-  <link rel="stylesheet" href="helix-ui/helix-ui.min.css" />
-  <!-- DO NOT COMPILE: Converts ES5 custom element constructor functions to ES6 classes -->
-  <script src="webcomponents/custom-elements-es5-adapter.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/helix-ui@0.18.0-rc.1/dist/css/helix-ui.css" />
   <!-- DO NOT COMPILE: Appends polyfills to <head> if needed by user's browser. -->
   <script src="webcomponents/webcomponents-loader.js"></script>
 </head>
@@ -58,11 +56,6 @@
       <a href="https://www.rackspace.com/information/legal/privacystatement">Privacy Policy</a>
     </nav>
   </footer>
-  <!--
-    DO NOT BUNDLE: ES5-compiled assets specifically for use in the browser.
-    Provides additional polyfills and automatically initializes HelixUI.
-  -->
-  <script src="helix-ui/helix-ui.browser.min.js"></script>
   <a id="bottom"></a>
 </body>
 </html>

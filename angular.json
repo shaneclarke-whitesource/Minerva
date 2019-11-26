@@ -23,9 +23,6 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              { "glob": "helix-ui.min.css", "input": "node_modules/helix-ui/dist/styles/", "output": "helix-ui/" },
-              { "glob": "helix-ui.browser.min.js", "input": "node_modules/helix-ui/dist/scripts/", "output": "helix-ui/" },
-              { "glob": "custom-elements-es5-adapter.js", "input": "node_modules/@webcomponents/webcomponentsjs/", "output": "webcomponents/" },
               { "glob": "webcomponents-loader.js", "input": "node_modules/@webcomponents/webcomponentsjs/", "output": "webcomponents/" },
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
               { "glob": "favicon.ico", "input": "src/", "output": "/" }
