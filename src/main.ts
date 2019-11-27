@@ -9,6 +9,10 @@ if (environment.production) {
   enableProdMode();
 }
 
-HelixUI.default.initialize();
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+const start = async () => {
+  await HelixUI.default.initialize();
+  platformBrowserDynamic().bootstrapModule(AppModule)
+    .catch(err => console.error(err));
+}
+
+start();
