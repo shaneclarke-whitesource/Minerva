@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
-import { Resource, Resources } from '../../_models/resources';
+import { Resource, Resources, CreateResource } from '../../_models/resources';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -87,8 +87,19 @@ export class ResourcesService {
     }
   }
 
-  createResource(param:any): Observable<any> {
-    return of();
+  createResource(resource:CreateResource): Observable<Resource> {
+    if (environment.mock) {
+      this._resource = this.mockedResources.single;
+      return of<Resource>(this.mockedResources.single);
+    }
+    else {
+    return this.http.post<Resource>(`${environment.api.salus}/resources`,
+    resource ,httpOptions).pipe(
+      tap(data =>
+        { this._resource = data;
+          this.logService.log(data, LogLevels.info);
+        }));
+    }
   }
 
   /**
@@ -111,6 +122,14 @@ export class ResourcesService {
           this.logService.log(`Resource: ${data}`, LogLevels.info);
         })
       )
+    }
+  }
+  validateResourceId(id:string): Observable<any> {
+    if (environment.mock) {
+      return of<boolean>(true);
+    }
+    else {
+      return this.http.head(`${environment.api.salus}/resources/${id}`, {observe: 'response'});
     }
   }
 

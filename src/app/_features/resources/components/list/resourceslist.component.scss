@@ -1,7 +1,27 @@
+.hxRow .hxCol.resource-header {
+    margin-left: 10px !important;
+}
+
 .hxRow .hxCol.resource-header button {
     margin-right: 15px;
 }
 
 .hxRow.resource-paging {
     text-align: center;
+}
+
+.popExpand {
+    width:500px
+}
+
+.hxCol-6.enabled-padding {
+    padding: 0 5px 0 20px;
+}
+
+.hxRow.footer{
+    padding: 20px 0 20px;
+}
+
+hx-text-control[required] input {
+    border: 2px solid #d32f2f;
 }

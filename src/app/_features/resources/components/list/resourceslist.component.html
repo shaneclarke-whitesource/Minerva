@@ -1,8 +1,20 @@
 <div class="hxRow">
   <div class="hxCol">
-    <hx-search
-        [placeholder]="searchPlaceholderText">
-    </hx-search>
+    <hx-search-control>
+        <input
+          id="txtSearch"
+          type="search"
+          [placeholder]="searchPlaceholderText"
+        />
+        <button
+          type="button"
+          class="hxClear"
+          aria-label="Clear search"
+          hidden>
+          <hx-icon type="times"></hx-icon>
+        </button>
+        <hx-search></hx-search>
+      </hx-search-control>
   </div>
   <div class="hxCol resource-header hxOffset-1">
 <button class="hxBtn" [disabled]="selectedResources.length === 0">
@@ -17,16 +29,65 @@
   Create Suppression
 </button>
 
-<button class="hxBtn hxPrimary">
+<hx-disclosure aria-controls="addResPopover" #addResButton id="addResButton" class="hxBtn hxPrimary">
   Add Resource
-</button>
-  </div>
+</hx-disclosure>
+<hx-popover id="addResPopover" position="bottom-center" class="popExpand">
+  <header>
+    <h3>Add Resource</h3>
+  </header>
+  <hx-div>
+  <form [formGroup]="addResourceForm" #resourceForm="ngForm" (ngSubmit)="addResource(addResourceForm)">
+    <div class="hxRow">
+    <div class="hxCol-6">
+      <hx-text-control [attr.required]="addResourceForm.get('name').errors?.invalidResourceName && resourceForm.submitted"
+      [attr.hx-dirty]="resourceForm.submitted" [attr.hx-touched]="resourceForm.submitted">
+        <input id="txtResource" formControlName="name" placeholder="Resource Id" type="text"
+        [required]="addResourceForm.get('name').hasError('required') && resourceForm.submitted"
+        />
+      </hx-text-control>
+      <span *ngIf="addResourceForm.get('name').errors?.invalidResourceName && resourceForm.submitted" class="required">Resource Id already in use</span>
+    </div>
+    <div class="hxCol-6 enabled-padding">
+        <hx-checkbox-control>
+            <input
+              formControlName="enabled"
+              type="checkbox"
+              id="chkEnable"
+            />
+            <label for="chkEnable">
+              <hx-checkbox></hx-checkbox>
+              Enable Presence Monitoring
+            </label>
+          </hx-checkbox-control>
+    </div>
+    </div>
+    <div class="hxRow footer">
+      <button type="submit" class="hxBtn hxPrimary" [disabled]="addResLoading">
+        <hx-busy class="popover-busy" *ngIf="addResLoading"></hx-busy>
+        Submit
+      </button>
+      <button class="hxBtn" type="button" (click)="addButton.nativeElement.click()" aria-controls="addResPopover">Cancel</button>
+    </div>
+  </form>
+  </hx-div>
+</hx-popover>
+</div>
 </div>
 <table class="hxTable">
   <thead>
     <tr>
       <th class="hxControl">
-          <hx-checkbox id="chkColumn" (change)="checkColumn($event)"></hx-checkbox>
+          <hx-checkbox-control>
+              <input
+                type="checkbox"
+                id="chkColumn"
+                (change)="checkColumn($event)"
+              />
+              <label for="chkColumn">
+                <hx-checkbox></hx-checkbox>
+              </label>
+            </hx-checkbox-control>
       </th>
       <th>RESOURCE NAME</th>
       <th>CRITICAL</th>
@@ -39,8 +100,17 @@
   <tbody>
     <tr *ngFor="let resource of resources">
       <td class="hxControl">
-          <hx-checkbox id="chk{{resource.id}}" (change)="selectResource(resource)"
-            [checked]="resource.checked"></hx-checkbox>
+          <hx-checkbox-control>
+              <input
+                type="checkbox"
+                id="chk{{resource.id}}"
+                (change)="selectResource(resource)"
+                [checked]="resource.checked"
+              />
+              <label for="chk{{resource.id}}">
+                <hx-checkbox></hx-checkbox>
+              </label>
+            </hx-checkbox-control>
       </td>
       <td><a [routerLink]="['/resources', resource.resourceId]">{{resource.resourceId}}</a></td>
       <td>--</td>

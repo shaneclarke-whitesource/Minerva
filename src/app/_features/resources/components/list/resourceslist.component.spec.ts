@@ -1,20 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import {ReactiveFormsModule, FormsModule, FormBuilder, FormControl} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourcesListComponent } from './resourceslist.component';
 import { ResourcesPage } from '../../pages/resources/resources.page';
 import { ResourceDetailsPage } from '../../pages/details/resource-details.page';
 import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock'
 import { environment } from '../../../../../environments/environment';
+import { Resource } from 'src/app/_models/resources';
+import { ResourcesService } from 'src/app/_services/resources/resources.service';
 
-var mockResource = {
-  "id": 26,
+var mockResource: Resource = {
   "resourceId": "development:1",
   "labels": {
-    "agent.discovered.hostname": "MS90HCG8WL",
-    "agent.discovered.os": "darwin",
-    "agent.environment": "localdev",
+    "agent_discovered_arch": "MS90HCG8WL",
+    "agent_discovered_os": "darwin",
+    "agent_discovered_hostname": "localdev",
     "pingable": "true",
     "agent.discovered.arch": "amd64"
   },
@@ -23,28 +25,48 @@ var mockResource = {
   },
   "tenantId": "833544",
   "presenceMonitoringEnabled": true,
-  "region": null
+  "associatedWithEnvoy": false,
+  "createdTimestamp": new Date(),
+  "updatedTimestamp": new Date()
 };
 
 describe('ResourcesListComponent', () => {
+  let injector: TestBed;
   let component: ResourcesListComponent;
   let fixture: ComponentFixture<ResourcesListComponent>;
+  let resourceService: ResourcesService;
 
+  // create new instance of FormBuilder
+  const formBuilder: FormBuilder = new FormBuilder();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [ ResourcesListComponent, ResourcesPage, ResourceDetailsPage ],
       imports: [
         RouterTestingModule,
-        HttpClientModule
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule
+      ],
+      providers: [
+        ResourcesService,
+        // reference the new instance of formBuilder from above
+        { provide: FormBuilder, useValue: formBuilder }
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
+    injector = getTestBed();
     fixture = TestBed.createComponent(ResourcesListComponent);
     component = fixture.componentInstance;
+    resourceService = injector.get(ResourcesService);
+    component.addResourceForm = formBuilder.group({
+      name: new FormControl('newish-server'),
+      enabled: new FormControl('false')
+    });
+
     fixture.detectChanges();
   });
 
@@ -52,7 +74,11 @@ describe('ResourcesListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('setup defaults', () => {
+    it ('should have defaults', () => {
+        expect(component.addResLoading).toEqual(false);
+        expect(component.addButton).toBeDefined();
+    });
+
     it('ngOnInit should resolve resources', () => {
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -72,7 +98,7 @@ describe('ResourcesListComponent', () => {
     it('should create correct placeholder text', () => {
       expect(component.searchPlaceholderText).toEqual('Search 54 Resources');
     });
-  });
+
 
   it('should add all resources', () => {
     var checked = { target:{checked:true} };
@@ -118,6 +144,13 @@ describe('ResourcesListComponent', () => {
     component.prevPage();
     expect(component.page).toEqual(2);
   });
+
+  it('should add Resource', () => {
+    /**
+     * Finish test for FormGroup
+     *
+     */
+  })
 
 
   it('should destroy subscriptions', () => {

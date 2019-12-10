@@ -40,6 +40,18 @@ router.get('/resources/:id', (req, res) => {
         const data = require(`${mockPath}/resources/single.json`);
         res.json(data);
     }
+
+    if (req.method === 'HEAD') {
+        let id = req.params.id;
+        axios.head(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`,
+        { headers: { 'x-auth-token':Identity.info().token.id }})
+        .then((data) => {
+            res.sendStatus(200);
+        })
+        .catch((err) => {
+            res.sendStatus(404);
+        });
+    }
     else {
         let id = req.params.id;
         axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`, {
@@ -54,6 +66,24 @@ router.get('/resources/:id', (req, res) => {
     }
 });
 
+router.post('/resources', (req, res) => {
+    if (devEnv) {
+        const data = require(`${mockPath}/resources/single.json`);
+        res.json(data);
+    }
+    else {
+        let resource = req.body;
+        axios.post(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources`,
+        resource, { headers: { 'x-auth-token':Identity.info().token.id }})
+        .then((data) => {
+            res.send(data.data);
+        })
+        .catch((err) => {
+            res.sendStatus(500).json(err);
+        });
+    }
+})
+
 router.put('/resources/:id', (req, res) => {
     if (devEnv) {
         const data = require(`${mockPath}/resources/single.json`);
@@ -66,6 +96,23 @@ router.put('/resources/:id', (req, res) => {
         updated, { headers: { 'x-auth-token':Identity.info().token.id }})
         .then((data) => {
             res.send(data.data);
+        })
+        .catch((err) => {
+            res.sendStatus(500).json(err);
+        });
+    }
+});
+
+router.head('/resources/:id', (req, res) => {
+    if (devEnv) {
+        res.sendStatus(200);
+    }
+    else {
+        let id = req.params.id;
+        axios.head(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`,
+        { headers: { 'x-auth-token':Identity.info().token.id }})
+        .then((data) => {
+            res.sendStatus(200).json(data.data);
         })
         .catch((err) => {
             res.sendStatus(500).json(err);

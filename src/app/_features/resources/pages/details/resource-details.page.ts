@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourcesService } from '../../../../_services/resources/resources.service';
 import { Observable, Subject, Subscription } from 'rxjs';
+import  { transformKeyPairs } from '../../../../_shared/utils';
 import { Resource } from 'src/app/_models/resources';
 import { tap } from 'rxjs/operators';
 
@@ -71,7 +72,7 @@ export class ResourceDetailsPage implements OnInit {
    * @param metaValues {[key: string] : any}
    */
   metaValueUpdated(metaValues: {[key: string] : any}):void {
-    this.updatedMetaFields = this.transformKeyPairs(metaValues.keysandvalues);
+    this.updatedMetaFields = transformKeyPairs(metaValues.keysandvalues);
   }
 
   /**
@@ -92,7 +93,7 @@ export class ResourceDetailsPage implements OnInit {
    * @param labelValues {[key: string] : any}
    */
   labelsUpdated(labelValues: {[key: string] : any}): void {
-    this.updatedLabelFields = this.transformKeyPairs(labelValues.keysandvalues);
+    this.updatedLabelFields = transformKeyPairs(labelValues.keysandvalues);
   }
 
   /**
@@ -106,21 +107,6 @@ export class ResourceDetailsPage implements OnInit {
           this.labelsLoading = false
         })
       );
-  }
-
-  /**
-   * @description Turns the array of key pairs into an object
-   * @param keyPairs [{[key: string] : any}]
-   * @returns {}
-   */
-  private transformKeyPairs(keyPairs: [{[key: string] : any}]): {} {
-    let paired = {};
-    keyPairs.forEach(element => {
-      if (element.key && element.value) {
-        paired[element.key] = element.value;
-      }
-    });
-    return paired;
   }
 
   /**

@@ -1,9 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { ResourcesService } from '../../../../_services/resources/resources.service';
+import { ValidateResource } from '../../../../_shared/validators/resourceName.validator';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs'
-import { Resource } from 'src/app/_models/resources';
+import { Resource, CreateResource } from 'src/app/_models/resources';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resourceslist',
@@ -11,6 +14,8 @@ import { Resource } from 'src/app/_models/resources';
   styleUrls: ['./resourceslist.component.scss']
 })
 export class ResourcesListComponent implements OnInit, OnDestroy {
+
+  @ViewChild('addResButton') addButton:ElementRef;
 
   private ngUnsubscribe = new Subject();
   searchPlaceholderText: string;
@@ -20,9 +25,11 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   defaultAmount: number = environment.pagination.pageSize;
   totalPages: number;
   fetchResources: any;
-
+  addResLoading: boolean = false;
   selectedResources: any = [];
-  constructor(private resourceService: ResourcesService) { }
+  addResourceForm: FormGroup;
+  constructor(private resourceService: ResourcesService, private fb: FormBuilder,
+    private router: Router) { }
 
   ngOnInit() {
     this.fetchResources = () => {
@@ -37,6 +44,11 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     }
 
     this.fetchResources();
+
+    this.addResourceForm = this.fb.group({
+      name: ['', Validators.required],
+      enabled: ['']
+    });
   }
 
   checkColumn(event) {
@@ -51,6 +63,11 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   *
+   * @param n number
+   * @returns void
+   */
   goToPage(n: number): void {
     this.page = n;
     this.fetchResources();
@@ -66,13 +83,45 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     this.fetchResources();
   }
 
-  selectResource(resource) {
+  /**
+   * @description Add selected resources to an array for actions
+   * @param resource Resource
+   */
+  selectResource(resource:Resource):void {
     if (this.selectedResources.indexOf(resource) === -1) {
       this.selectedResources.push(resource);
     } else {
       this.selectedResources.splice(
         this.selectedResources.indexOf(resource), 1
       );
+    }
+  }
+/**
+ * @description Adds a resource after validating resource id
+ * @param resourceForm FormGroup
+ * @returns void
+ */
+  addResource(resourceForm: FormGroup):void {
+    if (resourceForm.controls['name'].value) {
+      this.addResLoading = true;
+      ValidateResource.valid(this.resourceService, resourceForm.controls['name'].value)
+        .subscribe((response) => {
+          this.addResLoading = false;
+          if (response.status === 200) {
+            resourceForm.controls['name'].setErrors({ 'invalidResourceName': true });
+          }
+        }, error => {
+          this.addResLoading = false;
+          if ((error.status === 404)) {
+            let resource: CreateResource = {
+              resourceId: resourceForm.controls['name'].value,
+              presenceMonitoringEnabled: resourceForm.controls['enabled'].value ? true : false
+            }
+            this.resourceService.createResource(resource).subscribe((result) => {
+              this.router.navigate(['/resources', result.resourceId]);
+            })
+          }
+        })
     }
   }
 

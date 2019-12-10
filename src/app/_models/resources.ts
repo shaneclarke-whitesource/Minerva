@@ -29,3 +29,8 @@ export interface Resources {
     first: boolean;
 
 }
+
+export interface CreateResource {
+    resourceId: string,
+    presenceMonitoringEnabled: boolean;
+}
