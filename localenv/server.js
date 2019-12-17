@@ -60,20 +60,6 @@ console.log(`Starting with mocked ${env} environment`);
     require('request-debug')(request);
 */
 
-if (env === 'dev') {
-
-    try {
-        Portal.createPortal();
-        PilotScript.createPilot();
-    }
-    catch (e) {
-        return Promise.reject(e);
-    }
-
-    CreateServer();
-}
-else {
-
 // Attempt to login against Rackspace Identity
 Identity.login({'body': body}).then((response) => {
 
@@ -101,10 +87,9 @@ Identity.login({'body': body}).then((response) => {
     }
 
 }, breakChain).then(() => {
-
     CreateServer();
 });
-}
+
 /**
  * @name breakChain
  * @description function breaks the chain of promises
@@ -115,7 +100,6 @@ function breakChain(err) {
     console.log('** Promise chain broken:\n ' + JSON.stringify(err));
     return Promise.reject(err);
 }
-
 
 /**
  * @name CreateServer

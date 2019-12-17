@@ -1,10 +1,7 @@
 var express = require('express');
-var path = require('path');
 var axios = require('axios');
 const Settings = require('../config/index');
 var router = express.Router();
-var devEnv = process.env.NODE_ENV === 'dev';
-var mockPath = path.join(__dirname, '../../src/app/_mocks');
 
 const config = new Settings();
 
@@ -12,25 +9,18 @@ router.get('/', (req, res) => {
     let db = req.query.db;
     let q = req.query.q;
 
-    if (devEnv) {
-        returnJSON(q).then((data) => {
-            res.json(data);
-        });
-    }
-    else {
-        axios.get(`${config.metrics.api_host}${config.metrics.api_url}`, {
-            params: {
-                db,
-                q
-            }
-        })
-        .then((data) => {
-            res.json(data.data);
-        })
-        .catch((err) => {
-            res.sendStatus(500).json(err);
-        });
-    }
+    axios.get(`${config.metrics.api_host}${config.metrics.api_url}`, {
+        params: {
+            db,
+            q
+        }
+    })
+    .then((data) => {
+        res.json(data.data);
+    })
+    .catch((err) => {
+        res.sendStatus(500).json(err);
+    });
 });
 
 
