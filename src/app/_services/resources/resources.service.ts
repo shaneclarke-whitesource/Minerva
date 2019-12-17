@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
@@ -87,6 +87,11 @@ export class ResourcesService {
     }
   }
 
+  /**
+   * @description Creates a resource with preliminary resource object
+   * @param resource CreateResource
+   * @returns Resource
+   */
   createResource(resource:CreateResource): Observable<Resource> {
     if (environment.mock) {
       this._resource = this.mockedResources.single;
@@ -124,15 +129,29 @@ export class ResourcesService {
       )
     }
   }
-  validateResourceId(id:string): Observable<any> {
+
+  /**
+   * @description Validates that the resourceId being created isn't alreay in use
+   * by the tenant, as these must be unique on a per tenant basis
+   * @param id string
+   * @returns HttpResponse of empty object OR a boolean when in offline mode
+    */
+  validateResourceId(id:string): any {
     if (environment.mock) {
-      return of<boolean>(true);
+      return throwError(new HttpErrorResponse({
+        error: 'Not Found',
+        status: 404
+      }));
     }
     else {
       return this.http.head(`${environment.api.salus}/resources/${id}`, {observe: 'response'});
     }
   }
 
+  /**
+   * @description
+   * @param id string
+   */
   deleteResource(id:string) {
     if (environment.mock) {
       return of<boolean>(true);

@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
-import {ReactiveFormsModule, FormsModule, FormBuilder, FormControl} from '@angular/forms';
+import { async, ComponentFixture, TestBed, getTestBed, } from '@angular/core/testing';
+import {ReactiveFormsModule, FormsModule, FormBuilder, Validators} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourcesListComponent } from './resourceslist.component';
 import { ResourcesPage } from '../../pages/resources/resources.page';
@@ -9,7 +9,9 @@ import { ResourceDetailsPage } from '../../pages/details/resource-details.page';
 import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock'
 import { environment } from '../../../../../environments/environment';
 import { Resource } from 'src/app/_models/resources';
+import { ValidateResource } from '../../../../_shared/validators/resourceName.validator';
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
+import { Router } from '@angular/router';
 
 var mockResource: Resource = {
   "resourceId": "development:1",
@@ -34,7 +36,9 @@ describe('ResourcesListComponent', () => {
   let injector: TestBed;
   let component: ResourcesListComponent;
   let fixture: ComponentFixture<ResourcesListComponent>;
+  let validateResource: ValidateResource;
   let resourceService: ResourcesService;
+  let router: Router;
 
   // create new instance of FormBuilder
   const formBuilder: FormBuilder = new FormBuilder();
@@ -43,13 +47,16 @@ describe('ResourcesListComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [ ResourcesListComponent, ResourcesPage, ResourceDetailsPage ],
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(
+          [{path: 'resources/development:0', component: ResourceDetailsPage}]
+        ),
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule
       ],
       providers: [
         ResourcesService,
+        ValidateResource,
         // reference the new instance of formBuilder from above
         { provide: FormBuilder, useValue: formBuilder }
       ]
@@ -62,13 +69,20 @@ describe('ResourcesListComponent', () => {
     fixture = TestBed.createComponent(ResourcesListComponent);
     component = fixture.componentInstance;
     resourceService = injector.get(ResourcesService);
+    validateResource = injector.get(ValidateResource);
+    router = injector.get(Router);
     component.addResourceForm = formBuilder.group({
-      name: new FormControl('newish-server'),
-      enabled: new FormControl('false')
+      name: ['', Validators.required],
+      enabled: ''
     });
 
     fixture.detectChanges();
   });
+
+  const updateForm = (resourceId: string, enabledPresence: boolean) => {
+    component.addResourceForm.controls['name'].setValue(resourceId);
+    component.addResourceForm.controls['enabled'].setValue(enabledPresence);
+  };
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -145,13 +159,38 @@ describe('ResourcesListComponent', () => {
     expect(component.page).toEqual(2);
   });
 
-  it('should add Resource', () => {
-    /**
-     * Finish test for FormGroup
-     *
-     */
-  })
+  it('should set loading back to false after form submission', () => {
+    expect(component.addResLoading).toBe(false);
+    updateForm('newcool-server', false);
+    fixture.ngZone.run(() => {
+      component.addResource(component.addResourceForm);
+      expect(component.addResLoading).toBe(false);
+    });
+  });
 
+  it('should error form when resourceId is empty', () => {
+    updateForm('', false);
+    component.addResource(component.addResourceForm);
+    expect(component.addResourceForm.invalid).toBe(true);
+  });
+
+  it('should add Resource and navigate to details page', () => {
+    const spy = spyOn(router, 'navigate');
+    fixture.ngZone.run(() => {
+      updateForm('newcool-server', false);
+      component.addResource(component.addResourceForm);
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  it('should add Resource and trigger services', () => {
+    const spy = spyOn(resourceService, 'createResource');
+    fixture.ngZone.run(() => {
+      updateForm('newcool-server', false);
+      component.addResource(component.addResourceForm);
+      expect(spy).toHaveBeenCalled();
+    });
+  });
 
   it('should destroy subscriptions', () => {
     spyOn(component['ngUnsubscribe'], 'next');

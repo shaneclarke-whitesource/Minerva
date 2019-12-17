@@ -28,7 +28,8 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   addResLoading: boolean = false;
   selectedResources: any = [];
   addResourceForm: FormGroup;
-  constructor(private resourceService: ResourcesService, private fb: FormBuilder,
+  constructor(private resourceService: ResourcesService,
+    private validateResource: ValidateResource, private fb: FormBuilder,
     private router: Router) { }
 
   ngOnInit() {
@@ -45,13 +46,19 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
 
     this.fetchResources();
 
+    // popover form for adding a Resource
     this.addResourceForm = this.fb.group({
       name: ['', Validators.required],
       enabled: ['']
     });
   }
 
-  checkColumn(event) {
+  /**
+   * @description check column event for items in tables, selects resource item
+   * @param event any
+   * @returns void
+   */
+  checkColumn(event):void {
     if (event.target.checked) {
       this.selectedResources = this.resources.map(x => Object.assign({}, x));
     }
@@ -64,20 +71,26 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   *
+   * @description <app-pagination>
    * @param n number
    * @returns void
-   */
+  */
   goToPage(n: number): void {
     this.page = n;
     this.fetchResources();
   }
 
+  /**
+   * @description <app-pagination>
+   */
   nextPage(): void {
     this.page++;
     this.fetchResources();
   }
 
+  /**
+   * @description <app-pagination>
+   */
   prevPage(): void {
     this.page--;
     this.fetchResources();
@@ -96,28 +109,33 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
       );
     }
   }
+
 /**
  * @description Adds a resource after validating resource id
  * @param resourceForm FormGroup
  * @returns void
- */
+*/
   addResource(resourceForm: FormGroup):void {
     if (resourceForm.controls['name'].value) {
       this.addResLoading = true;
-      ValidateResource.valid(this.resourceService, resourceForm.controls['name'].value)
+      // check if the resourceId can be be used & is valid
+      this.validateResource.valid(resourceForm.controls['name'].value)
         .subscribe((response) => {
-          this.addResLoading = false;
+        this.addResLoading = false;
+          // if status of request is 200 the resourceId is taken and cannot be used
           if (response.status === 200) {
             resourceForm.controls['name'].setErrors({ 'invalidResourceName': true });
           }
         }, error => {
-          this.addResLoading = false;
+          // if status of request is 404 the resourceId was not found and can be used
           if ((error.status === 404)) {
             let resource: CreateResource = {
               resourceId: resourceForm.controls['name'].value,
               presenceMonitoringEnabled: resourceForm.controls['enabled'].value ? true : false
             }
+            // once valid, create the initial resource
             this.resourceService.createResource(resource).subscribe((result) => {
+              this.addResLoading = false;
               this.router.navigate(['/resources', result.resourceId]);
             })
           }

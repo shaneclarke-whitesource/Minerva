@@ -5,6 +5,7 @@ import { ResourcesService } from '../../_services/resources/resources.service';
 import { ResourcesListComponent } from './components/list/resourceslist.component';
 import { ResourcesPage } from './pages/resources/resources.page';
 import { ResourceDetailsPage } from './pages/details/resource-details.page';
+import { ValidateResource } from 'src/app/_shared/validators/resourceName.validator';
 
 const routes: Routes = [
   {
@@ -35,7 +36,8 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   providers: [
-    ResourcesService
+    ResourcesService,
+    ValidateResource
   ]
 })
 export class ResourcesModule { }

@@ -3,12 +3,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { ResourcesService } from './resources.service';
 import { environment } from '../../../environments/environment';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
-import { Resources, Resource } from 'src/app/_models/resources';
-import { executeInitAndContentHooks } from '@angular/core/src/render3/instructions';
+import { Resource, CreateResource } from 'src/app/_models/resources';
 
 describe('ResourcesService', () => {
   let injector: TestBed;
   let service: ResourcesService;
+  let createResource: CreateResource = {
+    resourceId: 'newcool-server',
+    presenceMonitoringEnabled: false
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -55,6 +58,20 @@ describe('ResourcesService', () => {
         expect(data).toEqual(new resourcesMock().single);
       });
     });
+
+    it('should create a resource', () => {
+      service.createResource(createResource).subscribe((data) => {
+        expect(data).toEqual(new resourcesMock().single);
+      })
+    });
+
+    it('should validate a resource ID', (done) => {
+      service.validateResourceId('newcool-server').subscribe(() => {
+      }, error => {
+        expect(error.status).toEqual(404);
+        done();
+      });
+    })
 
     it('should update a single resource metadata or labels', () => {
       let updated = {labels: {'newkey': 'newVal', 'somekey':'someVal'}};
