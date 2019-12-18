@@ -19,7 +19,7 @@ router.get('/resources', (req, res) => {
         res.send(data.data);
     })
     .catch((err) => {
-        res.sendStatus(err.status).json(err);
+        res.sendStatus(parseInt(err.response.status)).json(err);
     });
 });
 
@@ -33,7 +33,7 @@ router.get('/resources/:id', (req, res) => {
                 res.sendStatus(data.status);
             })
             .catch((err) => {
-                res.sendStatus(err.status);
+                res.sendStatus(parseInt(err.response.status));
             });
     }
     else {
@@ -44,7 +44,7 @@ router.get('/resources/:id', (req, res) => {
             res.send(data.data);
         })
         .catch((err) => {
-            res.sendStatus(err.status).json(err);
+            res.sendStatus(parseInt(err.response.status)).json(err);
         });
     }
 });
@@ -57,7 +57,7 @@ router.post('/resources', (req, res) => {
             res.send(data.data);
         })
         .catch((err) => {
-            res.sendStatus(err.status).json(err);
+            res.sendStatus(parseInt(err.response.status)).json(err);
         });
 });
 
@@ -70,7 +70,7 @@ router.put('/resources/:id', (req, res) => {
             res.send(data.data);
         })
         .catch((err) => {
-            res.sendStatus(err.status).json(err);
+            res.sendStatus(parseInt(err.response.status)).json(err);
         });
 });
 
@@ -82,7 +82,7 @@ router.delete('/resources/:id', (req, res) => {
             res.send(true)
         })
         .catch((err) => {
-            res.sendStatus(err.status).json(err);
+            res.sendStatus(parseInt(err.response.status)).json(err);
         });
 });
 
