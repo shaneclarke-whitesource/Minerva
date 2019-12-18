@@ -49,14 +49,9 @@ Running the application is quite simple, but there are a few options for us to t
 
 ## Development server
 
-The dev environment is setup to authenticate against either mock data (dev), staging (staging) or production (prod), and is in part separated from the rest of the environment via the `localenv` folder. You have the option to use `--password` or `--apikey` to authenticate with.
+The dev environment is setup to authenticate against either staging (staging) or production (prod), and is in part separated from the rest of the environment via the `localenv` folder. You have the option to use `--password` or `--apikey` to authenticate with.
 
-To launch with mock data simply run:
-```
-cd localenv
-NODE_ENV=dev npm run dev
-```
-And to test either staging or pod environments run:
+To launch either staging or pod environments run:
 
 ```
 cd localenv
