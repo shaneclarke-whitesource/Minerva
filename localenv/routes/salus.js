@@ -29,7 +29,7 @@ router.get('/resources', (req, res) => {
             res.send(data.data);
         })
         .catch((err) => {
-            res.sendStatus(500).json(err);
+            res.sendStatus(err.status).json(err);
         });
     }
 });
@@ -46,10 +46,10 @@ router.get('/resources/:id', (req, res) => {
         axios.head(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`,
         { headers: { 'x-auth-token':Identity.info().token.id }})
         .then((data) => {
-            res.sendStatus(200);
+            res.sendStatus(data.status);
         })
         .catch((err) => {
-            res.sendStatus(404);
+            res.sendStatus(err.status);
         });
     }
     else {
@@ -61,7 +61,7 @@ router.get('/resources/:id', (req, res) => {
             res.send(data.data);
         })
         .catch((err) => {
-            res.sendStatus(500).json(err);
+            res.sendStatus(err.status).json(err);
         });
     }
 });
@@ -79,7 +79,7 @@ router.post('/resources', (req, res) => {
             res.send(data.data);
         })
         .catch((err) => {
-            res.sendStatus(500).json(err);
+            res.sendStatus(err.status).json(err);
         });
     }
 })
@@ -98,24 +98,7 @@ router.put('/resources/:id', (req, res) => {
             res.send(data.data);
         })
         .catch((err) => {
-            res.sendStatus(500).json(err);
-        });
-    }
-});
-
-router.head('/resources/:id', (req, res) => {
-    if (devEnv) {
-        res.sendStatus(200);
-    }
-    else {
-        let id = req.params.id;
-        axios.head(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`,
-        { headers: { 'x-auth-token':Identity.info().token.id }})
-        .then((data) => {
-            res.sendStatus(200).json(data.data);
-        })
-        .catch((err) => {
-            res.sendStatus(500).json(err);
+            res.sendStatus(err.status).json(err);
         });
     }
 });
@@ -132,7 +115,7 @@ router.delete('/resources/:id', (req, res) => {
             res.send(true)
         })
         .catch((err) => {
-            res.sendStatus(500).json(err);
+            res.sendStatus(err.status).json(err);
         });
     }
 });
