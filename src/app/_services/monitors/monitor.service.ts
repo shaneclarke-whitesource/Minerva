@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
 import { monitorsMock } from '../../_mocks/monitors/monitors.service.mock'
+import { Monitors } from 'src/app/_models/monitors';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -31,17 +32,22 @@ export class MonitorService {
     this._monitors = value;
   }
 
-  getMonitors(size: number, page: number): Observable<any> {
+  /**
+   * @description Gets a list of monitors
+   * @param size number
+   * @param page number
+   * @returns Observable<Monitors>
+   */
+  getMonitors(size: number, page: number): Observable<Monitors> {
     if (environment.mock) {
-      let pageNumber = --page;
       let mocks = Object.assign({}, this.mockedMonitors.collection);
-      let slicedData = [... mocks.content.slice(pageNumber * size, (pageNumber + 1) * size)];
+      let slicedData = [... mocks.content.slice(page * size, (page + 1) * size)];
       this.monitors = mocks;
       this.monitors.content = slicedData
-      return of(this.monitors);
+      return of<Monitors>(this.monitors);
     }
     else {
-    return this.http.get(`${environment.api.salus}/monitors?size=${size}&page=${page}`, httpOptions)
+    return this.http.get<Monitors>(`${environment.api.salus}/monitors?size=${size}&page=${page}`, httpOptions)
     .pipe(
       tap(data =>
         { this.monitors = data;
@@ -50,8 +56,7 @@ export class MonitorService {
     }
   }
 
-  // TODO: establish interface for return data of individual
-  // monitors
+
   getMonitor(id: number): Observable<any> {
     if (environment.mock) {
       return of(this.mockedMonitors.single);

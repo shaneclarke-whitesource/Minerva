@@ -1,7 +1,25 @@
 <div class="hxRow">
+  <div class="hxCol">
+      <hx-search-control>
+          <input
+            id="txtSearch"
+            type="search"
+            [placeholder]="searchPlaceholderText"
+          />
+          <button
+            type="button"
+            class="hxClear"
+            aria-label="Clear search"
+            hidden>
+            <hx-icon type="times"></hx-icon>
+          </button>
+          <hx-search></hx-search>
+        </hx-search-control>
+  </div>
+
 <div class="hxCol monitors-header">
 <button class="hxBtn hxPrimary">
-  Create Multiple Checks
+  Create Multiple Monitors
 </button>
 
 <button class="hxBtn" [disabled]="selectedMonitors.length === 0">
@@ -9,23 +27,26 @@
 </button>
 
 <button class="hxBtn" [disabled]="selectedMonitors.length === 0">
-  Copy Check
+  Copy Monitor
 </button>
-</div>
-
-<div class="hxCol">
-  <hx-search
-    [placeholder]="searchPlaceholderText">
-  </hx-search>
 </div>
 </div>
 <table class="hxTable">
   <thead>
     <tr>
       <th class="hxControl">
-          <hx-checkbox id="chkColumn" (change)="checkColumn($event)"></hx-checkbox>
+          <hx-checkbox-control>
+              <input
+                type="checkbox"
+                id="chkColumn"
+                (change)="checkColumn($event)"
+              />
+              <label for="chkColumn">
+                <hx-checkbox></hx-checkbox>
+              </label>
+            </hx-checkbox-control>
       </th>
-      <th>CHECK NAME</th>
+      <th>MONITOR</th>
       <th>ALARM STATUS</th>
       <th>LABELS</th>
       <th>DETAILS</th>
@@ -34,14 +55,23 @@
   <tbody>
     <tr *ngFor="let monitor of monitors">
       <td class="hxControl">
-          <hx-checkbox id="monitor-{{monitor.id}}" (change)="selectMonitors(monitor)"
-            [checked]="monitor.checked"></hx-checkbox>
+          <hx-checkbox-control>
+              <input
+                type="checkbox"
+                id="monitor-{{monitor.id}}"
+                (change)="selectMonitors(monitor)"
+                [checked]="monitor.checked"
+              />
+              <label for="monitor-{{monitor.id}}">
+                <hx-checkbox></hx-checkbox>
+              </label>
+            </hx-checkbox-control>
       </td>
       <td><a [routerLink]="['/monitors', monitor.id]">{{monitor.name}}</a></td>
       <td>--</td>
       <td><hx-status *ngFor="let label of Object.keys(monitor.labelSelector)">
         {{monitor.labelSelector[label]}}</hx-status></td>
-      <td>{{monitor.details.message}}</td>
+      <td>{{monitor.details.type}}</td>
     </tr>
   </tbody>
 </table>

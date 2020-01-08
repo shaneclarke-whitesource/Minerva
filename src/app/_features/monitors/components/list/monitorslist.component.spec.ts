@@ -3,21 +3,31 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MonitorslistComponent } from './monitorslist.component';
+import { MonitorService } from '../../../../_services/monitors/monitor.service';
 import { MonitorsPage } from '../../pages/monitors/monitors.page';
 import { monitorsMock } from '../../../../_mocks/monitors/monitors.service.mock'
 import { environment } from '../../../../../environments/environment';
+import { Monitor } from 'src/app/_models/monitors';
 
-var mockMonitor = {
+var mockMonitor:Monitor = {
   "id": "76WE85UV",
   "name": "Ping - DFW",
+  "interval": "PT1M30S",
+  "labelSelectorMethod": "AND",
   "labelSelector": {
       "additionalProp1": "EC2Instance",
       "additionalProp2": "Prod",
       "additionalProp3": "Node API"
   },
   "details": {
-      "message": "162.242.171.102 (IPv4)"
-  }
+      "type": "local",
+      "plugin": {
+        "type": "cpu",
+        "message": "162.242.171.102 (IPv4)"
+      }
+  },
+  "createdTimestamp": "2019-12-31T19:04:50.630736Z",
+  "updatedTimestamp": "2019-12-31T19:04:50.630788Z"
 };
 
 describe('MonitorslistComponent', () => {
@@ -31,6 +41,9 @@ describe('MonitorslistComponent', () => {
       imports: [
         RouterTestingModule,
         HttpClientModule
+      ],
+      providers: [
+        MonitorService
       ]
     })
     .compileComponents();
@@ -39,6 +52,7 @@ describe('MonitorslistComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MonitorslistComponent);
     component = fixture.componentInstance;
+    component.ngOnInit();
     fixture.detectChanges();
   });
 
@@ -60,7 +74,7 @@ describe('MonitorslistComponent', () => {
     });
 
     it('should assign current page', () => {
-      expect(component.page).toEqual(1);
+      expect(component.page).toEqual(0);
     });
 
     it('should create correct placeholder text', () => {
@@ -104,7 +118,7 @@ describe('MonitorslistComponent', () => {
 
   it('should goto next page', () => {
     component.nextPage();
-    expect(component.page).toEqual(2);
+    expect(component.page).toEqual(1);
   });
 
   it('should goto previous page', () => {

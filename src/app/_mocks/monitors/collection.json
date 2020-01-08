@@ -6,241 +6,431 @@
         {
             "id": "889EJ382",
             "name": "Bandwidth Monitoring for eth0",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "DockerApps"
             },
             "details": {
-                "message": "eth0"
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "76IM09JM",
             "name": "Check Not Body II",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "LinuxOS",
                 "additionalProp2": "Staging",
                 "additionalProp3": "Website"
             },
             "details": {
-                "message": ""
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "10YN3Q45",
             "name": "CPU Check",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "LinuxOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "Load Balancer"
             },
             "details": {
-                "message": "dns1.stabletransit.com (IPv4):53"
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "23ONM715",
             "name": "Filesystem",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "EC2Instance",
                 "additionalProp2": "Dev",
                 "additionalProp3": "Node API",
                 "additionalProp4": "amd64"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "381IM0L1",
             "name": "Filesystem State",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "LinuxOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "DockerApps"
             },
-            "details": {
-                "message": ""
-            }
+            "details":{
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "76WE85UV",
             "name": "Ping - DFW",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "EC2Instance",
                 "additionalProp2": "Prod",
                 "additionalProp3": "Node API"
             },
             "details": {
-                "message": "162.242.171.102 (IPv4)"
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "12PC87X0",
             "name": "Ping - ORD",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "EC2Instance",
                 "additionalProp2": "Prod",
                 "additionalProp3": "Node API"
             },
             "details": {
-                "message": ""
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "45ZI29AS",
             "name": "Memory Usage",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "FreeBSD",
                 "additionalProp2": "Prod",
                 "additionalProp3": "Website"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "82WA0GP1",
             "name": "Memory Usage II",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "EC2Instance",
                 "additionalProp2": "Prod",
                 "additionalProp3": "Node API"
             },
             "details": {
-                "message": ""
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "45CN67M6",
             "name": "HTTP Monitor",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "FreeBSD",
                 "additionalProp2": "Prod",
                 "additionalProp3": "AdminSite"
             },
             "details": {
-                "message": ""
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "97JY3U82",
             "name": "Network Monitor",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "MongoDB"
             },
             "details": {
-                "message": "127.0.0.1:27017"
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "12IU34Z9",
             "name": "Ping Refractive",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "WindowsOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "Logs",
                 "additionalProp4": "Elastic Search"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "73IOQ56M",
             "name": "test windows",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "WindowsOS",
                 "additionalProp2": "staging",
                 "additionalProp3": "IIS",
                 "additionalProp4": "proxy"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "87JN0C21",
             "name": "MySQL",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "FreeBSD",
                 "additionalProp2": "Dev",
                 "additionalProp3": "mysql"
             },
             "details": {
-                "message": "/var/lib/mysql"
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "33IK87V0",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "name": "Load Average",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "Backup",
                 "additionalProp3": "storage"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "3ID6MCP5",
             "name": "Fedora CPU",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "FedoraOS",
                 "additionalProp2": "staging"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "56HAL38D",
             "name": "Fedora Memory",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "Dev"
             },
             "details": {
-                "message": "/var/lib/mysql"
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "EEX87PKA",
             "name": "Disk::xvda1",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "read time"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "56FT43M1",
             "name": "Filesystem::slash",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "CentOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "Free inodes"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "8KB10Z70",
             "name": "Network :: eth1",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "recieved",
                 "additionalProp4": "logs"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "11NBZOP2",
             "name": "Apache",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "FedoraOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "reverse poxy",
                 "additionalProp4": "load balancer"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "02N45AS7",
             "name": "SSH",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "ArchLinuxOS",
                 "additionalProp2": "Prod",
@@ -248,83 +438,161 @@
                 "additionalProp4": "duration"
 
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "8MX2120X",
             "name": "Network Monitor",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "CentOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "MongoDB"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "765MNC21",
             "name": "Filesystem::slash",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "Prod",
                 "additionalProp3": "MongoDB"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "C764AQO8",
             "name": "Redis DB",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "CentOS",
                 "additionalProp2": "Backup",
                 "additionalProp3": "transmitted",
                 "additionalProp4": "Redis-store"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "97NMC561",
             "name": "SMTP - Prod",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "dev",
                 "additionalProp3": "MongoDB"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "67TYQ341",
             "name": "SMTP - Dev",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "Dev",
                 "additionalProp3": "EC2Instance"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "7NC901Z0",
             "name": "TCP",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "UbuntuOS",
                 "additionalProp2": "dev",
                 "additionalProp3": "DynamoDB"
             },
-            "details": { }
+            "details": {
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "65BC17IU",
             "name": "Telnet Banner::1",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "FreeBSD",
                 "additionalProp2": "Prod"
             },
             "details": {
-                "message": "port:25"
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         },
         {
             "id": "U87X09OP",
             "name": "Telnet Banner::2",
+            "labelSelectorMethod": "AND",
+            "interval": "30",
             "labelSelector": {
                 "additionalProp1": "CentOS",
                 "additionalProp2": "Prod",
@@ -332,30 +600,18 @@
                 "additionalProp4": "SSL"
             },
             "details": {
-                "message": "port:29"
-            }
+                "type": "local",
+                "plugin": {
+                    "type": "network",
+                    "additional": "add0"
+                }
+            },
+            "createdTimestamp": "2019-12-31T19:04:51Z",
+            "updatedTimestamp": "2020-01-03T18:50:16Z"
         }
     ],
     "number": 0,
-    "sort": {
-        "sorted": true,
-        "unsorted": true,
-        "empty": true
-    },
     "last": true,
     "numberOfElements": 30,
-    "pageable": {
-        "offset": 0,
-        "sort": {
-            "sorted": true,
-            "unsorted": true,
-            "empty": true
-        },
-        "unpaged": true,
-        "paged": true,
-        "pageNumber": 0,
-        "pageSize": 0
-    },
-    "first": true,
-    "empty": true
+    "first": true
 }

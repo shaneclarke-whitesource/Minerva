@@ -5,7 +5,7 @@ const Settings = require('../config/index');
 var Identity = require('../services/identity/token');
 const config = new Settings();
 
-router.get('/resources', (req, res) => {
+router.get('/', (req, res) => {
     let page = req.query.page;
     let size = req.query.size;
     axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources`, {
@@ -24,7 +24,7 @@ router.get('/resources', (req, res) => {
 });
 
 
-router.get('/resources/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     if (req.method === 'HEAD') {
         let id = req.params.id;
         axios.head(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`,
@@ -49,7 +49,7 @@ router.get('/resources/:id', (req, res) => {
     }
 });
 
-router.post('/resources', (req, res) => {
+router.post('/', (req, res) => {
     let resource = req.body;
     axios.post(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources`,
         resource, { headers: { 'x-auth-token': Identity.info().token.id } })
@@ -61,7 +61,7 @@ router.post('/resources', (req, res) => {
         });
 });
 
-router.put('/resources/:id', (req, res) => {
+router.put('/:id', (req, res) => {
     let id = req.params.id;
     let updated = req.body;
     axios.put(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`,
@@ -74,7 +74,7 @@ router.put('/resources/:id', (req, res) => {
         });
 });
 
-router.delete('/resources/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     let id = req.params.id;
     axios.delete(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/resources/${id}`,
         { headers: { 'x-auth-token': Identity.info().token.id } })
