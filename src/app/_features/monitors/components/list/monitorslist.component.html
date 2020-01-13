@@ -47,9 +47,9 @@
             </hx-checkbox-control>
       </th>
       <th>MONITOR</th>
-      <th>ALARM STATUS</th>
       <th>LABELS</th>
-      <th>DETAILS</th>
+      <th>SCOPE</th>
+      <th>TYPE</th>
     </tr>
   </thead>
   <tbody>
@@ -68,10 +68,10 @@
             </hx-checkbox-control>
       </td>
       <td><a [routerLink]="['/monitors', monitor.id]">{{monitor.name}}</a></td>
-      <td>--</td>
       <td><hx-status *ngFor="let label of Object.keys(monitor.labelSelector)">
         {{monitor.labelSelector[label]}}</hx-status></td>
       <td>{{monitor.details.type}}</td>
+      <td>{{monitor.details.plugin.type}}</td>
     </tr>
   </tbody>
 </table>
