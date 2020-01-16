@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
 import { monitorsMock } from '../../_mocks/monitors/monitors.service.mock'
-import { Monitors } from 'src/app/_models/monitors';
+import { Monitors, Monitor } from 'src/app/_models/monitors';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,17 +19,26 @@ const httpOptions = {
 })
 export class MonitorService {
 
-  private _monitors: {};
+  private _monitors: Monitors;
+  private _monitor: Monitor;
   private mockedMonitors = new monitorsMock();
 
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
-  get monitors(): any {
+  get monitors(): Monitors {
     return this._monitors;
   }
 
-  set monitors(value: any) {
+  set monitors(value: Monitors) {
     this._monitors = value;
+  }
+
+  get monitor(): Monitor {
+    return this._monitor
+  }
+
+  set monitor(value: Monitor) {
+    this._monitor = value;
   }
 
   /**
@@ -57,14 +66,15 @@ export class MonitorService {
   }
 
 
-  getMonitor(id: number): Observable<any> {
+  getMonitor(id: string): Observable<Monitor> {
     if (environment.mock) {
-      return of(this.mockedMonitors.single);
+      return of<Monitor>(this.mockedMonitors.single);
     }
     else {
-      return this.http.get(`${environment.api.salus}/monitors/${id}`, httpOptions)
+      return this.http.get<Monitor>(`${environment.api.salus}/monitors/${id}`, httpOptions)
       .pipe(
         tap(data => {
+          this._monitor = data;
           this.logService.log(`Monitor: ${data}`, LogLevels.info);
         })
       );

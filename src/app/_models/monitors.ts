@@ -5,9 +5,9 @@ interface Label {
 export interface Monitor {
     id: string;
     name?: string;
+    labelSelectorMethod: string;
+    interval: string;
     labelSelector: Label;
-    labelSelectorMethod: string,
-    interval: string,
     details: {
         type: string,
         plugin: {

@@ -11,14 +11,16 @@ import { PaginationComponent } from './_components/pagination/pagination.compone
 import { MeasurementNamePipe } from './pipes/measurement-name.pipe';
 import { DeviceNamePipe } from './pipes/device-name.pipe';
 import { AddFieldsComponent } from './_components/add-fields/add-fields.component';
+import { DurationSecondsPipe } from './pipes/duration-seconds.pipe';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [
     BreadcrumbComponent,
     PaginationComponent,
-    MeasurementNamePipe,
     DeviceNamePipe,
+    DurationSecondsPipe,
+    MeasurementNamePipe,
     AddFieldsComponent
   ],
   imports: [
@@ -37,7 +39,8 @@ import { AddFieldsComponent } from './_components/add-fields/add-fields.componen
     PaginationComponent,
     AddFieldsComponent,
     MeasurementNamePipe,
-    DeviceNamePipe
+    DeviceNamePipe,
+    DurationSecondsPipe
   ],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandler },

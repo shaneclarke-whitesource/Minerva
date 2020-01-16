@@ -1,16 +1,21 @@
 {
-    "id": "10YN3Q45",
-    "name": "CPU Check",
+    "id": "23ONM715",
+    "name": "CPU System",
+    "labelSelectorMethod": "AND",
+    "interval": "30",
     "labelSelector": {
-        "additionalProp1": "LinuxOS",
-        "additionalProp2": "Prod",
-        "additionalProp3": "Load Balancer",
-        "additionalProp4": "amd64",
-        "additionalProp5": "Docker"
-
+        "additionalProp1": "EC2Instance",
+        "additionalProp2": "Dev",
+        "additionalProp3": "Node API",
+        "additionalProp4": "amd64"
     },
-    "type": "CPU",
     "details": {
-        "message": "dns1.stabletransit.com (IPv4):53"
-    }
+        "type": "local",
+        "plugin": {
+            "type": "network",
+            "additional": "add0"
+        }
+    },
+    "createdTimestamp": "2019-12-31T19:04:51Z",
+    "updatedTimestamp": "2020-01-03T18:50:16Z"
 }

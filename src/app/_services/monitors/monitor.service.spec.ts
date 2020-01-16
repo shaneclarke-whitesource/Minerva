@@ -26,9 +26,14 @@ describe('MonitorService', () => {
   });
 
   it('should set & get Monitors', () => {
-    service.monitors = {type: "legit"};
-    expect(service.monitors.type).toEqual("legit");
+    service.monitors = new monitorsMock().collection;
+    expect(service.monitors.content[0].id).toEqual("889EJ382");
   });
+
+  it('should set & get single Monitor', () => {
+    service.monitor = new monitorsMock().single;
+    expect(service.monitor.id).toEqual("23ONM715")
+  })
 
   describe('CRUD Operations', () => {
     it('should return collection', () => {
@@ -42,7 +47,7 @@ describe('MonitorService', () => {
     });
 
     it('should return single monitor', () => {
-      service.getMonitor(7).subscribe((data) => {
+      service.getMonitor("76kn92Mnnas-87mbVwq").subscribe((data) => {
         expect(data).toEqual(new monitorsMock().single);
       });
     });

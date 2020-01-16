@@ -23,9 +23,16 @@ router.get('/', (req, res) => {
     });
 });
 
-
 router.get('/:id', (req, res) => {
-
+    let id = req.params.id;
+    axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/monitors/${id}`, {
+        headers: { 'x-auth-token': Identity.info().token.id }
+    }).then((data) => {
+        res.send(data.data);
+    })
+    .catch((err) => {
+        res.sendStatus(parseInt(err.response.status)).json(err);
+    });
 });
 
 
