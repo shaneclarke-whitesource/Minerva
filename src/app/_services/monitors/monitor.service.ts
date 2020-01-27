@@ -65,7 +65,11 @@ export class MonitorService {
     }
   }
 
-
+/**
+ * @description Gets a single monitor
+ * @param id string
+ * @returns Observable<Monitor>
+ */
   getMonitor(id: string): Observable<Monitor> {
     if (environment.mock) {
       return of<Monitor>(this.mockedMonitors.single);
@@ -89,7 +93,21 @@ export class MonitorService {
     return of();
   }
 
-  deleteMonitor(id:number): Observable<any> {
-    return of();
+  /**
+   * @description Deletes a monitor
+   * @param id string
+   */
+  deleteMonitor(id:string): Observable<any> {
+    if (environment.mock) {
+      return of<boolean>(true);
+    }
+    else {
+      return this.http.delete(`${environment.api.salus}/monitors/${id}`, {observe: 'response'})
+      .pipe(
+        tap(data => {
+          this.logService.log(`Monitor deleted: ${id}`, LogLevels.info);
+        })
+      );
+    }
   }
 }

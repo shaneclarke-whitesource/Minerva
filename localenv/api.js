@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var Resources = require('./routes/resources');
-var Monitors = require('./routes/monitors');
-var Metrics = require('./routes/metrics');
+const express = require('express');
+const router = express.Router();
+const Resources = require('./routes/resources');
+const Monitors = require('./routes/monitors');
+const Metrics = require('./routes/metrics');
 
 //all Monitoring V2 routes
 router.use('/salus/resources', Resources);

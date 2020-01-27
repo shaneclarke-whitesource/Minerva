@@ -52,5 +52,11 @@ describe('MonitorService', () => {
       });
     });
 
+    it('should delete a Monitor', () => {
+      service.deleteMonitor('monitorID87723').subscribe((data) => {
+        expect(data).toEqual(true);
+      })
+    });
+
   });
 });
