@@ -40,7 +40,7 @@ router.delete('/:id', (req, res) => {
     axios.delete(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/monitors/${id}`, {
         headers: { 'x-auth-token': Identity.info().token.id }
     }).then((data) => {
-        res.send(data);
+        res.sendStatus(data.status);
     })
     .catch((err) => {
         res.sendStatus(parseInt(err.response.status)).json(err);

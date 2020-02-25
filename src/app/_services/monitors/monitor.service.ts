@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
 import { monitorsMock } from '../../_mocks/monitors/monitors.service.mock'
-import { Monitors, Monitor } from 'src/app/_models/monitors';
+import { Monitors, Monitor, Schema } from 'src/app/_models/monitors';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,6 +21,8 @@ export class MonitorService {
 
   private _monitors: Monitors;
   private _monitor: Monitor;
+
+  private _schema: Schema;
   private mockedMonitors = new monitorsMock();
 
   constructor(private http:HttpClient, private logService: LoggingService) { }
@@ -41,6 +43,13 @@ export class MonitorService {
     this._monitor = value;
   }
 
+  get schema(): Schema {
+    return this._schema;
+  }
+
+  set schema(scheme: Schema) {
+    this._schema = scheme;
+  }
   /**
    * @description Gets a list of monitors
    * @param size number
@@ -108,6 +117,25 @@ export class MonitorService {
           this.logService.log(`Monitor deleted: ${id}`, LogLevels.info);
         })
       );
+    }
+  }
+
+  /**
+   * @desciption Gets the monitor plugins schema
+   * @returns Observable<Schema>
+   */
+  getSchema(): Observable<Schema> {
+    if (environment.mock) {
+      return of<Schema>(this.mockedMonitors.schema);
+    }
+    else {
+      return this.http.get<Schema>(`${environment.api.salus}/schema/monitor-plugins`)
+      .pipe(
+        tap(data => {
+          this._schema = data;
+          this.logService.log(`Schema: ${data}`, LogLevels.info);
+        })
+      )
     }
   }
 }

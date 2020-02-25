@@ -88,6 +88,7 @@ export class ResourceDetailsPage implements OnInit {
         })
       )
   }
+
   /**
    * @description Whenever updates are made to the form we retrieve values here
    * @param labelValues {[key: string] : any}

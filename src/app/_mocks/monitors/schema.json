@@ -1,0 +1,196 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "monitor-plugins-scopes",
+    "description": "Conveys monitor scopes and plugin definitions for each",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "local": {
+            "oneOf": [{
+                "$ref": "#/definitions/Apache"
+            },
+            {
+                "$ref": "#/definitions/Cpu"
+            },
+            {
+                "$ref": "#/definitions/Disk"
+            },
+            {
+                "$ref": "#/definitions/DiskIo"
+            },
+            {
+                "$ref": "#/definitions/Mem"
+            }
+        ]},
+        "remote": {
+            "oneOf": [{
+                "$ref": "#/definitions/Dns"
+            },
+            {
+                "$ref": "#/definitions/HttpResponse"
+            },
+            {
+                "$ref": "#/definitions/MysqlRemote"
+            },
+            {
+                "$ref": "#/definitions/NetResponse"
+            },
+            {
+                "$ref": "#/definitions/Ping"
+            },
+            {
+                "$ref": "#/definitions/PostgresqlRemote"
+            },
+            {
+                "$ref": "#/definitions/SqlServerRemote"
+            },
+            {
+                "$ref": "#/definitions/X509Cert"
+            }
+            ]
+        }
+    },
+    "definitions": {
+        "Apache": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "apache"
+                    ],
+                    "default": "apache"
+                },
+                "url": {
+                    "type": "string",
+                    "pattern": "^.*\\S+.*$",
+                    "minLength": 1
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "tlsCa": {
+                    "type": "string"
+                },
+                "tlsCert": {
+                    "type": "string"
+                },
+                "tlsKey": {
+                    "type": "string"
+                },
+                "insecureSkipVerify": {
+                    "type": "boolean"
+                }
+            },
+            "title": "apache",
+            "required": [
+                "type",
+                "url"
+            ]
+        },
+        "Cpu": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "type": {
+            "type": "string",
+            "enum": [
+                "cpu"
+            ],
+            "default": "cpu"
+            },
+            "percpu": {
+            "type": "boolean"
+            },
+            "totalcpu": {
+            "type": "boolean"
+            },
+            "collectCpuTime": {
+            "type": "boolean"
+            },
+            "reportActive": {
+            "type": "boolean"
+            }
+        },
+        "title": "cpu",
+        "required": [
+            "type",
+            "percpu",
+            "totalcpu",
+            "collectCpuTime",
+            "reportActive"
+        ]
+        },
+        "Disk": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                "type": "string",
+                "enum": [
+                    "disk"
+                ],
+                "default": "disk"
+                },
+                "mount": {
+                "type": "string",
+                "pattern": "^.*\\S+.*$",
+                "minLength": 1
+                }
+            },
+            "title": "disk",
+            "required": [
+                "type",
+                "mount"
+            ]
+        },
+        "DiskIo": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                "type": "string",
+                "enum": [
+                    "diskio"
+                ],
+                "default": "diskio"
+                },
+                "device": {
+                "type": "string"
+                },
+                "skipSerialNumber": {
+                "type": "boolean"
+                }
+            },
+            "title": "diskio",
+            "required": [
+                "type"
+            ]
+        },
+        "Mem": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                "type": "string",
+                "enum": [
+                    "mem"
+                ],
+                "default": "mem"
+                }
+            },
+            "title": "mem",
+            "required": [
+                "type"
+            ]
+        }
+    }
+}

@@ -22,6 +22,12 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   @Input()
   labelContraints: boolean;
 
+  @Input()
+  listOfKeys: [];
+
+  @Input()
+  listOfValues: [];
+
   // Output emitters will update the components as to changes in the form
   // and whether they are valid
   @Output()
@@ -40,11 +46,20 @@ export class AddFieldsComponent implements OnInit, OnChanges {
     // Begin by pushing all intialData key pairs to the form and
     // pushing one empty set of inputs with appropriate validators
     const sets = [];
+    const keyValidators = [
+      ...(this.labelContraints ? [disallowValidator] : []),
+      ...(this.addArray.length === 0 ? [Validators.required] : [])
+    ];
+
+    const valueValidators = [
+      ...(this.addArray.length === 0 ? [Validators.required] : [])
+    ]
+
     sets.push(
       ...this.addArray,
       this.fb.group({
-      key: new FormControl('', ...(this.labelContraints && [disallowValidator])),
-      value: new FormControl('')
+      key: new FormControl('', keyValidators),
+      value: new FormControl('', valueValidators)
     }, { validator: keyPairValidator }));
 
     // finalize the form and push the fields to the FormArray

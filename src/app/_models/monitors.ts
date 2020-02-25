@@ -28,3 +28,23 @@ export interface Monitors {
     first: boolean;
 
 }
+
+interface refs {
+    $ref: string
+}
+
+export interface Schema {
+    $schema: string,
+    title: string,
+    description: string,
+    additionalProperties: boolean,
+    properties: {
+        local: {
+            oneOf: refs[]
+        },
+        remote: {
+            oneOf: refs[]
+        }
+    },
+    definitions: any
+}
