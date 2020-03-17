@@ -37,7 +37,7 @@ cd localenv && npm install
 
 ## Setup the proxy
 
-In order to run the application locally you will need to add the following to your `/etc/hosts` file
+In order to run the application locally you will need to add the following to your `/etc/hosts` file on Mac/Linux and `C:\Windows\System32\drivers\etc\hosts` file on Windows.
 
 ```
 0.0.0.0 dev.i.rax.io
