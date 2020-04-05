@@ -5,8 +5,8 @@ var Settings = require('../config/index');
 var Identity = require('../services/identity/token');
 const config = new Settings();
 
-router.get('/monitor-plugins', (req, res) => {
-    axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/schema/monitor-plugins`, {
+router.get('/monitors', (req, res) => {
+    axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/schema/monitors`, {
         headers: { 'x-auth-token': Identity.info().token.id }
     }).then((data) => {
         res.send(data.data);

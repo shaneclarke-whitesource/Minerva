@@ -6,14 +6,15 @@
     <h2>Create Monitor</h2>
   </div>
 </div>
-<form [formGroup]="createMonitorForm" #monitorForm="ngForm" (ngSubmit)="addMonitor(createMonitorForm)">
+<form *ngIf="typesOfMonitors" [formGroup]="createMonitorForm" #monitorForm="ngForm" (ngSubmit)="this.markFormGroupTouched();
+this.addMonLoading=true; this.labelSubmit.next()">
 <div class="hxRow hxSpan-9">
 <div class="hxCol hxSpan-6">
   <p>Monitor Type</p>
 </div>
 <div class="hxCol hxSpan-6">
-  <hx-select-control>
-    <select formControlName="type" id="selType">
+  <hx-select-control [attr.hx-dirty]="mf.type.dirty">
+    <select formControlName="type" [required]="createMonitorForm.get('type').hasError('required') && mf.type.touched" id="selType">
       <option value="">Select an option</option>
       <option *ngFor="let type of typesOfMonitors" [ngValue]="type">{{type}}</option>
     </select>
@@ -33,10 +34,10 @@
 </div>
 <div class="hxRow hxSpan-9">
   <div class="hxCol hxSpan-6">
-    <p>Select labels</p>
+    <p>Label Selector</p>
   </div>
   <div class="hxCol hxSpan-12">
-    <app-add-fields [validateForm]="labelSubmit.asObservable()" [labelContraints]="true" [listOfKeys]="listOfKeys"
+    <app-add-fields [validateForm]="labelSubmit.asObservable()" [monitorLabels]="true" [listOfKeys]="listOfKeys"
       [listOfValues]="listOfValues" (formValuesChanged)="labelsUpdated($event)" (formValid)="labelFormSubmit.next($event)">
       </app-add-fields>
   </div>

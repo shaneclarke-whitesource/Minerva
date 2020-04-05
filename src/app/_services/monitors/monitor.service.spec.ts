@@ -2,6 +2,7 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { MonitorService } from './monitor.service';
 import { environment } from '../../../environments/environment';
+import { ISchema } from '../../_models/monitors';
 import { monitorsMock } from '../../_mocks/monitors/monitors.service.mock';
 
 describe('MonitorService', () => {
@@ -33,7 +34,7 @@ describe('MonitorService', () => {
   it('should set & get single Monitor', () => {
     service.monitor = new monitorsMock().single;
     expect(service.monitor.id).toEqual("23ONM715")
-  })
+  });
 
   describe('CRUD Operations', () => {
     it('should return collection', () => {

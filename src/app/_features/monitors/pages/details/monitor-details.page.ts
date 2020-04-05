@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MonitorService } from '../../../../_services/monitors/monitor.service';
 import { Observable } from 'rxjs';
-import { Monitor } from 'src/app/_models/monitors';
+import { IMonitor } from 'src/app/_models/monitors';
 
 declare const window: any;
 
@@ -14,7 +14,7 @@ declare const window: any;
 export class MonitorDetailsPage implements OnInit {
   id: string;
 
-  monitor$: Observable<Monitor>;
+  monitor$: Observable<IMonitor>;
   Object = window.Object;
 
   @ViewChild('delMonLink') delMonitor :ElementRef;

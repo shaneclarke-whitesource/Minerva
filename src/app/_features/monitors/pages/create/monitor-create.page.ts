@@ -1,9 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import  { transformKeyPairs } from '../../../../_shared/utils';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service.js';
 import { LabelService } from '../../../../_services/labels/label.service';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { FormatMonitorUtil } from '../../mon.utils';
+import { Router } from '@angular/router';
+import { SchemaService } from 'src/app/_services/monitors/schema.service';
+
 
 @Component({
   selector: 'app-monitor-create',
@@ -25,14 +29,16 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
   listOfKeys = [];
   listOfValues = [];
 
+  get mf() { return this.createMonitorForm.controls; }
 
   constructor(private monitorService: MonitorService, private fb: FormBuilder,
-    private labelService: LabelService) { }
+    private labelService: LabelService, private router: Router, private readonly schemaService: SchemaService) {
 
-    ngOnInit() {
-      let typesOfMonitors = this.monitorService.getSchema().subscribe(data => {
-        this.typesOfMonitors = Object.keys(this.monitorService.schema.definitions);
-      });
+    }
+
+    async ngOnInit() {
+      await this.schemaService.loadSchema();
+      this.typesOfMonitors = Object.keys(this.schemaService.schema.definitions);
 
       let labelServiceSub = this.labelService.getResourceLabels().subscribe(data => {
         this.listOfKeys = Object.keys(this.labelService.labels);
@@ -49,37 +55,58 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
           this.addMonLoading = false;
         }
         else {
-          console.log("submitted");
+          this.addMonitor();
         }
       });
 
-      this.subManager.add(typesOfMonitors);
       this.subManager.add(labelFormSubscrip);
       this.subManager.add(labelServiceSub);
   }
 
-
-/**
+/*
  * @description Create a Monitor
  * @param monitorForm FormGroup
- */
-  async addMonitor(monitorForm: FormGroup) {
+*/
+  addMonitor(): void {
+    if (!this.createMonitorForm.valid) {
+      this.addMonLoading = false;
+      return;
+    }
 
-    let formValid = this.createMonitorForm.valid;
+    let formData = this.createMonitorForm.value;
+    formData.labelSelector = this.updatedLabelFields;
+    formData[this.createMonitorForm.get('type').value.toLowerCase()] = {};
 
-    let submit = this.labelSubmit.next();
+    const formattedMonitor = FormatMonitorUtil(this.createMonitorForm.get('type').value, formData);
+    const result = this.schemaService.validateData(formattedMonitor);
 
-    let isValid = await this.labelFormSubmit.toPromise();
-
+    if (result.isValid) {
+      this.monitorService.createMonitor(formattedMonitor).subscribe(data => {
+        this.addMonLoading = false;
+        this.router.navigate(['/monitors']);
+      }, (error) => this.addMonLoading = false);
+    }
+    else {
+      this.addMonLoading = false;
+    }
   }
 
 
-    /**
+  /*
    * @description Whenever updates are made to the form we retrieve values here
    * @param metaValues {[key: string] : any}
-   */
+  */
   labelsUpdated(metaValues: {[key: string] : any}):void {
     this.updatedLabelFields = transformKeyPairs(metaValues.keysandvalues);
+  }
+/**
+   * @description Marks all form fields as touched to show validation upon submission
+   * @param formGroup FormGroup
+*/
+  private markFormGroupTouched() {
+      (<any>Object).values(this.createMonitorForm.controls).forEach(control => {
+        control.markAsTouched();
+      });
   }
 
   ngOnDestroy() {

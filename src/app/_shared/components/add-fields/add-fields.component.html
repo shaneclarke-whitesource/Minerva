@@ -5,8 +5,8 @@
 <ng-container [formGroupName]="i">
 <div class="hxCol hxSpan-6">
 <hx-text-control [attr.hx-dirty]="getGroupControl(i, 'key').dirty" [attr.hx-touched]="getGroupControl(i, 'key').touched">
-    <input id="txtKey" list="list-keys" placeholder="key" [required]="(keyValueForm.controls.keysandvalues.controls[i].errors?.keyRequired &&
-    getGroupControl(i, 'key').touched)" [attr.agent_discovered]="getGroupControl(i, 'key').hasError('disallow') && getGroupControl(i, 'key').touched"
+    <input id="txtKey" list="list-keys" placeholder="key" [required]="(keyValueForm.controls.keysandvalues.controls[i].errors?.keyRequired ||
+    getGroupControl(i, 'key').hasError('required')) && getGroupControl(i, 'key').touched" [attr.agent_discovered]="getGroupControl(i, 'key').hasError('disallow') && getGroupControl(i, 'key').touched"
     formControlName="key" type="text" />
 </hx-text-control>
 <datalist id="list-keys">
@@ -27,7 +27,7 @@
         </option>
     </datalist>
 </div>
-<button class="hxBtn space-right inline-button {{i}}-{{totalItems()}}" *ngIf="(i != 0 && totalItems() > 1) || (i === 0 && totalItems() > 1)" (click)="removeRow(i)">
+<button class="hxBtn space-right inline-button" *ngIf="(i != 0 && totalItems() > 1) || (i === 0 && totalItems() > 1)" (click)="removeRow(i)">
     <hx-icon type="minus"></hx-icon>
 </button>
 <button class="hxBtn inline-button" *ngIf="(i+1) === totalItems()" (click)="addRow()">

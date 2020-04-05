@@ -1,0 +1,13 @@
+{
+  "agent_discovered_os": [
+    "linux"
+  ],
+  "env": [
+    "sage-server",
+    "dev",
+    "staging"
+  ],
+  "laptop": [
+    true
+  ]
+}

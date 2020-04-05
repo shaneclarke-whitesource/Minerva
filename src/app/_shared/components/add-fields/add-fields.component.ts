@@ -22,9 +22,11 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   @Input()
   labelContraints: boolean;
 
+  // list of keys to create dropdown list on txtKey input
   @Input()
   listOfKeys: [];
 
+  // list of values to create dropdown list on txtValue input
   @Input()
   listOfValues: [];
 
@@ -47,19 +49,14 @@ export class AddFieldsComponent implements OnInit, OnChanges {
     // pushing one empty set of inputs with appropriate validators
     const sets = [];
     const keyValidators = [
-      ...(this.labelContraints ? [disallowValidator] : []),
-      ...(this.addArray.length === 0 ? [Validators.required] : [])
+      ...(this.labelContraints ? [disallowValidator] : [])
     ];
-
-    const valueValidators = [
-      ...(this.addArray.length === 0 ? [Validators.required] : [])
-    ]
 
     sets.push(
       ...this.addArray,
       this.fb.group({
       key: new FormControl('', keyValidators),
-      value: new FormControl('', valueValidators)
+      value: new FormControl('')
     }, { validator: keyPairValidator }));
 
     // finalize the form and push the fields to the FormArray

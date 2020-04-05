@@ -2,7 +2,7 @@
 interface Label {
     [key: string] : any
 }
-export interface Monitor {
+export interface IMonitor {
     id: string;
     name?: string;
     labelSelectorMethod: string;
@@ -19,8 +19,8 @@ export interface Monitor {
     updatedTimestamp: string;
 }
 
-export interface Monitors {
-    content: Monitor[];
+export interface IMonitors {
+    content: IMonitor[];
     number: number;
     totalPages: number;
     totalElements: number;
@@ -29,22 +29,15 @@ export interface Monitors {
 
 }
 
-interface refs {
-    $ref: string
-}
-
-export interface Schema {
+export interface ISchema {
     $schema: string,
     title: string,
     description: string,
+    type: any,
     additionalProperties: boolean,
     properties: {
-        local: {
-            oneOf: refs[]
-        },
-        remote: {
-            oneOf: refs[]
-        }
+        name: any,
+        [x:string]: any
     },
     definitions: any
 }
