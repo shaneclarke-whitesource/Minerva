@@ -41,6 +41,7 @@ describe('AddMonitorFromType', () => {
         let monitor = {
             ...(newMonitor),
             cpu: {
+                percpu: true,
                 totalcpu: false,
                 collectCpuTime: false,
                 reportActive: true
@@ -50,11 +51,10 @@ describe('AddMonitorFromType', () => {
         expect(cpuMonitor.details.type).toEqual('local');
         expect(cpuMonitor.details.plugin.type).toEqual('cpu');
         expect(cpuMonitor.details.plugin.type).toEqual('cpu');
-        console.log('**Monitor: ' + JSON.stringify(cpuMonitor.details.plugin));
-        //expect(cpuMonitor.details.plugin['percpu']).toEqual(monitor.cpu.percpu);
-        //expect(cpuMonitor.details.plugin['totalcpu']).toEqual(monitor.cpu.totalcpu);
-        //expect(cpuMonitor.details.plugin['collectCpuTime']).toEqual(monitor.cpu.collectCpuTime);
-        //expect(cpuMonitor.details.plugin['reportActive']).toEqual(monitor.cpu.reportActive);
+        expect(cpuMonitor.details.plugin['percpu']).toEqual(monitor.cpu.percpu);
+        expect(cpuMonitor.details.plugin['totalcpu']).toEqual(monitor.cpu.totalcpu);
+        expect(cpuMonitor.details.plugin['collectCpuTime']).toEqual(monitor.cpu.collectCpuTime);
+        expect(cpuMonitor.details.plugin['reportActive']).toEqual(monitor.cpu.reportActive);
     });
 
 

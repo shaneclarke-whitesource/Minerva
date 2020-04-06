@@ -57,7 +57,7 @@ export class SchemaService {
           this._schema = result;
           this.ajv.addSchema(result, 'monitor');
           this.logService.log(`Schema: ${result}`, LogLevels.info);
-          res(true);
+          res(this._schema);
         }, (error) => rej(error));
       };
     });

@@ -34,15 +34,7 @@ export function createAjvInstance(AjvClass: any, config: Options) {
   ],
   providers: [
     MonitorService,
-    LabelService,
-    SchemaService,
-    { provide: AJV_CLASS, useValue: ajv },
-    { provide: AJV_CONFIG, useValue: { useDefaults: true } },
-    {
-      provide: AJV_INSTANCE,
-      useFactory: createAjvInstance,
-      deps: [AJV_CLASS, AJV_CONFIG]
-    }
+    LabelService
   ]
 })
 export class MonitorsModule { }

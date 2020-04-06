@@ -7,6 +7,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { LoggingService } from './_services/logging/logging.service';
 import { PortalDataService } from './_services/portal/portal-data.service';
 import { SharedModule } from './_shared/shared.module';
+import { SchemaResolver } from './_features/monitors/monitor.resolve';
+import { SchemaService, AJV_INSTANCE } from './_services/monitors/schema.service';
+import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from './_features/monitors/monitors.module';
+import ajv from 'ajv';
 
 @NgModule({
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -21,6 +25,15 @@ import { SharedModule } from './_shared/shared.module';
   ],
   exports: [],
   providers: [
+    SchemaResolver,
+    SchemaService,
+    { provide: AJV_CLASS, useValue: ajv },
+    { provide: AJV_CONFIG, useValue: { useDefaults: true } },
+    {
+      provide: AJV_INSTANCE,
+      useFactory: createAjvInstance,
+      deps: [AJV_CLASS, AJV_CONFIG]
+    },
     localStorageProviders({ prefix: 'intelligence' }),
     {
       provide: APP_INITIALIZER,

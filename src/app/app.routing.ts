@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SchemaResolver } from './_features/monitors/monitor.resolve';
 
 const routes: Routes = [
   { path: 'resources', loadChildren: './_features/resources/resources.module#ResourcesModule',
@@ -10,7 +11,7 @@ const routes: Routes = [
   { path: 'monitors', loadChildren: './_features/monitors/monitors.module#MonitorsModule',
     data: {
       breadcrumb: 'MONITORS'
-    }
+    }, resolve: {schema: SchemaResolver }
   },
   { path: 'visualize', loadChildren: './_features/visualize/visualize.module#VisualizeModule',
     data: {

@@ -2,14 +2,27 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { MonitorService } from './monitor.service';
 import { environment } from '../../../environments/environment';
-import { ISchema } from '../../_models/monitors';
 import { monitorsMock } from '../../_mocks/monitors/monitors.service.mock';
+import { ICreateMonitor } from 'src/app/_models/salus.monitor';
 
 describe('MonitorService', () => {
   let injector: TestBed;
   let service: MonitorService;
+  let newMonitor: ICreateMonitor;
 
   beforeEach(() => {
+    newMonitor = {
+      name: 'Tight Monitor',
+      labelSelector: {
+          agent_discovered_os: 'linux',
+          agent_hostname: 'mranderson'
+      },
+      labelSelectorMethod: 'AND',
+      resourceId: '45544',
+      excludedResourceIds: ['8774736', '6355266'],
+      interval: '60'
+
+    };
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule
@@ -57,6 +70,12 @@ describe('MonitorService', () => {
       service.deleteMonitor('monitorID87723').subscribe((data) => {
         expect(data).toEqual(true);
       })
+    });
+
+    it('should create a monitor', () => {
+      service.createMonitor(newMonitor).subscribe(data => {
+        expect(data).toEqual(new monitorsMock().single);
+      });
     });
 
   });

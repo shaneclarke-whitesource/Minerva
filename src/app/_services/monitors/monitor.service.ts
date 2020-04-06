@@ -44,13 +44,6 @@ export class MonitorService {
     this._monitor = value;
   }
 
-  get schema(): ISchema {
-    return this._schema;
-  }
-
-  set schema(scheme: ISchema) {
-    this._schema = scheme;
-  }
   /**
    * @description Gets a list of monitors
    * @param size number
@@ -82,6 +75,7 @@ export class MonitorService {
  */
   getMonitor(id: string): Observable<IMonitor> {
     if (environment.mock) {
+      this._monitor = this.mockedMonitors.single;
       return of<IMonitor>(this.mockedMonitors.single);
     }
     else {
@@ -97,7 +91,7 @@ export class MonitorService {
 
   createMonitor(monitor:ICreateMonitor): Observable<any> {
         if (environment.mock) {
-          return of<boolean>(true);
+          return of<IMonitor>(this.mockedMonitors.single);
         }
         else {
           return this.http.post(`${environment.api.salus}/monitors`, monitor, httpOptions)
