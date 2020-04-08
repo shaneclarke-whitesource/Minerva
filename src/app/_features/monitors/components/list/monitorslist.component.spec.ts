@@ -9,7 +9,7 @@ import { monitorsMock } from '../../../../_mocks/monitors/monitors.service.mock'
 import { environment } from '../../../../../environments/environment';
 import { Monitor } from 'src/app/_models/monitors';
 
-var mockMonitor:Monitor = {
+var mockMonitor: Monitor = {
   "id": "76WE85UV",
   "name": "Ping - DFW",
   "interval": "PT1M30S",

@@ -1,0 +1,1195 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "monitor",
+  "description": "Salus Monitor definition",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "labelSelector": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "labelSelectorMethod": {
+      "type": "string",
+      "enum": [
+        "AND",
+        "OR"
+      ]
+    },
+    "resourceId": {
+      "type": "string"
+    },
+    "excludedResourceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "interval": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "details": {
+      "oneOf": [{
+          "$ref": "#/definitions/LocalMonitorDetails"
+        },
+        {
+          "$ref": "#/definitions/RemoteMonitorDetails"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "LocalMonitorDetails": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "local"
+          ],
+          "default": "local"
+        },
+        "plugin": {
+          "oneOf": [{
+              "$ref": "#/definitions/Apache"
+            },
+            {
+              "$ref": "#/definitions/Cpu"
+            },
+            {
+              "$ref": "#/definitions/Disk"
+            },
+            {
+              "$ref": "#/definitions/DiskIo"
+            },
+            {
+              "$ref": "#/definitions/Mem"
+            },
+            {
+              "$ref": "#/definitions/Mysql"
+            },
+            {
+              "$ref": "#/definitions/Net"
+            },
+            {
+              "$ref": "#/definitions/Dataguard"
+            },
+            {
+              "$ref": "#/definitions/Rman"
+            },
+            {
+              "$ref": "#/definitions/Tablespace"
+            },
+            {
+              "$ref": "#/definitions/Packages"
+            },
+            {
+              "$ref": "#/definitions/Postgresql"
+            },
+            {
+              "$ref": "#/definitions/Procstat"
+            },
+            {
+              "$ref": "#/definitions/Redis"
+            },
+            {
+              "$ref": "#/definitions/SqlServer"
+            },
+            {
+              "$ref": "#/definitions/System"
+            }
+          ]
+        }
+      },
+      "title": "local",
+      "required": [
+        "type",
+        "plugin"
+      ]
+    },
+    "Apache": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "apache"
+          ],
+          "default": "apache"
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^.*\\S+.*$",
+          "minLength": 1
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "timeout": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "tlsCa": {
+          "type": "string"
+        },
+        "tlsCert": {
+          "type": "string"
+        },
+        "tlsKey": {
+          "type": "string"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        }
+      },
+      "title": "apache",
+      "required": [
+        "type",
+        "url"
+      ]
+    },
+    "Cpu": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "cpu"
+          ],
+          "default": "cpu"
+        },
+        "percpu": {
+          "type": "boolean"
+        },
+        "totalcpu": {
+          "type": "boolean",
+          "default": true
+        },
+        "collectCpuTime": {
+          "type": "boolean"
+        },
+        "reportActive": {
+          "type": "boolean"
+        }
+      },
+      "title": "cpu",
+      "required": [
+        "type"
+      ]
+    },
+    "Disk": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "disk"
+          ],
+          "default": "disk"
+        },
+        "mount": {
+          "type": "string",
+          "pattern": "^.*\\S+.*$",
+          "minLength": 1
+        }
+      },
+      "title": "disk",
+      "required": [
+        "type",
+        "mount"
+      ]
+    },
+    "DiskIo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "diskio"
+          ],
+          "default": "diskio"
+        },
+        "device": {
+          "type": "string"
+        },
+        "skipSerialNumber": {
+          "type": "boolean"
+        }
+      },
+      "title": "diskio",
+      "required": [
+        "type"
+      ]
+    },
+    "Mem": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mem"
+          ],
+          "default": "mem"
+        }
+      },
+      "title": "mem",
+      "required": [
+        "type"
+      ]
+    },
+    "Mysql": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mysql"
+          ],
+          "default": "mysql"
+        },
+        "servers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "perfEventsStatementsDigestTextLimit": {
+          "type": "integer"
+        },
+        "perfEventsStatementsLimit": {
+          "type": "integer"
+        },
+        "perfEventsStatementsTimeLimit": {
+          "type": "integer"
+        },
+        "tableSchemaDatabases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gatherProcessList": {
+          "type": "boolean"
+        },
+        "gatherUserStatistics": {
+          "type": "boolean"
+        },
+        "gatherInfoSchemaAutoInc": {
+          "type": "boolean"
+        },
+        "gatherInnodbMetrics": {
+          "type": "boolean"
+        },
+        "gatherSlaveStatus": {
+          "type": "boolean"
+        },
+        "gatherBinaryLogs": {
+          "type": "boolean"
+        },
+        "gatherTableIoWaits": {
+          "type": "boolean"
+        },
+        "gatherTableLockWaits": {
+          "type": "boolean"
+        },
+        "gatherIndexIoWaits": {
+          "type": "boolean"
+        },
+        "gatherEventWaits": {
+          "type": "boolean"
+        },
+        "gatherTableSchema": {
+          "type": "boolean"
+        },
+        "gatherFileEventsStats": {
+          "type": "boolean"
+        },
+        "gatherPerfEventsStatements": {
+          "type": "boolean"
+        },
+        "intervalSlow": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "tlsCa": {
+          "type": "string"
+        },
+        "tlsCert": {
+          "type": "string"
+        },
+        "tlsKey": {
+          "type": "string"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        }
+      },
+      "title": "mysql",
+      "required": [
+        "type",
+        "servers"
+      ]
+    },
+    "Net": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "net"
+          ],
+          "default": "net"
+        },
+        "ignoreProtocolStats": {
+          "type": "boolean",
+          "default": true
+        },
+        "interface": {
+          "type": "string"
+        }
+      },
+      "title": "net",
+      "required": [
+        "type"
+      ]
+    },
+    "Dataguard": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "oracle_dataguard"
+          ],
+          "default": "oracle_dataguard"
+        },
+        "databaseNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "filePath": {
+          "type": "string"
+        }
+      },
+      "title": "oracle_dataguard",
+      "required": [
+        "type"
+      ]
+    },
+    "Rman": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "oracle_rman"
+          ],
+          "default": "oracle_rman"
+        },
+        "exclusionCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "databaseNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "filePath": {
+          "type": "string"
+        }
+      },
+      "title": "oracle_rman",
+      "required": [
+        "type"
+      ]
+    },
+    "Tablespace": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "oracle_tablespace"
+          ],
+          "default": "oracle_tablespace"
+        },
+        "databaseNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "filePath": {
+          "type": "string"
+        }
+      },
+      "title": "oracle_tablespace",
+      "required": [
+        "type"
+      ]
+    },
+    "Packages": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "packages"
+          ],
+          "default": "packages"
+        },
+        "includeRpm": {
+          "type": "boolean"
+        },
+        "includeDebian": {
+          "type": "boolean"
+        },
+        "failWhenNotSupported": {
+          "type": "boolean"
+        }
+      },
+      "title": "packages",
+      "required": [
+        "type"
+      ]
+    },
+    "Postgresql": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "postgresql"
+          ],
+          "default": "postgresql"
+        },
+        "address": {
+          "type": "string",
+          "pattern": "^(postgres://.+)|(([^ ]+=[^ ]+ )*([^ ]+=[^ ]+))$",
+          "minLength": 1
+        },
+        "outputaddress": {
+          "type": "string"
+        },
+        "maxLifetime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ignoredDatabases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "databases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "postgresql",
+      "required": [
+        "type",
+        "address"
+      ]
+    },
+    "Procstat": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "procstat"
+          ],
+          "default": "procstat"
+        },
+        "pidFile": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "exe": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "systemdUnit": {
+          "type": "string"
+        },
+        "cgroup": {
+          "type": "string"
+        },
+        "winService": {
+          "type": "string"
+        },
+        "processName": {
+          "type": "string"
+        }
+      },
+      "title": "procstat",
+      "required": [
+        "type"
+      ]
+    },
+    "Redis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "redis"
+          ],
+          "default": "redis"
+        },
+        "url": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "tlsCa": {
+          "type": "string"
+        },
+        "tlsCert": {
+          "type": "string"
+        },
+        "tlsKey": {
+          "type": "string"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        }
+      },
+      "title": "redis",
+      "required": [
+        "type",
+        "url"
+      ]
+    },
+    "SqlServer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "sqlserver"
+          ],
+          "default": "sqlserver"
+        },
+        "servers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "azuredb": {
+          "type": "boolean"
+        },
+        "queryExclusions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "sqlserver",
+      "required": [
+        "type",
+        "servers",
+        "azuredb"
+      ]
+    },
+    "System": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "system"
+          ],
+          "default": "system"
+        }
+      },
+      "title": "system",
+      "required": [
+        "type"
+      ]
+    },
+    "RemoteMonitorDetails": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "remote"
+          ],
+          "default": "remote"
+        },
+        "monitoringZones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "plugin": {
+          "oneOf": [{
+              "$ref": "#/definitions/Dns"
+            },
+            {
+              "$ref": "#/definitions/HttpResponse"
+            },
+            {
+              "$ref": "#/definitions/MysqlRemote"
+            },
+            {
+              "$ref": "#/definitions/NetResponse"
+            },
+            {
+              "$ref": "#/definitions/Ping"
+            },
+            {
+              "$ref": "#/definitions/PostgresqlRemote"
+            },
+            {
+              "$ref": "#/definitions/Smtp"
+            },
+            {
+              "$ref": "#/definitions/SqlServerRemote"
+            },
+            {
+              "$ref": "#/definitions/X509Cert"
+            }
+          ]
+        }
+      },
+      "title": "remote",
+      "required": [
+        "type",
+        "plugin"
+      ]
+    },
+    "Dns": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "dns"
+          ],
+          "default": "dns"
+        },
+        "dnsServer": {
+          "type": "string",
+          "pattern": "^.*\\S+.*$",
+          "minLength": 1
+        },
+        "domain": {
+          "type": "string",
+          "pattern": "^.*\\S+.*$",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "enum": [
+            "udp",
+            "tcp"
+          ]
+        },
+        "recordType": {
+          "type": "string",
+          "enum": [
+            "A",
+            "AAAA",
+            "ANY",
+            "CNAME",
+            "MX",
+            "NS",
+            "PTR",
+            "TXT",
+            "SOA",
+            "SPF",
+            "SRV"
+          ]
+        },
+        "port": {
+          "type": "integer"
+        },
+        "timeout": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "dns",
+      "required": [
+        "type",
+        "dnsServer",
+        "domain",
+        "network",
+        "recordType",
+        "port"
+      ]
+    },
+    "HttpResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "http"
+          ],
+          "default": "http"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "httpProxy": {
+          "type": "string"
+        },
+        "timeout": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "method": {
+          "type": "string",
+          "pattern": "GET|PUT|POST|DELETE|HEAD|OPTIONS|PATCH|TRACE"
+        },
+        "followRedirects": {
+          "type": "boolean"
+        },
+        "body": {
+          "type": "string"
+        },
+        "responseStringMatch": {
+          "type": "string"
+        },
+        "tlsCa": {
+          "type": "string"
+        },
+        "tlsCert": {
+          "type": "string"
+        },
+        "tlsKey": {
+          "type": "string"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "http",
+      "required": [
+        "type",
+        "url"
+      ]
+    },
+    "MysqlRemote": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mysql"
+          ],
+          "default": "mysql"
+        },
+        "servers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "perfEventsStatementsDigestTextLimit": {
+          "type": "integer"
+        },
+        "perfEventsStatementsLimit": {
+          "type": "integer"
+        },
+        "perfEventsStatementsTimeLimit": {
+          "type": "integer"
+        },
+        "tableSchemaDatabases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gatherProcessList": {
+          "type": "boolean"
+        },
+        "gatherUserStatistics": {
+          "type": "boolean"
+        },
+        "gatherInfoSchemaAutoInc": {
+          "type": "boolean"
+        },
+        "gatherInnodbMetrics": {
+          "type": "boolean"
+        },
+        "gatherSlaveStatus": {
+          "type": "boolean"
+        },
+        "gatherBinaryLogs": {
+          "type": "boolean"
+        },
+        "gatherTableIoWaits": {
+          "type": "boolean"
+        },
+        "gatherTableLockWaits": {
+          "type": "boolean"
+        },
+        "gatherIndexIoWaits": {
+          "type": "boolean"
+        },
+        "gatherEventWaits": {
+          "type": "boolean"
+        },
+        "gatherTableSchema": {
+          "type": "boolean"
+        },
+        "gatherFileEventsStats": {
+          "type": "boolean"
+        },
+        "gatherPerfEventsStatements": {
+          "type": "boolean"
+        },
+        "intervalSlow": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "tlsCa": {
+          "type": "string"
+        },
+        "tlsCert": {
+          "type": "string"
+        },
+        "tlsKey": {
+          "type": "string"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        }
+      },
+      "title": "mysql",
+      "required": [
+        "type",
+        "servers"
+      ]
+    },
+    "NetResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "net_response"
+          ],
+          "default": "net_response"
+        },
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "udp",
+            "tcp"
+          ]
+        },
+        "host": {
+          "type": "string",
+          "pattern": "^.*\\S+.*$",
+          "minLength": 1
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "timeout": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "readTimeout": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "send": {
+          "type": "string"
+        },
+        "expect": {
+          "type": "string"
+        }
+      },
+      "title": "net_response",
+      "required": [
+        "type",
+        "protocol",
+        "host",
+        "port"
+      ]
+    },
+    "Ping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ping"
+          ],
+          "default": "ping"
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "count": {
+          "type": "integer"
+        },
+        "pingInterval": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "timeout": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "ping",
+      "required": [
+        "type",
+        "target"
+      ]
+    },
+    "PostgresqlRemote": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "postgresql"
+          ],
+          "default": "postgresql"
+        },
+        "address": {
+          "type": "string",
+          "pattern": "^(postgres://.+)|(([^ ]+=[^ ]+ )*([^ ]+=[^ ]+))$",
+          "minLength": 1
+        },
+        "outputaddress": {
+          "type": "string"
+        },
+        "maxLifetime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ignoredDatabases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "databases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "postgresql",
+      "required": [
+        "type",
+        "address"
+      ]
+    },
+    "Smtp": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "smtp"
+          ],
+          "default": "smtp"
+        },
+        "host": {
+          "type": "string",
+          "pattern": "^.*\\S+.*$",
+          "minLength": 1
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "timeout": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "readTimeout": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ehlo": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "starttls": {
+          "type": "boolean"
+        },
+        "tlsCa": {
+          "type": "string"
+        },
+        "tlsCert": {
+          "type": "string"
+        },
+        "tlsKey": {
+          "type": "string"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        }
+      },
+      "title": "smtp",
+      "required": [
+        "type",
+        "host",
+        "port"
+      ]
+    },
+    "SqlServerRemote": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "sqlserver"
+          ],
+          "default": "sqlserver"
+        },
+        "servers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "azuredb": {
+          "type": "boolean"
+        },
+        "queryExclusions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "sqlserver",
+      "required": [
+        "type",
+        "servers",
+        "azuredb"
+      ]
+    },
+    "X509Cert": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ssl"
+          ],
+          "default": "ssl"
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^.*\\S+.*$",
+          "minLength": 1
+        },
+        "timeout": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "tlsCa": {
+          "type": "string"
+        },
+        "tlsCert": {
+          "type": "string"
+        },
+        "tlsKey": {
+          "type": "string"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        }
+      },
+      "title": "ssl",
+      "required": [
+        "type",
+        "target"
+      ]
+    }
+  }
+}

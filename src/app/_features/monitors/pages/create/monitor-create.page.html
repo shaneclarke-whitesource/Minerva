@@ -1,0 +1,55 @@
+<div class="hxRow monitor-header">
+  <div class="hxCol hxSpan-12">
+    <app-breadcrumb routeDetails="ADD"></app-breadcrumb>
+  </div>
+  <div class="hxCol hxSpan-9 monitor-title">
+    <h2>Create Monitor</h2>
+  </div>
+</div>
+<form *ngIf="typesOfMonitors" [formGroup]="createMonitorForm" #monitorForm="ngForm" (ngSubmit)="this.markFormGroupTouched();
+this.addMonLoading=true; this.labelSubmit.next()">
+<div class="hxRow hxSpan-9">
+<div class="hxCol hxSpan-6">
+  <p>Monitor Type</p>
+</div>
+<div class="hxCol hxSpan-6">
+  <hx-select-control [attr.hx-dirty]="mf.type.dirty">
+    <select formControlName="type" [required]="createMonitorForm.get('type').hasError('required') && mf.type.touched" id="selType">
+      <option value="">Select an option</option>
+      <option *ngFor="let type of typesOfMonitors" [ngValue]="type">{{type}}</option>
+    </select>
+    <hx-select></hx-select>
+  </hx-select-control>
+</div>
+</div>
+<div class="hxRow hxSpan-9">
+  <div class="hxCol hxSpan-6">
+    <p>Monitor Name</p>
+  </div>
+  <div class="hxCol hxSpan-6">
+    <hx-text-control>
+        <input id="txtMonitor" formControlName="name" placeholder="Monitor name" type="text" />
+    </hx-text-control>
+  </div>
+</div>
+<div class="hxRow hxSpan-9">
+  <div class="hxCol hxSpan-6">
+    <p>Label Selector</p>
+  </div>
+  <div class="hxCol hxSpan-12">
+    <app-add-fields [validateForm]="labelSubmit.asObservable()" [monitorLabels]="true" [listOfKeys]="listOfKeys"
+      [listOfValues]="listOfValues" (formValuesChanged)="labelsUpdated($event)" (formValid)="labelFormSubmit.next($event)">
+      </app-add-fields>
+  </div>
+</div>
+
+<div class="hxRow">
+  <div class="hxCol hxSpan-12">
+    <button type="submit" class="hxBtn hxPrimary" [disabled]="addMonLoading">
+      <hx-busy class="popover-busy" *ngIf="addMonLoading"></hx-busy>
+      Submit
+    </button>
+  </div>
+</div>
+</form>
+

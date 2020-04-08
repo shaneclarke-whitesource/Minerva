@@ -6,7 +6,8 @@ import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
 import { monitorsMock } from '../../_mocks/monitors/monitors.service.mock'
-import { Monitors, Monitor } from 'src/app/_models/monitors';
+import { Monitors, Monitor, Schema } from 'src/app/_models/monitors';
+import { CreateMonitor } from 'src/app/_models/salus.monitor';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,6 +22,8 @@ export class MonitorService {
 
   private _monitors: Monitors;
   private _monitor: Monitor;
+
+  private _schema: Schema;
   private mockedMonitors = new monitorsMock();
 
   constructor(private http:HttpClient, private logService: LoggingService) { }
@@ -72,6 +75,7 @@ export class MonitorService {
  */
   getMonitor(id: string): Observable<Monitor> {
     if (environment.mock) {
+      this._monitor = this.mockedMonitors.single;
       return of<Monitor>(this.mockedMonitors.single);
     }
     else {
@@ -85,9 +89,28 @@ export class MonitorService {
     }
   }
 
-  createMonitor(param:any): Observable<any> {
-    return of();
+  /**
+   * @description Create a new monitor
+   * @param monitor formatted monitor to be created
+   * @returns Observable<Monitor>
+   *
+   */
+  createMonitor(monitor:CreateMonitor): Observable<Monitor> {
+        if (environment.mock) {
+          this._monitor = this.mockedMonitors.single;
+          return of<Monitor>(this.mockedMonitors.single);
+        }
+        else {
+          return this.http.post<Monitor>(`${environment.api.salus}/monitors`, monitor, httpOptions)
+          .pipe(
+            tap(data => {
+              return of<Monitor>(data);
+              this.logService.log(`Monitor created: ${data.id}`, LogLevels.info);
+            })
+          );
+        }
   }
+
 
   updateMonitor(id:number): Observable<any> {
     return of();

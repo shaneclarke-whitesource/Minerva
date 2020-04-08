@@ -1,0 +1,36 @@
+{
+  "agent_discovered_arch": [
+    "amd64"
+  ],
+  "agent_discovered_hostname": [
+    "mr-anderson",
+    "server-yea",
+    "server-yea-II",
+    "sage-prod3",
+    "sage-prod4"
+  ],
+  "agent_discovered_os": [
+    "linux"
+  ],
+  "env": [
+    "hellalocal",
+    "ahhhh"
+  ],
+  "laptop": [
+    "true"
+  ],
+  "agent_discovered_bios_vendor": [
+    "xen"
+  ],
+  "agent_discovered_bios_version": [
+    "4.1.5"
+  ],
+  "agent_discovered_serial": [
+    "1b8656a9-abe0-ce46-a72c-0974c7747405",
+    "f106e915-na54-0o653-5d27-9ki676aa9"
+  ],
+  "agent_discovered_xen_id": [
+    "instance-8778rco90-b750-4v3b-wd89-7308a14ed622",
+    "instance-0983ki2dsum876e-84dd-4313-b0df-877ei82n9sd"
+  ]
+}

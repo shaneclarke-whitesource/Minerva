@@ -28,3 +28,16 @@ export interface Monitors {
     first: boolean;
 
 }
+
+export interface Schema {
+    $schema: string,
+    title: string,
+    description: string,
+    type: any,
+    additionalProperties: boolean,
+    properties: {
+        name: any,
+        [x:string]: any
+    },
+    definitions: any
+}

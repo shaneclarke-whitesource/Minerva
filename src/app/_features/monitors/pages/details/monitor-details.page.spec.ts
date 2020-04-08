@@ -10,28 +10,7 @@ import { MonitorService } from '../../../../_services/monitors/monitor.service'
 import { MonitorDetailsPage } from './monitor-details.page';
 import { monitorsMock } from 'src/app/_mocks/monitors/monitors.service.mock';
 import { MonitorslistComponent } from '../../components/list/monitorslist.component';
-
-const routes = [
-  { path: 'resources',
-    data: {
-      breadcrumb: 'RESOURCES'
-    },
-    children: [{
-      path: '',
-      component: MonitorsPage,
-      data: {
-        breadcrumb: ''
-      }
-  },
-  {
-      path: ':id',
-      component: MonitorDetailsPage,
-      data: {
-        breadcrumb: 'DETAILS'
-      }
-  }]
-  }
-];
+import { routes } from '../../monitors.routes';
 
 describe('MonitorDetailComponent', () => {
   let injector: TestBed;

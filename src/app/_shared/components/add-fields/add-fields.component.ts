@@ -22,6 +22,14 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   @Input()
   labelContraints: boolean;
 
+  // list of keys to create dropdown list on txtKey input
+  @Input()
+  listOfKeys: [];
+
+  // list of values to create dropdown list on txtValue input
+  @Input()
+  listOfValues: [];
+
   // Output emitters will update the components as to changes in the form
   // and whether they are valid
   @Output()
@@ -40,10 +48,14 @@ export class AddFieldsComponent implements OnInit, OnChanges {
     // Begin by pushing all intialData key pairs to the form and
     // pushing one empty set of inputs with appropriate validators
     const sets = [];
+    const keyValidators = [
+      ...(this.labelContraints ? [disallowValidator] : [])
+    ];
+
     sets.push(
       ...this.addArray,
       this.fb.group({
-      key: new FormControl('', ...(this.labelContraints && [disallowValidator])),
+      key: new FormControl('', keyValidators),
       value: new FormControl('')
     }, { validator: keyPairValidator }));
 
