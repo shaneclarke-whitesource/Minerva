@@ -3,12 +3,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { MonitorService } from './monitor.service';
 import { environment } from '../../../environments/environment';
 import { monitorsMock } from '../../_mocks/monitors/monitors.service.mock';
-import { ICreateMonitor } from 'src/app/_models/salus.monitor';
+import { CreateMonitor } from 'src/app/_models/salus.monitor';
 
 describe('MonitorService', () => {
   let injector: TestBed;
   let service: MonitorService;
-  let newMonitor: ICreateMonitor;
+  let newMonitor: CreateMonitor;
 
   beforeEach(() => {
     newMonitor = {

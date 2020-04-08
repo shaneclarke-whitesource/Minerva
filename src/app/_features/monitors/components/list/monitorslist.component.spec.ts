@@ -7,9 +7,9 @@ import { MonitorService } from '../../../../_services/monitors/monitor.service';
 import { MonitorsPage } from '../../pages/monitors/monitors.page';
 import { monitorsMock } from '../../../../_mocks/monitors/monitors.service.mock'
 import { environment } from '../../../../../environments/environment';
-import { IMonitor } from 'src/app/_models/monitors';
+import { Monitor } from 'src/app/_models/monitors';
 
-var mockMonitor: IMonitor = {
+var mockMonitor: Monitor = {
   "id": "76WE85UV",
   "name": "Ping - DFW",
   "interval": "PT1M30S",

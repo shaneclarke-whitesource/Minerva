@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { MonitorService } from '../../../../_services/monitors/monitor.service';
-import { IMonitor, IMonitors} from '../../../../_models/monitors'
+import { Monitor, Monitors} from '../../../../_models/monitors'
 
 @Component({
   selector: 'app-monitorslist',
@@ -78,7 +78,7 @@ export class MonitorslistComponent implements OnInit {
    * @description Add selected monitors to an array for actions
    * @param monitor Monitor
    */
-  selectMonitors(monitor: IMonitor) {
+  selectMonitors(monitor: Monitor) {
     if (this.selectedMonitors.indexOf(monitor) === -1) {
       this.selectedMonitors.push(monitor);
     } else {

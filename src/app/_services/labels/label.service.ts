@@ -3,7 +3,7 @@ import { LoggingService } from '../logging/logging.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { LogLevels } from 'src/app/_enums/log-levels.enum'
-import { ILabelResources, ILabelMonitors } from '../../_models/labels';
+import { LabelResources, LabelMonitors } from '../../_models/labels';
 import { LabelMock } from '../../_mocks/labels/label.service.mock';
 import { of, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';;
@@ -36,13 +36,13 @@ export class LabelService {
    * @description Get all labels attached to all Resources
    * @returns Observable {}
    */
-  getResourceLabels(): Observable<ILabelResources> {
+  getResourceLabels(): Observable<LabelResources> {
     if (environment.mock) {
       this._labels = this.mockedLabels.resourceLabels;
-      return of<ILabelResources>(this.mockedLabels.resourceLabels);
+      return of<LabelResources>(this.mockedLabels.resourceLabels);
     }
     else {
-      return this.http.get<ILabelResources>(`${environment.api.salus}/resource-labels`, httpOptions)
+      return this.http.get<LabelResources>(`${environment.api.salus}/resource-labels`, httpOptions)
       .pipe(
         tap(data => {
           this._labels = data;
@@ -56,13 +56,13 @@ export class LabelService {
  * @description Get all labels attached to all monitors
  * @returns Observable {}
  */
-  getMonitorLabels(): Observable<ILabelMonitors> {
+  getMonitorLabels(): Observable<LabelMonitors> {
     if (environment.mock) {
       this._labels = this.mockedLabels.monitorLabels;
-      return of<ILabelMonitors>(this.mockedLabels.monitorLabels);
+      return of<LabelMonitors>(this.mockedLabels.monitorLabels);
     }
     else {
-      return this.http.get<ILabelMonitors>(`${environment.api.salus}/resource-labels`, httpOptions)
+      return this.http.get<LabelMonitors>(`${environment.api.salus}/resource-labels`, httpOptions)
       .pipe(
         tap(data => {
           this._labels = data;

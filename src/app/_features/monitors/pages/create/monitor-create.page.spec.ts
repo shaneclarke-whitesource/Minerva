@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, getTestBed, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service';
@@ -13,6 +12,7 @@ import { SchemaService, AJV_INSTANCE } from 'src/app/_services/monitors/schema.s
 import {routes } from '../../monitors.routes';
 import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module';
 import ajv from 'ajv';
+import { MonitorsPage } from '../monitors/monitors.page';
 
 const keyPair = {
   keysandvalues: [
@@ -33,22 +33,26 @@ const keyPair = {
     value: 'fourthpair'
   }
 ]};
-
 describe('MonitorCreatePage', () => {
-  let injector: TestBed;
-  let component: MonitorCreatePage;
-  let fixture: ComponentFixture<MonitorCreatePage>;
-  let schemaService: SchemaService;
-  let monitorService: MonitorService;
-  let labelService: LabelService;
+let injector: TestBed;
+let component: MonitorCreatePage;
+let fixture: ComponentFixture<MonitorCreatePage>;
+let schemaService: SchemaService;
+let monitorService: MonitorService;
+let spySubManager;
+let spyMonitorService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ MonitorCreatePage ],
+      declarations: [
+        MonitorCreatePage, MonitorsPage
+      ],
       imports: [
-        SharedModule,
-        RouterTestingModule
+        RouterTestingModule.withRoutes(
+          [{path: 'monitors', component: MonitorsPage}]
+        ),
+        SharedModule
       ],
       providers: [
         {
@@ -76,14 +80,20 @@ describe('MonitorCreatePage', () => {
 
   beforeEach(() => {
     injector = getTestBed();
-    fixture = TestBed.createComponent(MonitorCreatePage);
-    component = fixture.componentInstance;
     schemaService = injector.get(SchemaService);
     monitorService = injector.get(MonitorService);
-    labelService = injector.get(LabelService);
+    fixture = TestBed.createComponent(MonitorCreatePage);
+    component = fixture.componentInstance;
     schemaService.loadSchema();
-    labelService.getResourceLabels();
+    spySubManager = spyOn(component.subManager, 'add');
+    spyMonitorService = spyOn(monitorService, 'createMonitor');
+    fixture.detectChanges();
   });
+
+  afterEach(() => {
+    monitorService.monitor = undefined;
+    monitorService.monitors = undefined;
+  })
 
   // create reusable function for a dry spec.
   function updateForm(name, type) {
@@ -133,14 +143,25 @@ describe('MonitorCreatePage', () => {
   });
 
   it('should add typesOfMonitors', () => {
-    component.ngOnInit();
     expect(component.typesOfMonitors).toEqual(Object.keys(new monitorsMock().schema.definitions));
   });
 
   it('should add listOfKeys & listOfValues', () => {
-    component.ngOnInit();
     expect(component.listOfKeys).toEqual(Object.keys(new LabelMock().resourceLabels));
     expect(component.listOfValues).toEqual(Object.values(new LabelMock().resourceLabels).flat());
+  });
+
+  it('should add 2 subscriptions to subManager', () => {
+    updateForm('coolName', 'cpu');
+    expect(spySubManager).toHaveBeenCalledTimes(2);
+  });
+
+  it('should addMonitor() using service', () => {
+    fixture.ngZone.run(async() => {
+      updateForm('coolName', 'cpu');
+      await component.addMonitor();
+      expect(monitorService.createMonitor);
+    });
   });
 
   it('should unsubscribe on ngOnDestroy', () => {
@@ -148,5 +169,4 @@ describe('MonitorCreatePage', () => {
     component.ngOnDestroy();
     expect(component.subManager.unsubscribe).toHaveBeenCalled();
   });
-
 });

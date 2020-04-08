@@ -2,7 +2,7 @@
 interface Label {
     [key: string] : any
 }
-export interface IMonitor {
+export interface Monitor {
     id: string;
     name?: string;
     labelSelectorMethod: string;
@@ -19,8 +19,8 @@ export interface IMonitor {
     updatedTimestamp: string;
 }
 
-export interface IMonitors {
-    content: IMonitor[];
+export interface Monitors {
+    content: Monitor[];
     number: number;
     totalPages: number;
     totalElements: number;
@@ -29,7 +29,7 @@ export interface IMonitors {
 
 }
 
-export interface ISchema {
+export interface Schema {
     $schema: string,
     title: string,
     description: string,

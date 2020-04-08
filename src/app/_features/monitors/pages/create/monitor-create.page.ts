@@ -16,7 +16,6 @@ import { SchemaService } from 'src/app/_services/monitors/schema.service';
 })
 export class MonitorCreatePage implements OnInit, OnDestroy {
 
-
   private labelSubmit: Subject<void> = new Subject<void>();
   private labelFormSubmit: Subject<boolean> = new Subject<boolean>();
 
@@ -34,10 +33,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
 
   constructor(private monitorService: MonitorService, private fb: FormBuilder,
     private labelService: LabelService, private router: Router, private readonly schemaService: SchemaService) {
-      this.createMonitorForm = this.fb.group({
-        name: [''],
-        type: ['', Validators.required]
-      });
+
     }
 
     ngOnInit() {
@@ -45,6 +41,11 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
       let labelServiceSub = this.labelService.getResourceLabels().subscribe(data => {
         this.listOfKeys = Object.keys(this.labelService.labels);
         this.listOfValues = Object.values(this.labelService.labels).flat();
+      });
+
+      this.createMonitorForm = this.fb.group({
+        name: [''],
+        type: ['', Validators.required]
       });
 
       let labelFormSubscrip = this.labelFormSubmit.subscribe((valid) => {
@@ -60,7 +61,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
       this.subManager.add(labelServiceSub);
   }
 
-/*
+/**
  * @description Create a Monitor
  * @param monitorForm FormGroup
 */
@@ -88,8 +89,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
     }
   }
 
-
-  /*
+  /**
    * @description Whenever updates are made to the form we retrieve values here
    * @param metaValues {[key: string] : any}
   */
@@ -97,20 +97,17 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
     this.updatedLabelFields = transformKeyPairs(metaValues.keysandvalues);
   }
 
-/**
+  /**
    * @description Marks all form fields as touched to show validation upon submission
    * @param formGroup FormGroup
-
-  private markFormGroupTouched() {
+  */
+  markFormGroupTouched() {
       (<any>Object).values(this.createMonitorForm.controls).forEach(control => {
         control.markAsTouched();
       });
   }
-  */
 
   ngOnDestroy() {
     this.subManager.unsubscribe();
   }
-
-
 }

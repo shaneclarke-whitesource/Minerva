@@ -34,9 +34,10 @@ describe('SchemaService', () => {
     expect(service.schema.description).toEqual("Salus Monitor definition");
   });
 
-  it('should load schema file', () => {
-
-  })
+  it('should load schema file', async() => {
+    await service.loadSchema();
+    expect(service.schema.description).toEqual("Salus Monitor definition");
+  });
 
 
 });

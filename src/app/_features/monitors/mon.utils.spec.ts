@@ -1,13 +1,13 @@
 import { async } from '@angular/core/testing';
 import { FormatMonitorUtil } from './mon.utils';
 import {
-    ICreateMonitor,
-    ICpu
+    CreateMonitor,
+    Cpu
 } from 'src/app/_models/salus.monitor'
 
 describe('AddMonitorFromType', () => {
 
-    let newMonitor: ICreateMonitor;
+    let newMonitor: CreateMonitor;
     beforeEach(async(() => {
         newMonitor = {
             name: 'Tight Monitor',
@@ -28,7 +28,7 @@ describe('AddMonitorFromType', () => {
     });
 
     it('should format and add defaults', () => {
-        let monitor:ICreateMonitor = FormatMonitorUtil('', newMonitor);
+        let monitor:CreateMonitor = FormatMonitorUtil('', newMonitor);
         expect(monitor.name).toEqual(newMonitor.name);
         expect(monitor.labelSelector).toEqual(newMonitor.labelSelector);
         expect(monitor.labelSelectorMethod).toEqual(newMonitor.labelSelectorMethod);
@@ -49,7 +49,6 @@ describe('AddMonitorFromType', () => {
         }
         let cpuMonitor = FormatMonitorUtil('cpu', monitor);
         expect(cpuMonitor.details.type).toEqual('local');
-        expect(cpuMonitor.details.plugin.type).toEqual('cpu');
         expect(cpuMonitor.details.plugin.type).toEqual('cpu');
         expect(cpuMonitor.details.plugin['percpu']).toEqual(monitor.cpu.percpu);
         expect(cpuMonitor.details.plugin['totalcpu']).toEqual(monitor.cpu.totalcpu);

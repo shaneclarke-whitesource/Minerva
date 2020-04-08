@@ -1,7 +1,7 @@
 /**
  * Salus Monitor definition
  */
-export interface ICreateMonitor {
+export interface CreateMonitor {
     name?: string;
     labelSelector?: {
         [k: string]: string;
@@ -10,29 +10,29 @@ export interface ICreateMonitor {
     resourceId?: string;
     excludedResourceIds?: string[];
     interval?: string;
-    details?: ILocal | IRemote;
+    details?: Local | Remote;
 }
-export interface ILocal {
+export interface Local {
     type: "local";
     plugin:
-    | IApache
-    | ICpu
-    | IDisk
-    | IDiskio
-    | IMem
-    | IMysql
-    | INet
-    | IOracleDataguard
-    | IOracleRman
-    | IOracleTablespace
-    | IPackages
-    | IPostgresql
-    | IProcstat
-    | IRedis
-    | ISqlserver
-    | ISystem;
+    | Apache
+    | Cpu
+    | Disk
+    | Diskio
+    | Mem
+    | Mysql
+    | Net
+    | OracleDataguard
+    | OracleRman
+    | OracleTablespace
+    | Packages
+    | Postgresql
+    | Procstat
+    | Redis
+    | Sqlserver
+    | System;
 }
-export interface IApache {
+export interface Apache {
     type: "apache";
     url: string;
     username?: string;
@@ -43,26 +43,26 @@ export interface IApache {
     tlsKey?: string;
     insecureSkipVerify?: boolean;
 }
-export interface ICpu {
+export interface Cpu {
     type: "cpu";
     percpu?: boolean;
     totalcpu?: boolean;
     collectCpuTime?: boolean;
     reportActive?: boolean;
 }
-export interface IDisk {
+export interface Disk {
     type: "disk";
     mount: string;
 }
-export interface IDiskio {
+export interface Diskio {
     type: "diskio";
     device?: string;
     skipSerialNumber?: boolean;
 }
-export interface IMem {
+export interface Mem {
     type: "mem";
 }
-export interface IMysql {
+export interface Mysql {
     type: "mysql";
     servers: [string, ...string[]];
     perfEventsStatementsDigestTextLimit?: number;
@@ -88,34 +88,34 @@ export interface IMysql {
     tlsKey?: string;
     insecureSkipVerify?: boolean;
 }
-export interface INet {
+export interface Net {
     type: "net";
     ignoreProtocolStats?: boolean;
     interface?: string;
 }
-export interface IOracleDataguard {
+export interface OracleDataguard {
     type: "oracle_dataguard";
     databaseNames?: string[];
     filePath?: string;
 }
-export interface IOracleRman {
+export interface OracleRman {
     type: "oracle_rman";
     exclusionCodes?: string[];
     databaseNames?: string[];
     filePath?: string;
 }
-export interface IOracleTablespace {
+export interface OracleTablespace {
     type: "oracle_tablespace";
     databaseNames?: string[];
     filePath?: string;
 }
-export interface IPackages {
+export interface Packages {
     type: "packages";
     includeRpm?: boolean;
     includeDebian?: boolean;
     failWhenNotSupported?: boolean;
 }
-export interface IPostgresql {
+export interface Postgresql {
     type: "postgresql";
     address: string;
     outputaddress?: string;
@@ -123,7 +123,7 @@ export interface IPostgresql {
     ignoredDatabases?: string[];
     databases?: string[];
 }
-export interface IProcstat {
+export interface Procstat {
     type: "procstat";
     pidFile?: string;
     user?: string;
@@ -134,7 +134,7 @@ export interface IProcstat {
     winService?: string;
     processName?: string;
 }
-export interface IRedis {
+export interface Redis {
     type: "redis";
     url: string;
     password?: string;
@@ -143,21 +143,21 @@ export interface IRedis {
     tlsKey?: string;
     insecureSkipVerify?: boolean;
 }
-export interface ISqlserver {
+export interface Sqlserver {
     type: "sqlserver";
     servers: [string, ...string[]];
     azuredb: boolean;
     queryExclusions?: string[];
 }
-export interface ISystem {
+export interface System {
     type: "system";
 }
-export interface IRemote {
+export interface Remote {
     type: "remote";
     monitoringZones?: string[];
-    plugin: IDns | IHttp | IMysql1 | INetResponse | IPing | IPostgresql1 | ISmtp | ISqlserver1 | ISsl;
+    plugin: Dns | Http | Mysql1 | NetResponse | Ping | Postgresql1 | Smtp | Sqlserver1 | Ssl;
 }
-export interface IDns {
+export interface Dns {
     type: "dns";
     dnsServer: string;
     domain: string;
@@ -166,7 +166,7 @@ export interface IDns {
     port: number;
     timeout?: string;
 }
-export interface IHttp {
+export interface Http {
     type: "http";
     url: string;
     httpProxy?: string;
@@ -183,7 +183,7 @@ export interface IHttp {
         [k: string]: string;
     };
 }
-export interface IMysql1 {
+export interface Mysql1 {
     type: "mysql";
     servers: [string, ...string[]];
     perfEventsStatementsDigestTextLimit?: number;
@@ -209,7 +209,7 @@ export interface IMysql1 {
     tlsKey?: string;
     insecureSkipVerify?: boolean;
 }
-export interface INetResponse {
+export interface NetResponse {
     type: "net_response";
     protocol: "udp" | "tcp";
     host: string;
@@ -219,7 +219,7 @@ export interface INetResponse {
     send?: string;
     expect?: string;
 }
-export interface IPing {
+export interface Ping {
     type: "ping";
     target: string;
     count?: number;
@@ -227,7 +227,7 @@ export interface IPing {
     timeout?: string;
     deadline?: string;
 }
-export interface IPostgresql1 {
+export interface Postgresql1 {
     type: "postgresql";
     address: string;
     outputaddress?: string;
@@ -235,7 +235,7 @@ export interface IPostgresql1 {
     ignoredDatabases?: string[];
     databases?: string[];
 }
-export interface ISmtp {
+export interface Smtp {
     type: "smtp";
     host: string;
     port: number;
@@ -251,13 +251,13 @@ export interface ISmtp {
     tlsKey?: string;
     insecureSkipVerify?: boolean;
 }
-export interface ISqlserver1 {
+export interface Sqlserver1 {
     type: "sqlserver";
     servers: [string, ...string[]];
     azuredb: boolean;
     queryExclusions?: string[];
 }
-export interface ISsl {
+export interface Ssl {
     type: "ssl";
     target: string;
     timeout?: string;

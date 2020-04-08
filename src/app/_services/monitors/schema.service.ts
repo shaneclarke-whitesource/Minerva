@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
 import { monitorsMock } from 'src/app/_mocks/monitors/monitors.service.mock';
-import { ISchema } from 'src/app/_models/monitors';
+import { Schema } from 'src/app/_models/monitors';
 
 export const AJV_INSTANCE = new InjectionToken<Ajv>('The AJV Class Instance');
 
@@ -25,13 +25,13 @@ interface ValidateResult {
 })
 export class SchemaService {
 
-  private _schema: ISchema;
+  private _schema: Schema;
   private mockedMonitors = new monitorsMock();
-  get schema(): ISchema {
+  get schema(): Schema {
     return this._schema;
   }
 
-  set schema(scheme: ISchema) {
+  set schema(scheme: Schema) {
     this._schema = scheme;
   }
   constructor(private readonly http: HttpClient, @Inject(AJV_INSTANCE) private readonly ajv: Ajv,
@@ -44,14 +44,17 @@ export class SchemaService {
    * @param name The name of the schema, this will be used as the key to store it
    * @param urlPath The URL path of the schema to load
   */
-  loadSchema(): Promise<ISchema | boolean> {
+  loadSchema(): Promise<Schema | boolean> {
     return new Promise((res, rej) => {
       if (environment.mock) {
-        this._schema = this.mockedMonitors.schema
+        this._schema = this.mockedMonitors.schema;
+        this._schema['$id'] = this._schema.$schema;
+        delete this._schema.$schema;
+        this.ajv.addSchema(this._schema, 'monitor');
         res(this.schema);
       }
       else {
-        this.http.get<ISchema>(`${environment.api.salus}/schema/monitors`).subscribe(result => {
+        this.http.get<Schema>(`${environment.api.salus}/schema/monitors`).subscribe(result => {
           result['$id'] = result.$schema;
           delete result.$schema;
           this._schema = result;

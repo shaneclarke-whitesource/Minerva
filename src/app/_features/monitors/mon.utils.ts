@@ -1,5 +1,5 @@
 import {
-    ICreateMonitor
+    CreateMonitor
 } from 'src/app/_models/salus.monitor'
 
 /**
@@ -7,8 +7,8 @@ import {
 * @param
 * @returns {}
 */
-function FormatMonitorUtil(type: string, formData: any): ICreateMonitor {
-    let createMonitor: ICreateMonitor = {
+function FormatMonitorUtil(type: string, formData: any): CreateMonitor {
+    let createMonitor: CreateMonitor = {
         ...(formData.name && { name: formData.name }),
         ...(formData.labelSelector && {labelSelector: formData.labelSelector}),
         ...(formData.labelSelectorMethod && {labelSelectorMethod : formData.labelSelectorMethod}),

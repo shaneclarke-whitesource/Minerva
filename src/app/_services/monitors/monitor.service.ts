@@ -6,8 +6,8 @@ import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
 import { monitorsMock } from '../../_mocks/monitors/monitors.service.mock'
-import { IMonitors, IMonitor, ISchema } from 'src/app/_models/monitors';
-import { ICreateMonitor } from 'src/app/_models/salus.monitor';
+import { Monitors, Monitor, Schema } from 'src/app/_models/monitors';
+import { CreateMonitor } from 'src/app/_models/salus.monitor';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,27 +20,27 @@ const httpOptions = {
 })
 export class MonitorService {
 
-  private _monitors: IMonitors;
-  private _monitor: IMonitor;
+  private _monitors: Monitors;
+  private _monitor: Monitor;
 
-  private _schema: ISchema;
+  private _schema: Schema;
   private mockedMonitors = new monitorsMock();
 
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
-  get monitors(): IMonitors {
+  get monitors(): Monitors {
     return this._monitors;
   }
 
-  set monitors(value: IMonitors) {
+  set monitors(value: Monitors) {
     this._monitors = value;
   }
 
-  get monitor(): IMonitor {
+  get monitor(): Monitor {
     return this._monitor
   }
 
-  set monitor(value: IMonitor) {
+  set monitor(value: Monitor) {
     this._monitor = value;
   }
 
@@ -50,16 +50,16 @@ export class MonitorService {
    * @param page number
    * @returns Observable<Monitors>
    */
-  getMonitors(size: number, page: number): Observable<IMonitors> {
+  getMonitors(size: number, page: number): Observable<Monitors> {
     if (environment.mock) {
       let mocks = Object.assign({}, this.mockedMonitors.collection);
       let slicedData = [... mocks.content.slice(page * size, (page + 1) * size)];
       this.monitors = mocks;
       this.monitors.content = slicedData
-      return of<IMonitors>(this.monitors);
+      return of<Monitors>(this.monitors);
     }
     else {
-    return this.http.get<IMonitors>(`${environment.api.salus}/monitors?size=${size}&page=${page}`, httpOptions)
+    return this.http.get<Monitors>(`${environment.api.salus}/monitors?size=${size}&page=${page}`, httpOptions)
     .pipe(
       tap(data =>
         { this.monitors = data;
@@ -73,13 +73,13 @@ export class MonitorService {
  * @param id string
  * @returns Observable<Monitor>
  */
-  getMonitor(id: string): Observable<IMonitor> {
+  getMonitor(id: string): Observable<Monitor> {
     if (environment.mock) {
       this._monitor = this.mockedMonitors.single;
-      return of<IMonitor>(this.mockedMonitors.single);
+      return of<Monitor>(this.mockedMonitors.single);
     }
     else {
-      return this.http.get<IMonitor>(`${environment.api.salus}/monitors/${id}`, httpOptions)
+      return this.http.get<Monitor>(`${environment.api.salus}/monitors/${id}`, httpOptions)
       .pipe(
         tap(data => {
           this._monitor = data;
@@ -89,14 +89,22 @@ export class MonitorService {
     }
   }
 
-  createMonitor(monitor:ICreateMonitor): Observable<any> {
+  /**
+   * @description Create a new monitor
+   * @param monitor formatted monitor to be created
+   * @returns Observable<Monitor>
+   *
+   */
+  createMonitor(monitor:CreateMonitor): Observable<Monitor> {
         if (environment.mock) {
-          return of<IMonitor>(this.mockedMonitors.single);
+          this._monitor = this.mockedMonitors.single;
+          return of<Monitor>(this.mockedMonitors.single);
         }
         else {
-          return this.http.post(`${environment.api.salus}/monitors`, monitor, httpOptions)
+          return this.http.post<Monitor>(`${environment.api.salus}/monitors`, monitor, httpOptions)
           .pipe(
             tap(data => {
+              return of<Monitor>(data);
               this.logService.log(`Monitor created: ${data.id}`, LogLevels.info);
             })
           );

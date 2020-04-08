@@ -27,7 +27,7 @@ describe('LabelService', () => {
 
   it('should set and get Resource labels', () => {
     service.labels = new LabelMock().resourceLabels;
-    expect(service.labels.agent_discovered_hostname[0]);
+    expect(service.labels.agent_discovered_hostname[0]).toEqual('mr-anderson');
   });
 
   it('should return Resource labels', () => {

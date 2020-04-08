@@ -1,10 +1,10 @@
-import { ICpu } from 'src/app/_models/salus.monitor'
+import { Cpu } from 'src/app/_models/salus.monitor'
 
 export class MonitorConfig {
     monitor: {
         "CPU":
         {
-            "interface": ICpu
+            "interface": Cpu
             "details": {
                 "type": "local",
                 "plugin": {
