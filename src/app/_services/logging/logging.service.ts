@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LogLevels } from '../../_enums/log-levels.enum';
 import { LocalStorage } from '@ngx-pwa/local-storage';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,22 @@ export class LoggingService {
   logLevel = null;
   logLevels = LogLevels;
   localStorage: LocalStorage;
+  private alrtResponse:BehaviorSubject<string | undefined> = new BehaviorSubject(undefined);
 
   constructor() {
     this.logLevel = localStorage.getItem('LOG_LEVEL');
+  }
+
+
+  /**
+   * @description Get Latest occurence of Error
+   */
+  getAlertMsg(): Observable<string> {
+    return this.alrtResponse.asObservable();
+  }
+
+   private setAlertMsg(data:string){
+    this.alrtResponse.next(data);
   }
 
   /**
@@ -46,8 +60,7 @@ export class LoggingService {
     this.logLevel = logLevel;
     localStorage.setItem('LOG_LEVEL', logLevel.toString())
   }
-
-  /**
+    /**
    * @name LoggingService.getLevel
    * @description
    * Gets the current level set in local storage
@@ -77,6 +90,9 @@ export class LoggingService {
   log(message: any, logLevel: LogLevels): void {
     var level = this.logLevel;
     if (logLevel >= parseInt(level)){
+      if(parseInt(level) === LogLevels.error){
+        this.setAlertMsg(message);
+      }
       console.log({ level: LogLevels[logLevel], message: message });
     }
   }
