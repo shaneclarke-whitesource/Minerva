@@ -3,17 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { SchemaResolver } from './_features/monitors/monitor.resolve';
 
 const routes: Routes = [
-  { path: 'resources', loadChildren: './_features/resources/resources.module#ResourcesModule',
+  { path: 'resources', loadChildren: () => import('./_features/resources/resources.module').then(m => m.ResourcesModule),
     data: {
       breadcrumb: 'RESOURCES'
     }
   },
-  { path: 'monitors', loadChildren: './_features/monitors/monitors.module#MonitorsModule',
+  { path: 'monitors', loadChildren: () => import('./_features/monitors/monitors.module').then(m => m.MonitorsModule),
     data: {
       breadcrumb: 'MONITORS'
     }, resolve: {schema: SchemaResolver }
   },
-  { path: 'visualize', loadChildren: './_features/visualize/visualize.module#VisualizeModule',
+  { path: 'visualize', loadChildren: () => import('./_features/visualize/visualize.module').then(m => m.VisualizeModule),
     data: {
       breadcrumb: 'VISUALIZE'
     }

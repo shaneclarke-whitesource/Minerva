@@ -14,10 +14,10 @@ declare const window: any;
 })
 export class ResourceDetailsPage implements OnInit {
 
-  @ViewChild('metapop') metaPopPencil:ElementRef;
-  @ViewChild('labelpop') labelPopPencil:ElementRef;
-  @ViewChild('delResLink') delResource:ElementRef;
-  @ViewChild('delResourcepop') delResourcePop: ElementRef;
+  @ViewChild('metapop', { static: false }) metaPopPencil:ElementRef;
+  @ViewChild('labelpop', { static: false }) labelPopPencil:ElementRef;
+  @ViewChild('delResLink', { static: false }) delResource:ElementRef;
+  @ViewChild('delResourcepop', { static: false }) delResourcePop: ElementRef;
   id: string;
 
   resource$: Observable<Resource>;

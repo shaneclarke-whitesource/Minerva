@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class ResourcesListComponent implements OnInit, OnDestroy {
 
-  @ViewChild('addResButton') addButton:ElementRef;
+  @ViewChild('addResButton', { static: true }) addButton:ElementRef;
 
   private ngUnsubscribe = new Subject();
   searchPlaceholderText: string;
