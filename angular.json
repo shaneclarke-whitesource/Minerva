@@ -24,9 +24,21 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              { "glob": "webcomponents-loader.js", "input": "node_modules/@webcomponents/webcomponentsjs/", "output": "webcomponents/" },
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
-              { "glob": "favicon.ico", "input": "src/", "output": "/" }
+              {
+                "glob": "webcomponents-loader.js",
+                "input": "node_modules/@webcomponents/webcomponentsjs/",
+                "output": "webcomponents/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src/",
+                "output": "/"
+              }
             ],
             "styles": [
               "src/styles.scss"
@@ -74,11 +86,13 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.mock.ts"
-                }],
+                }
+              ],
               "scripts": [
-                  "localenv/scripts/portaldata.js",
-                  "localenv/scripts/pilotdata.js"
-            ]},
+                "localenv/scripts/portaldata.js",
+                "localenv/scripts/pilotdata.js"
+              ]
+            },
             "local": {
               "budgets": [
                 {
@@ -87,8 +101,8 @@
                 }
               ],
               "scripts": [
-                  "localenv/scripts/portaldata.js",
-                  "localenv/scripts/pilotdata.js"
+                "localenv/scripts/portaldata.js",
+                "localenv/scripts/pilotdata.js"
               ]
             }
           }
@@ -142,12 +156,36 @@
             ],
             "scripts": [],
             "assets": [
-              { "glob": "helix-ui.min.css", "input": "node_modules/helix-ui/dist/styles/", "output": "helix-ui/" },
-              { "glob": "helix-ui.browser.min.js", "input": "node_modules/helix-ui/dist/scripts/", "output": "helix-ui/" },
-              { "glob": "custom-elements-es5-adapter.js", "input": "node_modules/@webcomponents/webcomponentsjs/", "output": "webcomponents/" },
-              { "glob": "webcomponents-loader.js", "input": "node_modules/@webcomponents/webcomponentsjs/", "output": "webcomponents/" },
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
-              { "glob": "favicon.ico", "input": "src/", "output": "/" }
+              {
+                "glob": "helix-ui.min.css",
+                "input": "node_modules/helix-ui/dist/styles/",
+                "output": "helix-ui/"
+              },
+              {
+                "glob": "helix-ui.browser.min.js",
+                "input": "node_modules/helix-ui/dist/scripts/",
+                "output": "helix-ui/"
+              },
+              {
+                "glob": "custom-elements-es5-adapter.js",
+                "input": "node_modules/@webcomponents/webcomponentsjs/",
+                "output": "webcomponents/"
+              },
+              {
+                "glob": "webcomponents-loader.js",
+                "input": "node_modules/@webcomponents/webcomponentsjs/",
+                "output": "webcomponents/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src/",
+                "output": "/"
+              }
             ]
           }
         },
@@ -197,5 +235,8 @@
       }
     }
   },
-  "defaultProject": "minerva"
+  "defaultProject": "minerva",
+  "cli": {
+    "analytics": "03fb1f56-548b-4ca5-b4a4-ee3a84610127"
+  }
 }

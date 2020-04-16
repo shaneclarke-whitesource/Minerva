@@ -1,7 +1,7 @@
 <!-- Accepts an Object to be used as key pair value matching for adding edited, deleted -->
 <form [formGroup]="keyValueForm">
 <div class="hxRow hxSpan-10 nowrap" formArrayName="keysandvalues"
-*ngFor="let field of keyValueForm.get('keysandvalues').controls; let i = index;">
+*ngFor="let field of keyValueForm.get('keysandvalues')['controls']; let i = index;">
 <ng-container [formGroupName]="i">
 <div class="hxCol hxSpan-6">
 <hx-text-control [attr.hx-dirty]="getGroupControl(i, 'key').dirty" [attr.hx-touched]="getGroupControl(i, 'key').touched">

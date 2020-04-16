@@ -1,5 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
-import { localStorageProviders } from '@ngx-pwa/local-storage';
+import { StorageModule } from '@ngx-pwa/local-storage';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,7 +21,11 @@ import ajv from 'ajv';
     BrowserModule,
     AppRoutingModule,
     BrowserModule,
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    StorageModule.forRoot({
+      LSPrefix: 'intelligence_', // Note the underscore
+      IDBDBName: 'intelligence_ngStorage',
+    })
   ],
   exports: [],
   providers: [
@@ -33,8 +37,7 @@ import ajv from 'ajv';
       provide: AJV_INSTANCE,
       useFactory: createAjvInstance,
       deps: [AJV_CLASS, AJV_CONFIG]
-    },
-    localStorageProviders({ prefix: 'intelligence' }),
+    },    
     {
       provide: APP_INITIALIZER,
       useFactory: portalData,

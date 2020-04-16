@@ -18,6 +18,6 @@ let resource: Resource = <Resource>{
 }
 
 export class resourcesMock {
-    collection: Resources = resourceMockCollection;
+    collection: any = resourceMockCollection;
     single: Resource = resource;
 }

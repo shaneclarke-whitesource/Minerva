@@ -144,7 +144,7 @@ export class AddFieldsComponent implements OnInit, OnChanges {
    * @param formGroup FormGroup
    */
   private markFormGroupTouched() {
-    (<FormArray>this.keyValueForm.get('keysandvalues')).controls.forEach((group: FormGroup) => {
+    (<FormArray>this.keyValueForm.get('keysandvalues'))['controls'].forEach((group: FormGroup) => {
       (<any>Object).values(group.controls).forEach((control: FormControl) => {
           control.markAsDirty();
           control.markAsTouched();
