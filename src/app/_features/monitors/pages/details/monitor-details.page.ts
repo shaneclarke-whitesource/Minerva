@@ -17,8 +17,8 @@ export class MonitorDetailsPage implements OnInit {
   monitor$: Observable<Monitor>;
   Object = window.Object;
 
-  @ViewChild('delMonLink', { static: false }) delMonitor :ElementRef;
-  @ViewChild('delMonitorFail', { static: false }) delMonitorFailure: ElementRef;
+  @ViewChild('delMonLink') delMonitor :ElementRef;
+  @ViewChild('delMonitorFail') delMonitorFailure: ElementRef;
   deleteLoading:boolean = false;
 
 
