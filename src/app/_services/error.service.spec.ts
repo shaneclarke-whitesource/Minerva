@@ -1,31 +1,47 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { ErrorService } from './error.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 describe('ErrorService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+   let injector: TestBed;
+   let service:ErrorService;
+   beforeEach(() => {
+    TestBed.configureTestingModule({});
+    injector = getTestBed();
+    service = injector.get(ErrorService);
 
-  it('should be created', () => {
-    const service: ErrorService = TestBed.get(ErrorService);
+  });
+
+  it('should be created', () => {    
     expect(service).toBeTruthy();
   });
 
   it('should execute getClientErrorService', () => {
-    const service: ErrorService = TestBed.get(ErrorService);
     const error = new Error('basic Error');
     expect(service.getClientErrorMessage(error)).toEqual('basic Error');
   });
 
-  it('should execute getServerErrorMessage', () => {
-    const service: ErrorService = TestBed.get(ErrorService);
-    const error = new HttpErrorResponse({
+  it('Should execute getServerErrorMessage with status 500', () => {
+        const error = new HttpErrorResponse({
         error: 'server Error',
         status: 500,
         statusText: 'bad status',
         url: 'http://wiki.stuff/something'
     });
     expect(service.getServerErrorMessage(error)).toEqual(
-        'Http failure response for http://wiki.stuff/something: 500 bad status'
+        'Enternal server error.'
     );
   });
+  it('should execute getServerErrorMessage with status', () => {
+        const error = new HttpErrorResponse({
+        error: 'server Error',
+        status: 404,
+        statusText: 'bad status',
+        url: 'http://wiki.stuff/something'
+    });
+    expect(service.getServerErrorMessage(error)).toEqual(
+        'The server can not find the requested resource.'
+    );
+  });
+  
 });
