@@ -1,21 +1,23 @@
 {
   "content": [{
       "id": 26,
+      "tenantId": "833544",
       "resourceId": "development:1",
       "labels": {
-        "agent.discovered.hostname": "MS90HCG8WL",
-        "agent.discovered.os": "darwin",
-        "agent.environment": "localdev",
-        "pingable": "true",
-        "agent.discovered.arch": "amd64"
+        "agent_discovered_arch": "amd64",
+        "agent_discovered_hostname": "MS90HCG8WL",
+        "agent_discovered_os": "darwin",
+        "agent_environment": "localdev",
+        "pingable": "true"
       },
       "metadata": {
         "ping_ip": "127.0.0.1"
       },
-      "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
-
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 27,
@@ -28,15 +30,18 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 28,
       "resourceId": "development:3",
       "labels": {
-        "agent.discovered.hostname": "PR32IQG5OA",
-        "agent.discovered.os": "arch",
-        "agent.environment": "localdev",
+        "agent_discovered_hostname": "PR32IQG5OA",
+        "agent_discovered_os": "arch",
+        "agent_environment": "localdev",
         "pingable": "true",
         "agent.discovered.arch": "amd64"
       },
@@ -45,15 +50,18 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 29,
       "resourceId": "development:4",
       "labels": {
-        "agent.discovered.hostname": "TY58IAM1X3",
-        "agent.discovered.os": "tara",
-        "agent.environment": "localdev",
+        "agent_discovered_hostname": "TY58IAM1X3",
+        "agent_discovered_os": "tara",
+        "agent_environment": "localdev",
         "pingable": "true"
       },
       "metadata": {
@@ -61,7 +69,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 30,
@@ -74,7 +85,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 31,
@@ -87,7 +101,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 32,
@@ -100,7 +117,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 33,
@@ -113,7 +133,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 34,
@@ -126,7 +149,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 35,
@@ -139,7 +165,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 36,
@@ -152,7 +181,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 37,
@@ -165,7 +197,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 38,
@@ -178,7 +213,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 39,
@@ -191,7 +229,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 40,
@@ -204,7 +245,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 41,
@@ -217,7 +261,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 42,
@@ -230,7 +277,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 43,
@@ -243,7 +293,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 44,
@@ -256,7 +309,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 45,
@@ -269,7 +325,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 46,
@@ -282,7 +341,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 47,
@@ -295,7 +357,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 48,
@@ -308,7 +373,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 49,
@@ -321,7 +389,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 50,
@@ -334,7 +405,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 51,
@@ -347,7 +421,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 52,
@@ -359,8 +436,11 @@
         "ping_ip": "localhost"
       },
       "tenantId": "833544",
-      "presenceMonitoringEnabled": true,
-      "region": null
+      "presenceMonitoringEnabled": false,
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 53,
@@ -373,7 +453,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 54,
@@ -386,7 +469,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 55,
@@ -399,7 +485,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 56,
@@ -412,7 +501,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 57,
@@ -425,7 +517,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 58,
@@ -438,7 +533,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 59,
@@ -451,7 +549,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 60,
@@ -464,7 +565,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 61,
@@ -477,7 +581,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 62,
@@ -490,7 +597,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 63,
@@ -503,7 +613,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 64,
@@ -516,7 +629,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 65,
@@ -529,7 +645,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 66,
@@ -542,7 +661,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 67,
@@ -554,8 +676,11 @@
         "ping_ip": "localhost"
       },
       "tenantId": "833544",
-      "presenceMonitoringEnabled": true,
-      "region": null
+      "presenceMonitoringEnabled": false,
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 68,
@@ -568,7 +693,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 69,
@@ -581,7 +709,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 70,
@@ -594,7 +725,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 71,
@@ -607,7 +741,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 72,
@@ -620,7 +757,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 73,
@@ -632,8 +772,11 @@
         "ping_ip": "localhost"
       },
       "tenantId": "833544",
-      "presenceMonitoringEnabled": true,
-      "region": null
+      "presenceMonitoringEnabled": false,
+      "region": null,
+      "associatedWithEnvoy": false,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 74,
@@ -646,7 +789,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 75,
@@ -659,7 +805,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 76,
@@ -672,7 +821,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 77,
@@ -685,7 +837,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 78,
@@ -698,7 +853,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
       "id": 79,
@@ -711,7 +869,10 @@
       },
       "tenantId": "833544",
       "presenceMonitoringEnabled": true,
-      "region": null
+      "region": null,
+      "associatedWithEnvoy": true,
+      "createdTimestamp": "2016-04-26T18:09:16Z",
+      "updatedTimestamp": "2016-04-26T18:09:16Z"
     }
   ],
   "pageable": {
