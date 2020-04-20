@@ -5,7 +5,8 @@
     "types": []
   },
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": false
+    "annotateForClosureCompiler": false,
+    "enableIvy": true
   },
   "files": [
     "main.ts",
