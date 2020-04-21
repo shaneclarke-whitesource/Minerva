@@ -5,8 +5,16 @@
     "types": []
   },
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": false
+    "annotateForClosureCompiler": false,
+    "enableIvy": true
   },
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts"

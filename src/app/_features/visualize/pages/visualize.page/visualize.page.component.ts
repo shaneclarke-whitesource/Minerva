@@ -10,14 +10,14 @@ import { Subscription } from 'rxjs';
 })
 export class VisualizePage implements OnInit, OnDestroy {
 
-  // private fields
-  private system: string;
-  private measurement: string;
-  private device: string;
-  private start: string;
-  private end: string;
+  
+   system: string;
+   measurement: string;
+   device: string;
+   start: string;
+  end: string;
 
-  // public fields
+  public fields
   loading: boolean;
   subManager = new Subscription();
 

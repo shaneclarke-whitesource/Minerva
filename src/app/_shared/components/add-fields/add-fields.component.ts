@@ -124,12 +124,13 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   /**
    * @description Creates a new pair of fields for the form
    */
-  createItem(): FormGroup {
-    return this.fb.group({
-      key: new FormControl('', ...(this.labelContraints && [disallowValidator])),
+    createItem(): FormGroup { 
+    let frmCtrl=  this.labelContraints ? new FormControl('', ...([disallowValidator])) : new FormControl('');  
+    return this.fb.group({      
+      key: frmCtrl,
       value: []
     }, { validator: keyPairValidator });
-  }
+  } 
 
   /**
    * Returns the total of pairs
@@ -144,7 +145,7 @@ export class AddFieldsComponent implements OnInit, OnChanges {
    * @param formGroup FormGroup
    */
   private markFormGroupTouched() {
-    (<FormArray>this.keyValueForm.get('keysandvalues')).controls.forEach((group: FormGroup) => {
+    (<FormArray>this.keyValueForm.get('keysandvalues'))['controls'].forEach((group: FormGroup) => {
       (<any>Object).values(group.controls).forEach((control: FormControl) => {
           control.markAsDirty();
           control.markAsTouched();
