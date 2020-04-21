@@ -6,7 +6,7 @@
     <h2>Create Monitor</h2>
   </div>
 </div>
-<form *ngIf="typesOfMonitors" [formGroup]="createMonitorForm" #monitorForm="ngForm" (ngSubmit)="this.markFormGroupTouched();
+<form *ngIf="typesOfMonitors" [formGroup]="createMonitorForm" #monitorForm="ngForm" (ngSubmit)="this.markFormGroupTouched(this.createMonitorForm);
 this.addMonLoading=true; this.labelSubmit.next()">
 <div class="hxRow hxSpan-9">
 <div class="hxCol hxSpan-6">
@@ -14,9 +14,10 @@ this.addMonLoading=true; this.labelSubmit.next()">
 </div>
 <div class="hxCol hxSpan-6">
   <hx-select-control [attr.hx-dirty]="mf.type.dirty">
-    <select formControlName="type" [required]="createMonitorForm.get('type').hasError('required') && mf.type.touched" id="selType">
+    <select formControlName="type" [required]="createMonitorForm.get('type').hasError('required') && mf.type.touched" id="selType"
+    (change)="loadMonitorForm($event.target.value)">
       <option value="">Select an option</option>
-      <option *ngFor="let type of typesOfMonitors" [ngValue]="type">{{type}}</option>
+      <option *ngFor="let type of typesOfMonitors">{{type}}</option>
     </select>
     <hx-select></hx-select>
   </hx-select-control>
@@ -38,9 +39,22 @@ this.addMonLoading=true; this.labelSubmit.next()">
   </div>
   <div class="hxCol hxSpan-12">
     <app-add-fields [validateForm]="labelSubmit.asObservable()" [monitorLabels]="true" [listOfKeys]="listOfKeys"
-      [listOfValues]="listOfValues" (formValuesChanged)="labelsUpdated($event)" (formValid)="labelFormSubmit.next($event)">
+      [listOfValues]="listOfValues" (formValuesChanged)="labelsUpdated($event)" (formValid)="labelFormValid.next($event)">
       </app-add-fields>
   </div>
+</div>
+<!--
+<div class="hxRow hxSpan-9 busy-row">
+  <div class="busy-center">
+  <hx-busy></hx-busy>
+</div>
+</div>
+ -->
+<div *ngIf="selectedMonitor" class="hxRow hxSpan-9">
+  <div class="hxCol hx-span-12">
+  <monitor-dynamic-form [config]="dynaConfig" [validateForm]="dynamicFormSubmit.asObservable()" (formValid)="dynamicFormValid.next($event)">
+  </monitor-dynamic-form>
+</div>
 </div>
 
 <div class="hxRow">

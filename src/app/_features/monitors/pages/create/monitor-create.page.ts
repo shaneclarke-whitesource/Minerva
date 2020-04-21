@@ -1,12 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'
-import  { transformKeyPairs } from '../../../../_shared/utils';
-import { MonitorService } from 'src/app/_services/monitors/monitor.service.js';
-import { LabelService } from '../../../../_services/labels/label.service';
-import {  Subject, Subscription } from 'rxjs';
-import { FormatMonitorUtil } from '../../mon.utils';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import {  Subject, Subscription } from 'rxjs';
+import { MonitorService } from 'src/app/_services/monitors/monitor.service.js';
+import { LabelService } from 'src/app/_services/labels/label.service';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
+import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
+import { FieldConfig } from '../../interfaces/field.interface';
+import { transformKeyPairs } from 'src/app/_shared/utils';
+import { FormatMonitorUtil, CreateMonitorConfig } from '../../mon.utils';
+import { MarkFormGroupTouched } from "src/app/_shared/utils";
 
 
 @Component({
@@ -17,23 +20,31 @@ import { SchemaService } from 'src/app/_services/monitors/schema.service';
 export class MonitorCreatePage implements OnInit, OnDestroy {
 
   private labelSubmit: Subject<void> = new Subject<void>();
-  private labelFormSubmit: Subject<boolean> = new Subject<boolean>();
+  private labelFormValid: Subject<boolean> = new Subject<boolean>();
+  private dynamicFormSubmit: Subject<void> = new Subject<void>();
+  private dynamicFormValid: Subject<boolean> = new Subject<boolean>();
 
   createMonitorForm: FormGroup;
   addMonLoading: boolean = false;
   updatedLabelFields: {[key: string] : any} = null;
   subManager = new Subscription();
+  dynaConfig: FieldConfig[] = [];
 
   listOfKeys = [];
   listOfValues = [];
   typesOfMonitors: string[] = [];
+  selectedMonitor = null;
+  markFormGroupTouched = MarkFormGroupTouched;
 
   // #ngForm reference needed for view
   get mf() { return this.createMonitorForm.controls; }
 
+  // viewchild for dynamic sub form for monitors
+  @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
+
+
   constructor(private monitorService: MonitorService, private fb: FormBuilder,
     private labelService: LabelService, private router: Router, private readonly schemaService: SchemaService) {
-
     }
 
     ngOnInit() {
@@ -48,7 +59,16 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
         type: ['', Validators.required]
       });
 
-      let labelFormSubscrip = this.labelFormSubmit.subscribe((valid) => {
+      let labelFormSubscrip = this.labelFormValid.subscribe((valid) => {
+        if (!valid) {
+          this.addMonLoading = false;
+        }
+        else {
+          this.dynamicFormSubmit.next();
+        }
+      });
+
+      let subFormValidSubscrip = this.dynamicFormValid.subscribe((valid) => {
         if (!valid) {
           this.addMonLoading = false;
         }
@@ -57,8 +77,45 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
         }
       });
 
-      this.subManager.add(labelFormSubscrip);
       this.subManager.add(labelServiceSub);
+      this.subManager.add(labelFormSubscrip);
+      this.subManager.add(subFormValidSubscrip);
+
+      /*
+      this.dynaConfig = [
+        {
+          type: "input",
+          label: "Username",
+          inputType: "text",
+          name: "name",
+          validations: [
+            {
+              name: "required",
+              validator: Validators.required,
+              message: "Name Required"
+            },
+            {
+              name: "pattern",
+              validator: Validators.pattern("^[a-zA-Z]+$"),
+              message: "Accept only text"
+            }
+          ]
+        },
+        {
+          type: "checkbox",
+          label: "Accept Terms",
+          name: "term",
+          value: true
+        },
+        {
+          type: "select",
+          label: "Country",
+          name: "country",
+          value: "UK",
+          options: ["India", "UAE", "UK", "US"]
+        }
+      ];
+      */
   }
 
 /**
@@ -98,13 +155,13 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
   }
 
   /**
-   * @description Marks all form fields as touched to show validation upon submission
-   * @param formGroup FormGroup
-  */
-  markFormGroupTouched() {
-      (<any>Object).values(this.createMonitorForm.controls).forEach(control => {
-        control.markAsTouched();
-      });
+   * @description loads the appropriate monitor form based on selection
+   * @param value dropdown selection event.target.value
+   */
+  loadMonitorForm(value: any) {
+    this.selectedMonitor = value;
+    let definitions = this.schemaService.schema.definitions[this.selectedMonitor];
+    this.dynaConfig = CreateMonitorConfig(definitions);
   }
 
   ngOnDestroy() {

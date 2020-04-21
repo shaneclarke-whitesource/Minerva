@@ -1,23 +1,22 @@
 
 interface Labels {
-    agent_discovered_arch: string;
-    agent_discovered_hostname: string;
-    agent_discovered_os: string;
-
+    agent_discovered_arch?: string;
+    agent_discovered_hostname?: string;
+    agent_discovered_os?: string;
     [key: string]: any
 }
 
 export interface Resource {
     tenantId: string;
     resourceId: string;
-    labels: Labels;
+    labels?: Labels;
     metadata: {
         [key: string]: any;
     }
     presenceMonitoringEnabled: boolean;
     associatedWithEnvoy: boolean;
-    createdTimestamp: Date;
-    updatedTimestamp: Date;
+    createdTimestamp: string | Date;
+    updatedTimestamp: string | Date
 }
 
 export interface Resources {

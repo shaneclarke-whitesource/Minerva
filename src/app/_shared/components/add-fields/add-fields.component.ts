@@ -4,6 +4,7 @@ import { keyPairValidator } from '../../validators/keyvalue.validator';
 import { disallowValidator } from '../../validators/disallow.validator';
 import { Subscription, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { MarkFormGroupTouched } from '../../utils';
 
 @Component({
   selector: 'app-add-fields',
@@ -145,10 +146,7 @@ export class AddFieldsComponent implements OnInit, OnChanges {
    */
   private markFormGroupTouched() {
     (<FormArray>this.keyValueForm.get('keysandvalues')).controls.forEach((group: FormGroup) => {
-      (<any>Object).values(group.controls).forEach((control: FormControl) => {
-          control.markAsDirty();
-          control.markAsTouched();
-      })
+      MarkFormGroupTouched(group);
     });
   }
 
