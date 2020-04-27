@@ -1,6 +1,6 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { DynamicFieldDirective } from './dynamic-field.directive';
-import { Component, DebugElement, ComponentFactoryResolver } from '@angular/core';
+import { Component, DebugElement, ComponentFactoryResolver, SimpleChange } from '@angular/core';
 
 @Component({
   template: `

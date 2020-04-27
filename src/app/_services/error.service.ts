@@ -8,13 +8,27 @@ export class ErrorService {
 
   getClientErrorMessage(error: Error): string {
     return error.message ?
-      error.message :
+    this.errorMessage(error) :
       error.toString();
   }
 
   getServerErrorMessage(error: HttpErrorResponse): string {
     return navigator.onLine ?
-      error.message :
+      this.errorMessage(error) :
       'No Internet Connection';
+  }
+
+  errorMessage(error):string{
+    if(error.status){
+      switch (true) {
+        case error.status>=400 && error.status<500:
+          return 'The server can not find the requested resource.'
+        case error.status>=500 && error.status<600: 
+        return 'Enternal server error.'   
+        default:
+          return error.message;          
+      }    
+    }
+    return error.message;
   }
 }

@@ -38,18 +38,12 @@ this.addMonLoading=true; this.labelSubmit.next()">
     <p>Label Selector</p>
   </div>
   <div class="hxCol hxSpan-12">
-    <app-add-fields [validateForm]="labelSubmit.asObservable()" [monitorLabels]="true" [listOfKeys]="listOfKeys"
+    <app-add-fields [validateForm]="labelSubmit.asObservable()" [listOfKeys]="listOfKeys"
       [listOfValues]="listOfValues" (formValuesChanged)="labelsUpdated($event)" (formValid)="labelFormValid.next($event)">
       </app-add-fields>
   </div>
 </div>
-<!--
-<div class="hxRow hxSpan-9 busy-row">
-  <div class="busy-center">
-  <hx-busy></hx-busy>
-</div>
-</div>
- -->
+
 <div *ngIf="selectedMonitor" class="hxRow hxSpan-9">
   <div class="hxCol hx-span-12">
   <monitor-dynamic-form [config]="dynaConfig" [validateForm]="dynamicFormSubmit.asObservable()" (formValid)="dynamicFormValid.next($event)">

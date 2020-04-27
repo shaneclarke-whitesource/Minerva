@@ -12,7 +12,7 @@ export class SelectComponent implements OnInit {
   config: FieldConfig;
   group: FormGroup;
 
-  @ViewChild('content', {read: TemplateRef}) actualContentTmpl: TemplateRef<any>;
+  @ViewChild('content', {read: TemplateRef, static: true}) actualContentTmpl: TemplateRef<any>;
 
   constructor(private root: ViewContainerRef) { }
 

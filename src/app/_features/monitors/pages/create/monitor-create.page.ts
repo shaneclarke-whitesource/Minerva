@@ -8,8 +8,9 @@ import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { FieldConfig } from '../../interfaces/field.interface';
 import { transformKeyPairs } from 'src/app/_shared/utils';
-import { FormatMonitorUtil, CreateMonitorConfig } from '../../mon.utils';
+import { CreateMonitorConfig, ParseMonitorTypeEnum } from '../../mon.utils';
 import { MarkFormGroupTouched } from "src/app/_shared/utils";
+import { config as MonitorConfigs } from '../../config/index';
 
 
 @Component({
@@ -80,42 +81,6 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
       this.subManager.add(labelServiceSub);
       this.subManager.add(labelFormSubscrip);
       this.subManager.add(subFormValidSubscrip);
-
-      /*
-      this.dynaConfig = [
-        {
-          type: "input",
-          label: "Username",
-          inputType: "text",
-          name: "name",
-          validations: [
-            {
-              name: "required",
-              validator: Validators.required,
-              message: "Name Required"
-            },
-            {
-              name: "pattern",
-              validator: Validators.pattern("^[a-zA-Z]+$"),
-              message: "Accept only text"
-            }
-          ]
-        },
-        {
-          type: "checkbox",
-          label: "Accept Terms",
-          name: "term",
-          value: true
-        },
-        {
-          type: "select",
-          label: "Country",
-          name: "country",
-          value: "UK",
-          options: ["India", "UAE", "UK", "US"]
-        }
-      ];
-      */
   }
 
 /**
@@ -123,20 +88,31 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
  * @param monitorForm FormGroup
 */
   addMonitor(): void {
+
+    // If form is invalid return
     if (!this.createMonitorForm.valid) {
       this.addMonLoading = false;
       return;
     }
 
-    let formData = this.createMonitorForm.value;
-    formData.labelSelector = this.updatedLabelFields;
-    formData[this.createMonitorForm.get('type').value.toLowerCase()] = {};
+    // add selector label fields
+    if (this.updatedLabelFields) {
+      this.createMonitorForm.value['labelSelector'] = this.updatedLabelFields;
+    }
 
-    const formattedMonitor = FormatMonitorUtil(this.createMonitorForm.get('type').value, formData);
-    const result = this.schemaService.validateData(formattedMonitor);
+    this.createMonitorForm.value['details'] = {
+      type: MonitorConfigs[this.selectedMonitor].type,
+      plugin: {
+        type: ParseMonitorTypeEnum(this.schemaService.schema.definitions[this.selectedMonitor]),
+        ...(this.subForm.value)
+      }
+    };
 
+    // delete drop down selection value, it's not needed
+    delete this.createMonitorForm.value['type'];
+    const result = this.schemaService.validateData(this.createMonitorForm.value);
     if (result.isValid) {
-      this.monitorService.createMonitor(formattedMonitor).subscribe(data => {
+      this.monitorService.createMonitor(this.createMonitorForm.value).subscribe(data => {
         this.addMonLoading = false;
         this.router.navigate(['/monitors']);
       }, (error) => this.addMonLoading = false);

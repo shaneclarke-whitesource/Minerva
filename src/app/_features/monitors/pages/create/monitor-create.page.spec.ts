@@ -1,5 +1,5 @@
-import { CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
-import { async, ComponentFixture, TestBed, getTestBed, fakeAsync } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service';
@@ -14,6 +14,7 @@ import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module'
 import ajv from 'ajv';
 import { MonitorsPage } from '../monitors/monitors.page';
 import { MarkFormGroupTouched } from 'src/app/_shared/utils';
+import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 
 const keyPair = {
   keysandvalues: [
@@ -34,20 +35,21 @@ const keyPair = {
     value: 'fourthpair'
   }
 ]};
+
 describe('MonitorCreatePage', () => {
 let injector: TestBed;
 let component: MonitorCreatePage;
 let fixture: ComponentFixture<MonitorCreatePage>;
 let schemaService: SchemaService;
 let monitorService: MonitorService;
+let subFormComponent: DynamicFormComponent
 let spySubManager;
 let spyMonitorService;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [
-        MonitorCreatePage, MonitorsPage
+        MonitorCreatePage, MonitorsPage, DynamicFormComponent
       ],
       imports: [
         RouterTestingModule.withRoutes(
@@ -94,7 +96,7 @@ let spyMonitorService;
   afterEach(() => {
     monitorService.monitor = undefined;
     monitorService.monitors = undefined;
-  })
+  });
 
   // create reusable function for a dry spec.
   function updateForm(name, type) {
@@ -143,7 +145,7 @@ let spyMonitorService;
       likelykey: 'likelypair',
       somekey: 'somepair',
       fourthkey: 'fourthpair'
-    }
+    };
     component.labelsUpdated(keyPair);
     expect(component.updatedLabelFields).toEqual(formattedKeyPair);
   });
@@ -163,11 +165,33 @@ let spyMonitorService;
   });
 
   it('should addMonitor() using service', () => {
+    component.selectedMonitor = 'Cpu';
+    component.dynaConfig = [
+      {
+        type: "checkbox",
+        label: "CPU Percentage",
+        name: "percpu",
+        value: true
+      }, {
+        type: "checkbox",
+        label: "Total CPU",
+        name: "totalcpu",
+        value: true
+    }];
+    fixture.detectChanges();
     fixture.ngZone.run(async() => {
       updateForm('coolName', 'cpu');
       await component.addMonitor();
       expect(monitorService.createMonitor);
     });
+  });
+
+  it('should return dynamic form invalid', () => {
+    component.selectedMonitor = 'Disk';
+    component['dynamicFormValid'].subscribe((data) => {
+      console.log("**Valid response ", data);
+    });
+    component['dynamicFormSubmit'].next();
   });
 
   it('should make selectedMonitor equal to dropdown selection', () => {
@@ -186,4 +210,5 @@ let spyMonitorService;
     component.ngOnDestroy();
     expect(component.subManager.unsubscribe).toHaveBeenCalled();
   });
+
 });

@@ -1,19 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DynamicFormComponent } from './dynamic-form.component';
 import { DynamicFieldDirective } from '../dynamic-field/dynamic-field.directive';
-import { MarkFormGroupTouched } from "src/app/_shared/utils";
 import { InputComponent } from '../input/input.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { SelectComponent } from '../select/select.component';
+import  * as markedGroup from "src/app/_shared/utils";
 
 describe('DynamicFormComponent', () => {
   let component: DynamicFormComponent;
   let fixture: ComponentFixture<DynamicFormComponent>;
-  let formValidSub: Subject<void> = new Subject<void>()
+  let formValidSub: Subject<void> = new Subject<void>();
+
 
   const formBuilder: FormBuilder = new FormBuilder();
   beforeEach(async(() => {
@@ -76,6 +77,7 @@ describe('DynamicFormComponent', () => {
         options: ["India", "UAE", "UK", "US"]
       }
     ];
+    component.initiateForm();
     fixture.detectChanges();
   });
 
@@ -84,12 +86,12 @@ describe('DynamicFormComponent', () => {
   });
 
   it('should return form value', () => {
-    expect(JSON.stringify(component.value)).toEqual('{"name":null,"term":true,"country":"UK"}');
+    expect(JSON.stringify(component.value)).toEqual('{"term":true,"country":"UK"}');
   });
 
-  it('should add 3 subscriptions to subManager', () => {
+  it('should add 1 subscriptions to subManager', () => {
     let spy = spyOn(component.subManager, 'add');
-    component.ngOnInit();
+    component.initiateForm();
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
@@ -100,6 +102,17 @@ describe('DynamicFormComponent', () => {
   it('should expect validators to be added to controls', () => {
     let control = component.form.controls['name'];
     expect(control.validator).toBeDefined();
+  });
+
+  it('should execute ngOnChanges and initiateForm()', () => {
+    let spy = spyOn(component, 'initiateForm');
+    component.ngOnChanges({
+      config: new SimpleChange(null, [{type: "checkbox", label: "percpu", name: "percpu"},
+      {type: "checkbox", label: "totalcpu", name: "totalcpu", value: true},
+      {type: "checkbox", label: "collectCpuTime", name: "collectCpuTime"},
+      {type: "checkbox", label: "reportActive", name: "reportActive"}], true)
+    });
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should unsubscribe once component is destroyed', () => {

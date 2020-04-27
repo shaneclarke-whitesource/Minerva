@@ -4,7 +4,9 @@
   <input
   [type]="config.type"
     id="{{config.name}}-{{config.type}}"
+    [formControlName]="config.name"
     [checked]="config.value"
+    (change)="onChanged(config,$event.target)"
     [required]="group.get(config.name).hasError('required') && (group.get(config.name).dirty || group.get(config.name).touched)"
   />
   <label for="{{config.name}}-{{config.type}}">

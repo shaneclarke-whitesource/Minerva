@@ -39,9 +39,9 @@
       "id": 28,
       "resourceId": "development:3",
       "labels": {
-        "agent.discovered.hostname": "PR32IQG5OA",
-        "agent.discovered.os": "arch",
-        "agent.environment": "localdev",
+        "agent_discovered_hostname": "PR32IQG5OA",
+        "agent_discovered_os": "arch",
+        "agent_environment": "localdev",
         "pingable": "true",
         "agent.discovered.arch": "amd64"
       },
@@ -59,9 +59,9 @@
       "id": 29,
       "resourceId": "development:4",
       "labels": {
-        "agent.discovered.hostname": "TY58IAM1X3",
-        "agent.discovered.os": "tara",
-        "agent.environment": "localdev",
+        "agent_discovered_hostname": "TY58IAM1X3",
+        "agent_discovered_os": "tara",
+        "agent_environment": "localdev",
         "pingable": "true"
       },
       "metadata": {

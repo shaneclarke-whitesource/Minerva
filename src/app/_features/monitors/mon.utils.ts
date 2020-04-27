@@ -5,42 +5,6 @@ import { FieldConfig, Validator } from './interfaces/field.interface';
 import { Validators } from '@angular/forms';
 
 /**
-* @description a utility for formatting the post of a
-* @param type string
-* @param formData any
-* @returns CreateMonitor
-*/
-function FormatMonitorUtil(type: string, formData: any): CreateMonitor {
-    let createMonitor: CreateMonitor = {
-        ...(formData.name && { name: formData.name }),
-        ...(formData.labelSelector && {labelSelector: formData.labelSelector}),
-        ...(formData.labelSelectorMethod && {labelSelectorMethod : formData.labelSelectorMethod}),
-        ...(formData.resourceId && {resourceId : formData.resourceId }),
-        ...(formData.excludedResourceIds && {excludedResourceIds: formData.excludedResourceIds}),
-        ...(formData.interval && { interval: formData.interval })
-    };
-
-    switch (type.toLowerCase()) {
-        case 'cpu':
-            createMonitor.details = {
-                type: "local",
-                plugin: {
-                    type: "cpu",
-                    ...(formData.cpu.hasOwnProperty('percpu') && { percpu: formData.cpu.percpu }),
-                    ...(formData.cpu.hasOwnProperty('totalcpu') && {totalcpu: formData.cpu.totalcpu }),
-                    ...(formData.cpu.hasOwnProperty('collectCpuTime') && {collectCpuTime: formData.cpu.collectCpuTime}),
-                    ...(formData.cpu.hasOwnProperty('reportActive') && {reportActive: formData.cpu.reportActive})
-                }
-            };
-            break;
-        default:
-            createMonitor.details = null;
-            break;
-    }
-
-    return createMonitor;
-}
-/**
  *
  * @param monitor a monitor based on schema type
  * @returns FieldConfig[]
@@ -55,6 +19,17 @@ function CreateMonitorConfig(monitor: any): FieldConfig[] {
         fields.push(config);
     }
     return fields;
+}
+
+function ParseMonitorTypeEnum(monitor: any): string {
+    let type: string;
+    for (const field in monitor.properties) {
+        if (field === "type") {
+            type = monitor.properties[field].enum[0];
+            break;
+        }
+    }
+    return type;
 }
 
 /**
@@ -143,4 +118,4 @@ function createField(monitor, fieldName): FieldConfig  {
     };
 }
 
-export { FormatMonitorUtil, CreateMonitorConfig }
+export { CreateMonitorConfig, ParseMonitorTypeEnum }

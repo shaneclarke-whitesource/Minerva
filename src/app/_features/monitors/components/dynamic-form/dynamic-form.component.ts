@@ -1,15 +1,53 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { FieldConfig, Validator } from "../../interfaces/field.interface";
 import { Observable, Subscription } from "rxjs";
 import { MarkFormGroupTouched } from "src/app/_shared/utils";
+
+/**
+ * DynamicForm Component
+ * @Input config example
+ * this.config = [
+        {
+          type: "input",
+          label: "Username",
+          inputType: "text",
+          name: "name",
+          validations: [
+            {
+              name: "required",
+              validator: Validators.required,
+              message: "Name Required"
+            },
+            {
+              name: "pattern",
+              validator: Validators.pattern("^[a-zA-Z]+$"),
+              message: "Accept only text"
+            }
+          ]
+        },
+        {
+          type: "checkbox",
+          label: "Accept Terms",
+          name: "term",
+          value: true
+        },
+        {
+          type: "select",
+          label: "Country",
+          name: "country",
+          value: "UK",
+          options: ["India", "UAE", "UK", "US"]
+        }
+    ];
+ */
 
 @Component({
   selector: 'monitor-dynamic-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss']
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent implements OnChanges {
 
   // input for configs that will build each of the fields
   @Input() config: FieldConfig[] = [];
@@ -21,14 +59,22 @@ export class DynamicFormComponent implements OnInit {
   subManager = new Subscription();
 
   get value() {
-    return this.form.value;
+    let val = this.form.value;
+    // we won't return fields with null values
+    Object.keys(val).forEach((key) => {
+      if (val[key] === null || val[key] === '') { delete val[key] }
+    });
+    return val;
   }
 
   constructor(private fb: FormBuilder) { }
 
-  ngOnInit() {
+  /**
+   * @description needed to reinitiate this component & reassign the form
+   */
+  initiateForm(): void {
     this.form = this.createControl();
-    let formValidSub = this.validateForm.subscribe((data) => {
+    let formValidSub = this.validateForm.subscribe(() => {
       let valid = this.form.valid;
       MarkFormGroupTouched(this.form);
       this.formValid.emit(valid);
@@ -68,7 +114,13 @@ export class DynamicFormComponent implements OnInit {
     return null;
   }
 
-  ngOnDestroy(){
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.config) {
+      this.initiateForm();
+    }
+  }
+
+  ngOnDestroy() {
     this.subManager.unsubscribe();
   }
 }

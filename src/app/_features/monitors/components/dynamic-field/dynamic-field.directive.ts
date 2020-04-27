@@ -1,6 +1,8 @@
 import {
   ComponentFactoryResolver, ComponentRef, Directive, Input, OnInit,
-  ViewContainerRef
+  ViewContainerRef,
+  OnChanges,
+  SimpleChanges
   } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { FieldConfig } from "../../interfaces/field.interface";
@@ -17,7 +19,7 @@ const componentMapper = {
 @Directive({
   selector: '[monitorDynamicField]'
 })
-export class DynamicFieldDirective implements OnInit {
+export class DynamicFieldDirective implements OnChanges {
   @Input() config: FieldConfig;
   @Input() group: FormGroup;
 
@@ -26,7 +28,11 @@ export class DynamicFieldDirective implements OnInit {
   constructor(private resolver: ComponentFactoryResolver,
 private container: ViewContainerRef) { }
 
-  ngOnInit() {
+
+  /**
+   * @description creates components when called
+   */
+  composeComponent(): void {
     const factory = this.resolver.resolveComponentFactory(
       componentMapper[this.config.type]
     );
@@ -35,4 +41,10 @@ private container: ViewContainerRef) { }
     this.componentRef.instance.group = this.group;
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.config) {
+      this.container.clear();
+      this.composeComponent();
+    }
+  }
 }

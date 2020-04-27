@@ -125,9 +125,10 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   /**
    * @description Creates a new pair of fields for the form
    */
-  createItem(): FormGroup {
+    createItem(): FormGroup {
+    let frmCtrl=  this.labelContraints ? new FormControl('', ...([disallowValidator])) : new FormControl('');
     return this.fb.group({
-      key: new FormControl('', ...(this.labelContraints && [disallowValidator])),
+      key: frmCtrl,
       value: []
     }, { validator: keyPairValidator });
   }
