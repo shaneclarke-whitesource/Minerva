@@ -24,7 +24,7 @@
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
     "e2e": "ng e2e -c mock",
     "e2e-ci": "webdriver-manager update --standalone false --gecko false --versions.chrome 2.37 && ng e2e -c mock",
-    "docs": "gulp compudoc"
+    "docs": "npx compodoc -p tsconfig.json -d docs"
   },
   "description": "Rackspace NextGen Intelligence",
   "main": "app.js",
@@ -59,13 +59,12 @@
     "@angular/cli": "9.1.1",
     "@angular/compiler-cli": "9.1.2",
     "@angular/language-service": "9.1.2",
-    "@compodoc/gulp-compodoc": "0.0.10",
+    "@compodoc/compodoc": "1.1.11",
     "@types/jasmine": "2.8.8",
     "@types/jasminewd2": "2.0.3",
     "@types/node": "12.11.1",
     "angular-in-memory-web-api": "0.7.0",
     "codelyzer": "5.1.2",
-    "gulp": "4.0.0",
     "http-server": "0.11.1",
     "jasmine-core": "2.99.1",
     "jasmine-spec-reporter": "4.2.1",
