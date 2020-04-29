@@ -1,0 +1,35 @@
+{
+    "content": [
+      {
+        "monitorId": "2f6d7684-efd4-43b2-94c2-52f8e1353382",
+        "monitorName":"Monitor1",
+        "monitorType": "net",
+        "resourceId": "devUbuntu",
+        "interval": "PT1M6S",
+        "selectorScope": "LOCAL",
+        "agentType": "TELEGRAF",
+        "renderedContent": "{\"type\":\"net\",\"ignoreProtocolStats\":true,\"interface\":null}",
+        "envoyId": null,
+        "createdTimestamp": "2020-02-04T18:13:11Z",
+        "updatedTimestamp": "2020-02-04T18:13:11Z"
+      },
+      {
+        "monitorId": "82d19a31-cf05-44b9-b9d5-abf8a332aea4",
+        "monitorName":"Monitor2",
+        "monitorType": "cpu",
+        "resourceId": "devUbuntu",
+        "interval": "PT1M6S",
+        "selectorScope": "LOCAL",
+        "agentType": "TELEGRAF",
+        "renderedContent": "{\"type\":\"cpu\",\"percpu\":null,\"totalcpu\":true,\"collectCpuTime\":null,\"reportActive\":null}",
+        "envoyId": null,
+        "createdTimestamp": "2020-04-21T17:15:21Z",
+        "updatedTimestamp": "2020-04-21T17:15:21Z"
+      }
+    ],
+    "number": 0,
+    "totalPages": 1,
+    "totalElements": 2,
+    "last": true,
+    "first": true
+  }

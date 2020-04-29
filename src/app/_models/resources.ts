@@ -1,4 +1,4 @@
-
+import {  Pagination} from "../_models/common";
 interface Labels {
     agent_discovered_arch?: string;
     agent_discovered_hostname?: string;
@@ -33,3 +33,21 @@ export interface CreateResource {
     resourceId: string,
     presenceMonitoringEnabled: boolean;
 }
+
+export interface BoundMonitorPaging extends Pagination {
+    content:BoundMonitor[];   
+}
+export interface BoundMonitor{
+    monitorId: string,
+    monitorType: string,
+    monitorName:string,
+    resourceId: string,
+    interval: string,
+    selectorScope: string,
+    agentType: string,
+    renderedContent: string,
+    envoyId: string,
+    createdTimestamp: string,
+    updatedTimestamp: string
+}
+
