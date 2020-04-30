@@ -9,7 +9,7 @@ import { LoggingService } from './_services/logging/logging.service';
 
 export class AppComponent implements OnInit  {
   title = 'minerva';
-  message: string = undefined;  
+  message: string = undefined;
   constructor(private lgService:LoggingService,
      private changeDetector: ChangeDetectorRef){}
 
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit  {
   }
   private subscribeError(){
     this.lgService.getAlertMsg().subscribe(msg =>{
-      this.message=msg;      
+      this.message=msg;
       this.changeDetector.detectChanges();
     })
   }

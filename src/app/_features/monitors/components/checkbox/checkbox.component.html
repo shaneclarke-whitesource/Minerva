@@ -1,0 +1,18 @@
+<ng-template #content>
+  <div class="hxCol hxSpan-3">
+<hx-checkbox-control [formGroup]="group" [attr.hx-dirty]="(group.get(config.name).dirty || group.get(config.name).touched)">
+  <input
+  [type]="config.type"
+    id="{{config.name}}-{{config.type}}"
+    [formControlName]="config.name"
+    [checked]="config.value"
+    (change)="onChanged(config,$event.target)"
+    [required]="group.get(config.name).hasError('required') && (group.get(config.name).dirty || group.get(config.name).touched)"
+  />
+  <label for="{{config.name}}-{{config.type}}">
+    <hx-checkbox></hx-checkbox>
+    {{ config.label }}
+  </label>
+</hx-checkbox-control>
+</div>
+</ng-template>
