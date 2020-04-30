@@ -32,30 +32,4 @@ export class MonitorListComponent implements OnInit {
   ngOnDestroy() {
     this.subscriber.unsubscribe();
   }
-//    /**
-//    * @description <app-pagination>
-//    * @param n number
-//    * @returns void
-//   */
-//  goToPage(n: number): void {
-//   // this.page = n;
-//   // this.fetchMonitors();
-// }
-
-// /**
-//  * @description <app-pagination>
-//  */
-// nextPage(): void {
-//   // this.page++;
-//   // this.fetchMonitors();
-// }
-
-// /**
-//  * @description <app-pagination>
-//  */
-// prevPage(): void {
-//   // this.page--;
-//   // this.fetchMonitors();
-// }
-
 }

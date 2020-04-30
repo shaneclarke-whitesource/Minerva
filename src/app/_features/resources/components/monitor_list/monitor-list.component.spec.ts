@@ -3,6 +3,8 @@ import { MonitorService } from "../../../../_services/monitors/monitor.service";
 import { MonitorListComponent } from './monitor-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
+import { monitorsMock } from "../../../../_mocks/monitors/monitors.service.mock";
+import { of } from 'rxjs';
 
 describe('MonitorListComponent', () => {
   let component: MonitorListComponent;
@@ -29,11 +31,14 @@ describe('MonitorListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('get bound monitors', () =>{
+  it('get bound monitors', (done) =>{
+    let spy = spyOn(component, 'getMonitors').and.returnValue(of(new monitorsMock().boundMonitor));
     component.ngOnInit();
     fixture.detectChanges();
     fixture.whenStable().then(() =>{
+      expect(component.getMonitors).toHaveBeenCalled()
       expect(component.monitors.length).toBeGreaterThanOrEqual(1);
-    })
+      done();
+          })
   })
 });
