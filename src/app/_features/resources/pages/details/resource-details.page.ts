@@ -42,7 +42,7 @@ export class ResourceDetailsPage implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = params['id'];
-      this.resource$ = this.resourceService.getResource(this.id);
+      this.resource$ = this.resourceService.getResource(this.id);      
     });
 
     let metaFormSubscrip = this.metaFormSubmit.subscribe((valid) => {
