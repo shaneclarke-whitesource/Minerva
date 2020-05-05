@@ -59,6 +59,7 @@ describe('Monitor Utilities', () => {
 
         it('should parse monitor properties for enum monitor value', () => {
             let monitorProps = {
+                properties: {
                 "type": {
                     "type": "string",
                     "enum": [
@@ -68,6 +69,7 @@ describe('Monitor Utilities', () => {
                 },
                 "percpu": {
                     "type": "boolean"
+                }
                 }
             };
             let parsedEnum = ParseMonitorTypeEnum(monitorProps);

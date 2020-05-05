@@ -6,6 +6,7 @@ import { ResourcesListComponent } from './components/list/resourceslist.componen
 import { ResourcesPage } from './pages/resources/resources.page';
 import { ResourceDetailsPage } from './pages/details/resource-details.page';
 import { ValidateResource } from 'src/app/_shared/validators/resourceName.validator';
+import { MonitorListComponent } from './components/monitor_list/monitor-list.component';
 
 const routes: Routes = [
   {
@@ -29,7 +30,8 @@ const routes: Routes = [
   declarations: [
     ResourcesListComponent,
     ResourcesPage,
-    ResourceDetailsPage
+    ResourceDetailsPage,
+    MonitorListComponent
   ],
   imports: [
     SharedModule,

@@ -1,0 +1,18 @@
+<table class="hxTable">
+    <thead>
+      <tr>
+               <th>MONITOR</th>
+              <th>TYPE</th>
+              <th>SCOPE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let monitor of monitors">       
+        <td [id]="monitor.monitorId"><a [routerLink]="['/monitors/details', monitor.monitorId]">{{monitor.monitorName}}</a></td>
+       
+        <td >{{monitor.monitorType}}</td>
+        <td>{{monitor.selectorScope}}</td>
+      </tr>
+    </tbody>
+  </table>
+  
