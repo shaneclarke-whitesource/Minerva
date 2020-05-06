@@ -23,8 +23,8 @@
     "lint": "ng lint",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
     "e2e": "ng e2e -c mock",
-    "e2e-ci": "webdriver-manager update --standalone false --gecko false --versions.chrome 2.37 && ng e2e -c mock",
-    "docs": "gulp compudoc"
+    "up": "webdriver-manager update --standalone false --gecko false --versions.chrome 2.37 && protractor ./e2e/protractor.conf.js",
+    "docs": "npx compodoc -p tsconfig.json -d docs"
   },
   "description": "Rackspace NextGen Intelligence",
   "main": "app.js",
