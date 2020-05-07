@@ -42,8 +42,14 @@
       </div>
       <div class="hxCol hxSpan-6">
         <h4>Labels</h4>
-        <hx-status *ngFor="let label of Object.keys(monitor.labelSelector)">
-          {{monitor.labelSelector[label]}}</hx-status>
+        <div class="hxRow" *ngFor="let label of Object.keys(monitor.labelSelector)">
+          <div class="hxCol hxSpan-6">
+            {{label}}
+          </div>
+          <div class="hxCol hxSpan-6">
+            {{monitor.labelSelector[label]}}
+          </div>
+        </div>
       </div>
     </div>
 
