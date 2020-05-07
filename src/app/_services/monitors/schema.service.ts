@@ -49,7 +49,8 @@ export class SchemaService {
       if (environment.mock) {
         this._schema = this.mockedMonitors.schema;
         this._schema['$id'] = this._schema.$schema;
-        delete this._schema.$schema;
+        delete this._schema.$schema;    
+        this.ajv.removeSchema();     
         this.ajv.addSchema(this._schema, 'monitor');
         res(this.schema);
       }
@@ -58,7 +59,8 @@ export class SchemaService {
           result['$id'] = result.$schema;
           delete result.$schema;
           this._schema = result;
-          this.ajv.addSchema(result, 'monitor');
+          this.ajv.removeSchema();          
+          this.ajv.addSchema(result, 'monitor');          
           this.logService.log(`Schema: ${result}`, LogLevels.info);
           res(this._schema);
         });

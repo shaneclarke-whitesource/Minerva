@@ -64,7 +64,7 @@ export interface Mem {
 }
 export interface Mysql {
     type: "mysql";
-    servers: [string, ...string[]];
+    servers: any;
     perfEventsStatementsDigestTextLimit?: number;
     perfEventsStatementsLimit?: number;
     perfEventsStatementsTimeLimit?: number;
@@ -145,7 +145,7 @@ export interface Redis {
 }
 export interface Sqlserver {
     type: "sqlserver";
-    servers: [string, ...string[]];
+    servers: any;
     azuredb: boolean;
     queryExclusions?: string[];
 }
@@ -185,7 +185,7 @@ export interface Http {
 }
 export interface Mysql1 {
     type: "mysql";
-    servers: [string, ...string[]];
+    servers: any;
     perfEventsStatementsDigestTextLimit?: number;
     perfEventsStatementsLimit?: number;
     perfEventsStatementsTimeLimit?: number;
@@ -253,7 +253,7 @@ export interface Smtp {
 }
 export interface Sqlserver1 {
     type: "sqlserver";
-    servers: [string, ...string[]];
+    servers: any;
     azuredb: boolean;
     queryExclusions?: string[];
 }

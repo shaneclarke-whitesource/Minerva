@@ -10,6 +10,11 @@ import { MonitorDetailsPage } from './pages/details/monitor-details.page';
 import { MonitorCreatePage } from './pages/create/monitor-create.page';
 import { routes } from './monitors.routes';
 import ajv, { Ajv, Options } from 'ajv';
+import { InputComponent } from './components/input/input.component';
+import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { SelectComponent } from './components/select/select.component';
+import { DynamicFieldDirective } from './components/dynamic-field/dynamic-field.directive';
+import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 
 export const AJV_CLASS = new InjectionToken<Ajv>('The AJV Class Instance');
 export const AJV_CONFIG = new InjectionToken<Ajv>('The AJV Class config');
@@ -26,7 +31,12 @@ export function createAjvInstance(AjvClass: any, config: Options) {
     MonitorsPage,
     MonitorslistComponent,
     MonitorDetailsPage,
-    MonitorCreatePage
+    MonitorCreatePage,
+    InputComponent,
+    CheckboxComponent,
+    SelectComponent,
+    DynamicFieldDirective,
+    DynamicFormComponent
   ],
   imports: [
     SharedModule,
@@ -35,6 +45,11 @@ export function createAjvInstance(AjvClass: any, config: Options) {
   providers: [
     MonitorService,
     LabelService
+  ],
+  entryComponents: [
+    InputComponent,
+    CheckboxComponent,
+    SelectComponent
   ]
 })
 export class MonitorsModule { }

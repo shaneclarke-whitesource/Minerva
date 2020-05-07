@@ -1,0 +1,15 @@
+<ng-template #content>
+<div class="hxCol hxSpan-6">
+  <hx-text-control [formGroup]="group" [attr.hx-dirty]="(group.get(config.name).dirty || group.get(config.name).touched)">
+    <input [formControlName]="config.name" [placeholder]="config.label"
+  [required]="group.get(config.name).hasError('required') && (group.get(config.name).dirty || group.get(config.name).touched)"
+  [type]="config.inputType" />
+</hx-text-control>
+<ng-container *ngFor="let validation of config.validations" ngProjectAs="span">
+  <span *ngIf="group.get(config.name).hasError(validation.name) && (group.get(config.name).dirty || group.get(config.name).touched)"
+  class="required">
+    {{validation.message}}
+  </span>
+</ng-container>
+</div>
+</ng-template>

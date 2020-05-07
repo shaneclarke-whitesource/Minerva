@@ -32,7 +32,7 @@ describe('MonitorService', () => {
       ]
     });
     injector = getTestBed();
-    service = injector.get(MonitorService);
+    service = injector.get(MonitorService);    
 });
 
   it('should be created', () => {
@@ -75,6 +75,11 @@ describe('MonitorService', () => {
     it('should create a monitor', () => {
       service.createMonitor(newMonitor).subscribe(data => {
         expect(data).toEqual(new monitorsMock().single);
+      });
+    });
+    it('should get bound monitors', () => {
+      service.getBoundMonitor("").subscribe(data => {
+        expect(data.content[0].monitorId).toEqual(new monitorsMock().boundMonitor.content[0].monitorId);
       });
     });
 

@@ -63,7 +63,7 @@ typings/
 # Angular Specific excludes
 dist
 
-#compudoc
+#compodoc
 docs
 
 #vscode config

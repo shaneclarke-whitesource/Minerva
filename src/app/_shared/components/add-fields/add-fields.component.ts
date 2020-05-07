@@ -4,6 +4,7 @@ import { keyPairValidator } from '../../validators/keyvalue.validator';
 import { disallowValidator } from '../../validators/disallow.validator';
 import { Subscription, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { MarkFormGroupTouched } from '../../utils';
 
 @Component({
   selector: 'app-add-fields',
@@ -124,9 +125,10 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   /**
    * @description Creates a new pair of fields for the form
    */
-  createItem(): FormGroup {
+    createItem(): FormGroup {
+    let frmCtrl=  this.labelContraints ? new FormControl('', ...([disallowValidator])) : new FormControl('');
     return this.fb.group({
-      key: new FormControl('', ...(this.labelContraints && [disallowValidator])),
+      key: frmCtrl,
       value: []
     }, { validator: keyPairValidator });
   }
@@ -144,11 +146,8 @@ export class AddFieldsComponent implements OnInit, OnChanges {
    * @param formGroup FormGroup
    */
   private markFormGroupTouched() {
-    (<FormArray>this.keyValueForm.get('keysandvalues'))['controls'].forEach((group: FormGroup) => {
-      (<any>Object).values(group.controls).forEach((control: FormControl) => {
-          control.markAsDirty();
-          control.markAsTouched();
-      })
+    (<FormArray>this.keyValueForm.get('keysandvalues')).controls.forEach((group: FormGroup) => {
+      MarkFormGroupTouched(group);
     });
   }
 
