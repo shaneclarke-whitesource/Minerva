@@ -13,8 +13,13 @@ describe("App Navigations", () => {
 
   it("should navigate to all", async() => {
     page.navigateTo();
-    await nav.navigateToAll();
-    
-    
+    await nav.navigateToAll();  
+   // nav.loadresources();  
   });
+  
+  it("should load HelixUI loads with app", async() =>{
+    page.navigateTo();
+    await nav.heliuxUIloads()
+  });
+
 });

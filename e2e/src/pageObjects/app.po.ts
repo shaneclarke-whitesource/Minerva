@@ -16,5 +16,7 @@ export class AppPage {
 
   getHelixNavCssClass() {
     return element(by.id("nav")).getAttribute("class");
-  }
+  } 
+
+
 }

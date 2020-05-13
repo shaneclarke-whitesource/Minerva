@@ -16,4 +16,11 @@ describe("workspace-project App", () => {
     page.navigateTo();
     expect(page.getHelixNavCssClass()).toBe("hxNav");
   });
+  
+
+
+
+
+
+  
 });
