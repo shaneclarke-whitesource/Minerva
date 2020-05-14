@@ -4,24 +4,26 @@ import {
 import { FieldConfig, Validator } from './interfaces/field.interface';
 import { Validators } from '@angular/forms';
 
+
+export class MonotorUtil{
 /**
  *
  * @param monitor a monitor based on schema type
  * @returns FieldConfig[]
  */
-function CreateMonitorConfig(monitor: any): FieldConfig[] {
+ static CreateMonitorConfig(monitor: any): FieldConfig[] {
     let fields: FieldConfig[] = [];
     for (const field in monitor.properties) {
         if (field === "type") {
             continue;
         }
-        const config: FieldConfig = createField(monitor, field);
+        const config: FieldConfig = MonotorUtil.createField(monitor, field);
         fields.push(config);
     }
     return fields;
 }
 
-function ParseMonitorTypeEnum(monitor: any): string {
+static ParseMonitorTypeEnum(monitor: any): string {
     let type: string;
     for (const field in monitor.properties) {
         if (field === "type") {
@@ -37,72 +39,10 @@ function ParseMonitorTypeEnum(monitor: any): string {
  * @param monitor a monitor based on schema type
  * @param fieldName name of field of monitor.properties
  */
-function createField(monitor, fieldName): FieldConfig  {
+ static createField(monitor, fieldName): FieldConfig  {
 
     let field = monitor.properties[fieldName];
-    let defaultValue = (): string | null => {
-        let value;
-        if(field.hasOwnProperty('default')) {
-            value = field.default;
-        }
-        return value || null;
-    };
-
-    let validators = (): Validator[] | null => {
-        let vals = [];
-        // apply any required validators
-        if (monitor.required.includes(fieldName)) {
-            vals.push({
-                name: "required",
-                validator: Validators.required,
-                message: `${fieldName} Required`
-            })
-        }
-
-        // apply any pattern validators
-        if (field.type === "string" && field.hasOwnProperty('pattern')) {
-            vals.push({
-                name: "pattern",
-                validator: Validators.pattern(field.pattern),
-                message: `${fieldName} format incorrect`
-            });
-        }
-
-        // apply any minimum validators
-        if (field.type === "string" && field.hasOwnProperty('minLength')) {
-            vals.push({
-                name: "minimum",
-                validator: Validators.minLength(parseInt(field.minLength)),
-                message: `${fieldName} must be at least ${field.minLength} character(s)`
-            })
-        }
-
-        return vals.length > 0 ? vals : null;
-    }
-
-    let type = (): string | null => {
-        let _type;
-        switch (true) {
-            case field.type === 'boolean':
-                _type = "checkbox";
-                break;
-            case field.type === 'string' || field.type === 'integer':
-                _type = "input";
-                break;
-            default:
-                // TODO: Add error service connect
-                break;
-        }
-        return _type || null;
-    }
-
-    let inputType = (): string | null => {
-        let _inputType;
-        if (field.type === "string") {
-            _inputType = 'text';
-        }
-        return _inputType || null;
-    }
+      
 
     let label = () => {
         let _label = fieldName;
@@ -110,12 +50,107 @@ function createField(monitor, fieldName): FieldConfig  {
     }
 
     return {
-        type: type(),
+        type: MonotorUtil.type(field),
         ...(label() && {label: label(), name: label()}),
-        ...(inputType() && {inputType: inputType()}),
-        ...(defaultValue() && {value: defaultValue()}),
-        ...(validators() && {validations: validators()})
+        ...(MonotorUtil.inputType(field) && {inputType: MonotorUtil.inputType(field)}),
+        ...(MonotorUtil.defaultValue(field) && {value: MonotorUtil.defaultValue(field)}),
+        ...(MonotorUtil.validators(monitor,field,fieldName) && {validations: MonotorUtil.validators(monitor,field,fieldName)}),
+        ...(MonotorUtil.options(field)&& {options:MonotorUtil.options(field)})
     };
 }
+static options(field){
+    if (field.type === "string" && field.hasOwnProperty('enum')){
+        return field.enum;
+    }
+    return null;
+}
+ static defaultValue(field): string | null {
+    let value;
+    if(field.hasOwnProperty('default')) {
+        value = field.default;
+    }
+    return value || null;
+}; 
 
-export { CreateMonitorConfig, ParseMonitorTypeEnum }
+ static inputType (field): string | null {
+    let _inputType;
+    if (field.type === "string") {        
+        _inputType = 'text';
+    }
+    if(field.type ==="integer"){
+        _inputType="number";
+    }
+    return _inputType || null;
+}
+    static type(field): string | null {
+        let _type;
+        switch (true) {
+            case field.type === 'string' && field.hasOwnProperty('enum'):
+                _type = "select";
+                break;
+            case field.type === 'boolean':
+                _type = "checkbox";
+                break;
+            case field.type === 'string':
+            case field.type === 'integer':
+                _type = "input";
+                break;
+            default:
+                throw `Field type ${field.type}  don't support`;    
+        }
+        return _type || null;
+    }
+
+ static validators (monitor,field,fieldName): Validator[] | null  {
+    let vals = [];
+    // apply any required validators
+    if (monitor.required.includes(fieldName)) {
+        vals.push({
+            name: "required",
+            validator: Validators.required,
+            message: `${fieldName} Required`
+        })
+    }
+
+    // apply any pattern validators
+    if (field.type === "string" && field.hasOwnProperty('pattern')) {
+        vals.push({
+            name: "pattern",
+            validator: Validators.pattern(field.pattern),
+            message: `${fieldName} format incorrect`
+        });
+    }
+
+    // apply any minimum validators
+    if (field.type === "string" && field.hasOwnProperty('minLength')) {
+        vals.push({
+            name: "minimum",
+            validator: Validators.minLength(parseInt(field.minLength)),
+            message: `${fieldName} must be at least ${field.minLength} character(s)`
+        })
+    }
+
+    if (field.type === "integer") {
+        if(field.hasOwnProperty('minimum')){
+            vals.push({
+                name: "minimum",
+                validator: Validators.min(parseInt(field.minimum)),
+                message: `The minimum value to accept for this input ${field.minimum}`
+            }) 
+        }
+        if(field.hasOwnProperty('maximum')){
+            vals.push({
+                name: "maximum",
+                validator: Validators.max(parseInt(field.maximum)),
+                message: `The maximum value to accept for this input ${field.maximum}`
+            }) 
+        }
+        
+    }
+
+    return vals.length > 0 ? vals : null;
+}
+
+}
+
+// export { CreateMonitorConfig, ParseMonitorTypeEnum }
