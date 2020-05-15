@@ -34,9 +34,12 @@ export class ZoneService {
     }
 
     constructor(private http: HttpClient, private logService: LoggingService) {
-
     }
 
+    /**
+     * Get Zones 
+     * @returns Zones with pagination details
+     */
     getZones(): Observable<Zone> {
         if (environment.mock) {
             let mock = Object.assign({}, this.mockZones.zones);

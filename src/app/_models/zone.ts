@@ -1,4 +1,5 @@
-export interface Zone {
+import { Pagination } from "./common";
+export interface Zone extends Pagination  {
     name: string,
     pollerTimeout: number,
     provider: string,
