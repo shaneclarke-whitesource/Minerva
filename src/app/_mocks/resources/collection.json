@@ -1,6 +1,5 @@
 {
   "content": [{
-      "id": 26,
       "tenantId": "833544",
       "resourceId": "development:1",
       "labels": {
@@ -20,7 +19,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 27,
       "resourceId": "development:2",
       "labels": {
         "pingable": "true"
@@ -36,7 +34,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 28,
       "resourceId": "development:3",
       "labels": {
         "agent_discovered_hostname": "PR32IQG5OA",
@@ -56,7 +53,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 29,
       "resourceId": "development:4",
       "labels": {
         "agent_discovered_hostname": "TY58IAM1X3",
@@ -75,7 +71,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 30,
       "resourceId": "development:5",
       "labels": {
         "pingable": "true"
@@ -91,7 +86,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 31,
       "resourceId": "development:6",
       "labels": {
         "pingable": "true"
@@ -107,7 +101,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 32,
       "resourceId": "development:7",
       "labels": {
         "pingable": "true"
@@ -123,7 +116,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 33,
       "resourceId": "development:8",
       "labels": {
         "pingable": "true"
@@ -139,7 +131,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 34,
       "resourceId": "development:9",
       "labels": {
         "pingable": "true"
@@ -155,7 +146,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 35,
       "resourceId": "development:10",
       "labels": {
         "pingable": "true"
@@ -171,7 +161,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 36,
       "resourceId": "development:11",
       "labels": {
         "pingable": "true"
@@ -187,7 +176,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 37,
       "resourceId": "development:12",
       "labels": {
         "pingable": "true"
@@ -203,7 +191,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 38,
       "resourceId": "development:13",
       "labels": {
         "pingable": "true"
@@ -219,7 +206,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 39,
       "resourceId": "development:14",
       "labels": {
         "pingable": "true"
@@ -235,7 +221,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 40,
       "resourceId": "development:15",
       "labels": {
         "pingable": "true"
@@ -251,7 +236,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 41,
       "resourceId": "development:16",
       "labels": {
         "pingable": "true"
@@ -267,7 +251,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 42,
       "resourceId": "development:17",
       "labels": {
         "pingable": "true"
@@ -283,7 +266,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 43,
       "resourceId": "development:18",
       "labels": {
         "pingable": "true"
@@ -299,7 +281,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 44,
       "resourceId": "development:19",
       "labels": {
         "pingable": "true"
@@ -315,7 +296,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 45,
       "resourceId": "development:20",
       "labels": {
         "pingable": "true"
@@ -331,7 +311,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 46,
       "resourceId": "development:21",
       "labels": {
         "pingable": "true"
@@ -347,7 +326,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 47,
       "resourceId": "development:22",
       "labels": {
         "pingable": "true"
@@ -363,7 +341,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 48,
       "resourceId": "development:23",
       "labels": {
         "pingable": "true"
@@ -379,7 +356,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 49,
       "resourceId": "development:24",
       "labels": {
         "pingable": "true"
@@ -395,7 +371,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 50,
       "resourceId": "development:25",
       "labels": {
         "pingable": "true"
@@ -411,7 +386,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 51,
       "resourceId": "development:26",
       "labels": {
         "pingable": "true"
@@ -427,7 +401,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 52,
       "resourceId": "development:27",
       "labels": {
         "pingable": "true"
@@ -443,7 +416,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 53,
       "resourceId": "development:28",
       "labels": {
         "pingable": "true"
@@ -459,7 +431,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 54,
       "resourceId": "development:29",
       "labels": {
         "pingable": "true"
@@ -475,7 +446,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 55,
       "resourceId": "development:30",
       "labels": {
         "pingable": "true"
@@ -491,7 +461,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 56,
       "resourceId": "development:31",
       "labels": {
         "pingable": "true"
@@ -507,7 +476,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 57,
       "resourceId": "development:32",
       "labels": {
         "pingable": "true"
@@ -523,7 +491,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 58,
       "resourceId": "development:33",
       "labels": {
         "pingable": "true"
@@ -539,7 +506,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 59,
       "resourceId": "development:34",
       "labels": {
         "pingable": "true"
@@ -555,7 +521,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 60,
       "resourceId": "development:35",
       "labels": {
         "pingable": "true"
@@ -571,7 +536,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 61,
       "resourceId": "development:36",
       "labels": {
         "pingable": "true"
@@ -587,7 +551,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 62,
       "resourceId": "development:37",
       "labels": {
         "pingable": "true"
@@ -603,7 +566,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 63,
       "resourceId": "development:38",
       "labels": {
         "pingable": "true"
@@ -619,7 +581,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 64,
       "resourceId": "development:39",
       "labels": {
         "pingable": "true"
@@ -635,7 +596,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 65,
       "resourceId": "development:40",
       "labels": {
         "pingable": "true"
@@ -651,7 +611,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 66,
       "resourceId": "development:41",
       "labels": {
         "pingable": "true"
@@ -667,7 +626,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 67,
       "resourceId": "development:42",
       "labels": {
         "pingable": "true"
@@ -683,7 +641,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 68,
       "resourceId": "development:43",
       "labels": {
         "pingable": "true"
@@ -699,7 +656,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 69,
       "resourceId": "development:44",
       "labels": {
         "pingable": "true"
@@ -715,7 +671,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 70,
       "resourceId": "development:45",
       "labels": {
         "pingable": "true"
@@ -731,7 +686,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 71,
       "resourceId": "development:46",
       "labels": {
         "pingable": "true"
@@ -747,7 +701,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 72,
       "resourceId": "development:47",
       "labels": {
         "pingable": "true"
@@ -763,7 +716,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 73,
       "resourceId": "development:48",
       "labels": {
         "pingable": "true"
@@ -779,7 +731,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 74,
       "resourceId": "development:49",
       "labels": {
         "pingable": "true"
@@ -795,7 +746,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 75,
       "resourceId": "development:50",
       "labels": {
         "pingable": "true"
@@ -811,7 +761,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 76,
       "resourceId": "development:51",
       "labels": {
         "pingable": "true"
@@ -827,7 +776,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 77,
       "resourceId": "development:52",
       "labels": {
         "pingable": "true"
@@ -843,7 +791,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 78,
       "resourceId": "development:53",
       "labels": {
         "pingable": "true"
@@ -859,7 +806,6 @@
       "updatedTimestamp": "2016-04-26T18:09:16Z"
     },
     {
-      "id": 79,
       "resourceId": "development:54",
       "labels": {
         "pingable": "true"
