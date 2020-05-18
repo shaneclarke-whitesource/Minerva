@@ -1,0 +1,93 @@
+{
+    "content": [
+      {
+        "name": "public/asia_east_1",
+        "pollerTimeout": 300,
+        "provider": "Rackspace",
+        "providerRegion": "HKG1",
+        "sourceIpAddresses": [
+          "127.0.0.1/27"
+        ],
+        "createdTimestamp": "2019-07-01T20:09:22Z",
+        "updatedTimestamp": "2019-07-01T20:09:22Z",
+        "public": true
+      },
+      {
+        "name": "public/australia_east_1",
+        "pollerTimeout": 300,
+        "provider": "Rackspace",
+        "providerRegion": "SYD2",
+        "sourceIpAddresses": [
+          "127.0.0.1/27"
+        ],
+        "createdTimestamp": "2019-07-01T20:09:07Z",
+        "updatedTimestamp": "2019-07-01T20:09:07Z",
+        "public": true
+      },
+      {
+        "name": "public/eu_west_1",
+        "pollerTimeout": 300,
+        "provider": "Rackspace",
+        "providerRegion": "LON3",
+        "sourceIpAddresses": [
+          "127.0.0.1/27"
+        ],
+        "createdTimestamp": "2019-07-01T20:07:37Z",
+        "updatedTimestamp": "2019-07-01T20:07:37Z",
+        "public": true
+      },
+      {
+        "name": "public/eu_west_2",
+        "pollerTimeout": 300,
+        "provider": "Rackspace",
+        "providerRegion": "FRA1",
+        "sourceIpAddresses": [
+          "127.0.0.1/27"
+        ],
+        "createdTimestamp": "2019-07-01T20:08:25Z",
+        "updatedTimestamp": "2019-07-01T20:08:25Z",
+        "public": true
+      },
+      {
+        "name": "public/us_central_1",
+        "pollerTimeout": 300,
+        "provider": "Rackspace",
+        "providerRegion": "DFW3",
+        "sourceIpAddresses": [
+          "127.0.0.1/27"
+        ],
+        "createdTimestamp": "2019-07-01T19:24:13Z",
+        "updatedTimestamp": "2019-07-01T20:10:43Z",
+        "public": true
+      },
+      {
+        "name": "public/us_central_2",
+        "pollerTimeout": 300,
+        "provider": "Rackspace",
+        "providerRegion": "ORD1",
+        "sourceIpAddresses": [
+          "127.0.0.1/27"
+        ],
+        "createdTimestamp": "2019-07-01T20:08:38Z",
+        "updatedTimestamp": "2019-07-01T20:08:38Z",
+        "public": true
+      },
+      {
+        "name": "public/us_east_1",
+        "pollerTimeout": 300,
+        "provider": "Rackspace",
+        "providerRegion": "IAD3",
+        "sourceIpAddresses": [
+          "127.0.0.1/27"
+        ],
+        "createdTimestamp": "2019-07-01T20:08:55Z",
+        "updatedTimestamp": "2019-07-01T20:08:55Z",
+        "public": true
+      }
+    ],
+    "number": 0,
+    "totalPages": 1,
+    "totalElements": 7,
+    "last": true,
+    "first": true
+  }
