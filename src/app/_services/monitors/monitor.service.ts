@@ -89,7 +89,7 @@ export class MonitorService {
       return of<Monitor>(this.mockedMonitors.single);
     }
     else {
-      return this.http.get<Monitor>(`${environment.api.salus}/monitorsxyz/${id}`, httpOptions)
+      return this.http.get<Monitor>(`${environment.api.salus}/monitors/${id}`, httpOptions)
       .pipe(
         tap(data => {
           this._monitor = data;

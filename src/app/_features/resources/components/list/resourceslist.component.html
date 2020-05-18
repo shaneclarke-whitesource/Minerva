@@ -103,11 +103,11 @@
           <hx-checkbox-control>
               <input
                 type="checkbox"
-                id="chk{{resource.id}}"
+                id="resource-{{resource.resourceId}}"
                 (change)="selectResource(resource)"
                 [checked]="resource.checked"
               />
-              <label for="chk{{resource.id}}">
+              <label for="resource-{{resource.resourceId}}">
                 <hx-checkbox></hx-checkbox>
               </label>
             </hx-checkbox-control>
