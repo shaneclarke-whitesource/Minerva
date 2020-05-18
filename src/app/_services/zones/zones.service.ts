@@ -7,7 +7,7 @@ import { LogLevels } from 'src/app/_enums/log-levels.enum'
 import { LoggingService } from "../logging/logging.service";
 import { of, Observable } from "rxjs";
 import { zoneMocks } from "../../_mocks/zones/zone.service.mock";
-import { Zone } from "src/app/_models/zone";
+import { Zones } from "src/app/_models/zone";
 
 const httpsoption = {
     headers: new HttpHeaders(
@@ -40,13 +40,13 @@ export class ZoneService {
      * Get Zones 
      * @returns Zones with pagination details
      */
-    getZones(): Observable<Zone> {
+    getZones(): Observable<Zones> {
         if (environment.mock) {
             let mock = Object.assign({}, this.mockZones.zones);
             this._monZone = mock;
-            return of<Zone>(this._monZone);
+            return of<Zones>(this._monZone);
         }
-        return this.http.get<Zone>(`${environment.api.salus}/zones`, httpsoption)
+        return this.http.get<Zones>(`${environment.api.salus}/zones`, httpsoption)
             .pipe(
                 tap(data => {
                     this._monZone = data;
