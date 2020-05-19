@@ -5,12 +5,14 @@ const Monitors = require('./routes/monitors');
 const Metrics = require('./routes/metrics');
 const Labels = require('./routes/labels');
 const Schema = require('./routes/schema');
+const Zones= require(`./routes/zones`)
 
 //all Monitoring V2 routes
 router.use('/salus', Labels);
 router.use('/salus/schema', Schema);
 router.use('/salus/resources', Resources);
 router.use('/salus/monitors', Monitors);
+router.use('/salus/zones',Zones)
 
 //all Metrics V2 routes
 router.use('/metrics', Metrics);
