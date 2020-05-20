@@ -1,5 +1,5 @@
 import { async } from '@angular/core/testing';
-import { CreateMonitorConfig, ParseMonitorTypeEnum } from './mon.utils';
+import {MonotorUtil } from './mon.utils';
 import {
     CreateMonitor
 } from 'src/app/_models/salus.monitor'
@@ -54,7 +54,7 @@ describe('Monitor Utilities', () => {
 
     describe('ParseMonitorTypeEnum', () => {
         it('should create utility', () => {
-            expect(ParseMonitorTypeEnum).toBeTruthy();
+            expect(MonotorUtil.ParseMonitorTypeEnum).toBeTruthy();
         });
 
         it('should parse monitor properties for enum monitor value', () => {
@@ -72,7 +72,7 @@ describe('Monitor Utilities', () => {
                 }
                 }
             };
-            let parsedEnum = ParseMonitorTypeEnum(monitorProps);
+            let parsedEnum = MonotorUtil.ParseMonitorTypeEnum(monitorProps);
             expect(parsedEnum).toEqual('cpu');
 
         })
@@ -80,16 +80,16 @@ describe('Monitor Utilities', () => {
 
     describe('CreateMonitorConfig()', () => {
         it('should create utility', () => {
-            expect(CreateMonitorConfig).toBeTruthy();
+            expect(MonotorUtil.CreateMonitorConfig).toBeTruthy();
         });
 
         it('should create array of FieldConfig fields', () => {
-            const fields = CreateMonitorConfig(schemaMonitor);
+            const fields = MonotorUtil.CreateMonitorConfig(schemaMonitor);
             expect(fields.length).toEqual(3);
         });
 
         it('should add type "input" to controls', () => {
-            const fields = CreateMonitorConfig(schemaMonitor);
+            const fields = MonotorUtil.CreateMonitorConfig(schemaMonitor);
             const mountField = fields.find((el) => el.name === 'mount');
             const sizeField = fields.find((el) => el.name === 'size');
             expect(sizeField.type).toEqual('input');
@@ -97,7 +97,7 @@ describe('Monitor Utilities', () => {
         });
 
         it('should add type "input" to controls', () => {
-            const fields = CreateMonitorConfig(schemaMonitor);
+            const fields = MonotorUtil.CreateMonitorConfig(schemaMonitor);
             const mountField = fields.find((el) => el.name === 'mount');
             const sizeField = fields.find((el) => el.name === 'size');
             expect(sizeField.type).toEqual('input');
@@ -105,19 +105,19 @@ describe('Monitor Utilities', () => {
         });
 
         it('should add type "checkbox" to controls', () => {
-            const fields = CreateMonitorConfig(schemaMonitor);
+            const fields = MonotorUtil.CreateMonitorConfig(schemaMonitor);
             const fileSysField = fields.find((el) => el.name === 'filesys');
             expect(fileSysField.type).toEqual('checkbox');
         });
 
         it('should add name controls', () => {
-            const fields = CreateMonitorConfig(schemaMonitor);
+            const fields = MonotorUtil.CreateMonitorConfig(schemaMonitor);
             const mountField = fields.find((el) => el.name === 'mount');
             expect(mountField.name).toEqual('mount');
         });
 
         it('should add default values', () => {
-            const fields = CreateMonitorConfig(schemaMonitor);
+            const fields = MonotorUtil.CreateMonitorConfig(schemaMonitor);
             const mountField = fields.find((el) => el.name === 'mount');
             const filesysField = fields.find((el) => el.name === 'filesys');
             expect(filesysField.value).toEqual(true);
@@ -125,7 +125,7 @@ describe('Monitor Utilities', () => {
         });
 
         it('should add validations', () => {
-            const fields = CreateMonitorConfig(schemaMonitor);
+            const fields = MonotorUtil.CreateMonitorConfig(schemaMonitor);
             const mountField = fields.find((el) => el.name === 'mount');
             const sizeField = fields.find((el) => el.name === 'size');
             expect(mountField.validations.length).toEqual(3);

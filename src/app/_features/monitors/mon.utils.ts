@@ -129,25 +129,6 @@ static options(field){
             message: `${fieldName} must be at least ${field.minLength} character(s)`
         })
     }
-
-    if (field.type === "integer") {
-        if(field.hasOwnProperty('minimum')){
-            vals.push({
-                name: "minimum",
-                validator: Validators.min(parseInt(field.minimum)),
-                message: `The minimum value to accept for this input ${field.minimum}`
-            }) 
-        }
-        if(field.hasOwnProperty('maximum')){
-            vals.push({
-                name: "maximum",
-                validator: Validators.max(parseInt(field.maximum)),
-                message: `The maximum value to accept for this input ${field.maximum}`
-            }) 
-        }
-        
-    }
-
     return vals.length > 0 ? vals : null;
 }
 
