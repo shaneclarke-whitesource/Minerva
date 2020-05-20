@@ -1,6 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../../../../_shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
@@ -27,6 +29,7 @@ describe('MonitorDetailComponent', () => {
         MonitorDetailsPage
       ],
       imports: [
+        BrowserAnimationsModule,
         HttpClientModule,
         RouterTestingModule,
         SharedModule
@@ -65,6 +68,7 @@ describe('MonitorDetailComponent', () => {
     expect(component.deleteLoading).toEqual(false);
     expect(component.delMonitor).toBeDefined();
     expect(component.delMonitorFailure).toBeDefined();
+    expect(component.additionalSettings).toEqual('out');
   });
 
 

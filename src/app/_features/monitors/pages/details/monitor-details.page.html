@@ -59,12 +59,41 @@
         {{monitor.details.type}}
       </div>
       <div class="hxCol hxSpan-6">
-        <h4>Period (seconds)</h4>
-        {{monitor.interval | durationSeconds}}
+        <a [routerLink]="" (click)="additionalSettings = additionalSettings === 'in' ? 'out': 'in'">
+          Additional Settings</a>
       </div>
     </div>
 
-    <div class="hxRow hxSpan-9">
+    <div class="hxRow hxSpan-9" style="margin-top:-15px" [@slideInOut]="additionalSettings">
+      <div class="hxCol hxSpan-6 hxOffset-6">
+        <div class="hxRow hxSpan-12">
+        <div class="hxCol hxSpan-6">
+          <h4>Period (seconds)</h4>
+          {{monitor.interval | durationSeconds}}
+        </div>
+        <div class="hxCol hxSpan-6" *ngIf="monitor.excludedResourceIds.length > 0">
+          <h4>Excluded Resources</h4>
+          <ng-container *ngFor="let item of monitor.excludedResourceIds, let i = index ">
+            {{item}} <br/>
+          </ng-container>
+        </div>
+        <div class="hxCol hxSpan-6" *ngIf="monitor.resourceId">
+          <h4>Resource ID</h4>
+          {{monitor.resourceId}}
+        </div>
+        <div class="hxCol hxSpan-6">
+        <h4>Label Selector Method</h4>
+        {{monitor.labelSelectorMethod}}
+      </div>
+      <div class="hxCol hxSpan-6">
+        <h4>Policy</h4>
+        {{monitor.policy}}
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="hxRow hxSpan-9" style="padding-top: 20px;">
       <div class="hxCol hxSpan-6"><h4>{{monitor.details.plugin.type}} monitor Details</h4></div>
       <div class="hxCol hxSpan-6">
         <div class="hxRow" *ngFor="let pluginField of Object.keys(monitor.details.plugin)">

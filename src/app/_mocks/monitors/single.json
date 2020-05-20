@@ -2,7 +2,10 @@
     "id": "23ONM715",
     "name": "CPU System",
     "labelSelectorMethod": "AND",
-    "interval": "30",
+    "interval": "PT1M6S",
+    "resourceId": "87ekiiNY3TW",
+    "policy": false,
+    "excludedResourceIds": ["738mmskkJn3", "298POn347B", "243IkoeC"],
     "labelSelector": {
         "additionalProp1": "EC2Instance",
         "additionalProp2": "Dev",
