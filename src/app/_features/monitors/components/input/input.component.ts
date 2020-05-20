@@ -20,4 +20,10 @@ export class InputComponent implements OnInit {
     // displays the component without wrapping in an element
     this.root.createEmbeddedView(this.actualContentTmpl);
   }
+
+  convertInt(int) {
+    if (+int) {
+      this.group.controls[this.config.name].setValue(+int);
+    }
+  }
 }

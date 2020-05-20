@@ -42,7 +42,7 @@ static ParseMonitorTypeEnum(monitor: any): string {
  static createField(monitor, fieldName): FieldConfig  {
 
     let field = monitor.properties[fieldName];
-      
+
 
     let label = () => {
         let _label = fieldName;
@@ -70,15 +70,21 @@ static options(field){
         value = field.default;
     }
     return value || null;
-}; 
+};
 
  static inputType (field): string | null {
     let _inputType;
-    if (field.type === "string") {        
+    if (field.type === "string") {
         _inputType = 'text';
     }
     if(field.type ==="integer"){
         _inputType="number";
+    }
+
+    if(field.type === "string" && field.hasOwnProperty('format')) {
+        if (field.format === "date-time") {
+            _inputType = "number";
+        }
     }
     return _inputType || null;
 }
@@ -96,7 +102,7 @@ static options(field){
                 _type = "input";
                 break;
             default:
-                throw `Field type ${field.type}  don't support`;    
+                throw `Field type ${field.type}  don't support`;
         }
         return _type || null;
     }

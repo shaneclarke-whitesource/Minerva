@@ -8,6 +8,6 @@ export const config = {
     Cpu: new CPUConfig(),
     Disk: new DiskConfig(),
     Net: new NetworkConfig(),
-    Mem:new MemoryConfig(),  
-    NetResponse:new NetResponseConfig()  
+    Mem:new MemoryConfig(),
+    NetResponse:new NetResponseConfig()
 }
