@@ -71,21 +71,18 @@ describe("Resources List", () => {
    expect(element(by.xpath("//input[@id='txtSearch']")).isPresent()).toBe(true);
 });
 
-it("Should Capture Data", async()=>{
+it("should display 25 rows", async()=>
+{
     var arrRows = await element(by.css("table.hxTable tbody")).all(by.tagName("tr"));
-    var data = "";
-    for(var i=0;i<arrRows.length;i++) {
-        var arrCols = await arrRows[i].all(by.tagName("td"));
-        for(var j=0;j<arrCols.length;j++) {
-            data = data + await arrCols[j].getText() + "\t\t";
-        }
-        data = data + "\n";
-    }
-    //console.log(data);
-    fs.writeFile(path.join(__dirname,'../output/CaptureData.txt'),data,(err) => {
-      if(err) throw err;
-            })
-  });
+    expect(arrRows.length).toEqual(25);
+});
 
+it("Should display 7 columns ", async()=>
+{
+  var path =  element.all(by.xpath("//tbody//tr[2]//td"));
+  var colNum = await path.getAttribute("childElementCount");
+  expect(colNum.length).toEqual(7);
+});
+   
 
 })

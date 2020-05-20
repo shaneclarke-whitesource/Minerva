@@ -14,7 +14,7 @@ export class navigations
 
    {
       // clicking on resources
-      await this.baseElement.root.element(by.xpath("//a[text()='Resources']")).click();
+      element(by.xpath("//a[text()='Resources']")).click();
       browser.sleep(5000);
       //  validate - add expect for resources
       expect(element(by.xpath("//h2[contains(text(),'Resources')]")).isPresent()).toBe(true);
@@ -30,14 +30,12 @@ export class navigations
    async navigateToVisualize()
    {
      //clicking on visualize
-     await this.baseElement.root.element(by.xpath("//a[text()='Visualize']")).click();
+     element(by.xpath("//a[contains(text(),'Visualize')]")).click();
      browser.sleep(5000);
       // validate - add expect visualize
       expect(element(by.xpath("//a[contains(text(),'Visualize')]")).isPresent()).toBe(true);
      
    }
-      
-   
   
   async loadresources()
   {
@@ -73,8 +71,7 @@ async heliuxUIloads()
  //validation basd on url. 
  
  expect(hre.indexOf('helix-ui.css')).toBeGreaterThan(0);
-}
-   
+}   
     
 }
 
