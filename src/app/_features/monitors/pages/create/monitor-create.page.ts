@@ -11,6 +11,7 @@ import { transformKeyPairs } from 'src/app/_shared/utils';
 import { MonotorUtil } from '../../mon.utils';
 import { MarkFormGroupTouched } from "src/app/_shared/utils";
 import { config as MonitorConfigs } from '../../config/index';
+import { duration } from "moment";
 
 
 @Component({
@@ -110,6 +111,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
 
     // delete drop down selection value, it's not needed
     delete this.createMonitorForm.value['type'];
+    this.parseInISO();
     const result = this.schemaService.validateData(this.createMonitorForm.value);
     if (result.isValid) {
       this.monitorService.createMonitor(this.createMonitorForm.value).subscribe(data => {
@@ -120,6 +122,15 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
     else {
       this.addMonLoading = false;
     }
+  }
+  parseInISO(){
+    let definitions =this.schemaService.schema.definitions[this.selectedMonitor]
+    for(var pr in this.schemaService.schema.definitions[this.selectedMonitor].properties){
+      if(definitions.properties[pr].hasOwnProperty('format'))
+       if(this.createMonitorForm.value.details.plugin.hasOwnProperty(pr)){
+         this.createMonitorForm.value.details.plugin[pr]=  duration(parseInt(this.createMonitorForm.value.details.plugin[pr]),'seconds').toISOString();
+       }
+          }
   }
 
   /**
