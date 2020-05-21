@@ -36,7 +36,7 @@ export class SchemaService {
   }
   constructor(private readonly http: HttpClient, @Inject(AJV_INSTANCE) private readonly ajv: Ajv,
     private readonly logService: LoggingService) {
-    const dateTimeRegex = new RegExp('^P');
+    const dateTimeRegex = new RegExp(/^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/);
     this.ajv.addFormat('date-time', {
       validate: (dateValue) => dateTimeRegex.test(dateValue)
     });
