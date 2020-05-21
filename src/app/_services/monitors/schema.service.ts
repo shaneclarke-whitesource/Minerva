@@ -35,8 +35,11 @@ export class SchemaService {
     this._schema = scheme;
   }
   constructor(private readonly http: HttpClient, @Inject(AJV_INSTANCE) private readonly ajv: Ajv,
-  private readonly logService: LoggingService) {
-
+    private readonly logService: LoggingService) {
+    const dateTimeRegex = new RegExp(/^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/);
+    this.ajv.addFormat('date-time', {
+      validate: (dateValue) => dateTimeRegex.test(dateValue)
+    });
   }
 
   /**
@@ -49,8 +52,8 @@ export class SchemaService {
       if (environment.mock) {
         this._schema = this.mockedMonitors.schema;
         this._schema['$id'] = this._schema.$schema;
-        delete this._schema.$schema;    
-        this.ajv.removeSchema();     
+        delete this._schema.$schema;
+        this.ajv.removeSchema();
         this.ajv.addSchema(this._schema, 'monitor');
         res(this.schema);
       }
@@ -59,8 +62,8 @@ export class SchemaService {
           result['$id'] = result.$schema;
           delete result.$schema;
           this._schema = result;
-          this.ajv.removeSchema();          
-          this.ajv.addSchema(result, 'monitor');          
+          this.ajv.removeSchema();
+          this.ajv.addSchema(result, 'monitor');
           this.logService.log(`Schema: ${result}`, LogLevels.info);
           res(this._schema);
         });

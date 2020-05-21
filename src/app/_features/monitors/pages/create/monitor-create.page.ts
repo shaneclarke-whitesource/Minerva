@@ -8,9 +8,10 @@ import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { FieldConfig } from '../../interfaces/field.interface';
 import { transformKeyPairs } from 'src/app/_shared/utils';
-import { CreateMonitorConfig, ParseMonitorTypeEnum } from '../../mon.utils';
+import { MonotorUtil } from '../../mon.utils';
 import { MarkFormGroupTouched } from "src/app/_shared/utils";
 import { config as MonitorConfigs } from '../../config/index';
+import { duration } from "moment";
 
 
 @Component({
@@ -103,13 +104,14 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
     this.createMonitorForm.value['details'] = {
       type: MonitorConfigs[this.selectedMonitor].type,
       plugin: {
-        type: ParseMonitorTypeEnum(this.schemaService.schema.definitions[this.selectedMonitor]),
+        type: MonotorUtil.ParseMonitorTypeEnum(this.schemaService.schema.definitions[this.selectedMonitor]),
         ...(this.subForm.value)
       }
     };
 
     // delete drop down selection value, it's not needed
     delete this.createMonitorForm.value['type'];
+    this.parseInISO();
     const result = this.schemaService.validateData(this.createMonitorForm.value);
     if (result.isValid) {
       this.monitorService.createMonitor(this.createMonitorForm.value).subscribe(data => {
@@ -120,6 +122,15 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
     else {
       this.addMonLoading = false;
     }
+  }
+  parseInISO(){
+    let definitions =this.schemaService.schema.definitions[this.selectedMonitor]
+    for(var pr in this.schemaService.schema.definitions[this.selectedMonitor].properties){
+      if(definitions.properties[pr].hasOwnProperty('format'))
+       if(this.createMonitorForm.value.details.plugin.hasOwnProperty(pr)){
+         this.createMonitorForm.value.details.plugin[pr]=  duration(parseInt(this.createMonitorForm.value.details.plugin[pr]),'seconds').toISOString();
+       }
+          }
   }
 
   /**
@@ -137,7 +148,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
   loadMonitorForm(value: any) {
     this.selectedMonitor = value;
     let definitions = this.schemaService.schema.definitions[this.selectedMonitor];
-    this.dynaConfig = CreateMonitorConfig(definitions);
+    this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
   }
 
   ngOnDestroy() {
