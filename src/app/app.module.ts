@@ -3,6 +3,7 @@ import { StorageModule } from '@ngx-pwa/local-storage';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoggingService } from './_services/logging/logging.service';
 import { PortalDataService } from './_services/portal/portal-data.service';
@@ -20,7 +21,7 @@ import ajv from 'ajv';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserModule,
+    BrowserAnimationsModule,
     SharedModule.forRoot(),
     StorageModule.forRoot({
       LSPrefix: 'intelligence_', // Note the underscore
@@ -37,7 +38,7 @@ import ajv from 'ajv';
       provide: AJV_INSTANCE,
       useFactory: createAjvInstance,
       deps: [AJV_CLASS, AJV_CONFIG]
-    },    
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: portalData,
