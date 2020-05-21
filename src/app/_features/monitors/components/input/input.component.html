@@ -1,5 +1,5 @@
 <ng-template #content>
-<div [ngClass]="(config.inputType==='number')?'hxCol hxSpan-2 numberCtrl':'hxCol hxSpan-6'">
+<div [ngClass]="(config.inputType==='number')?'hxCol hxSpan-2 numberCtrl':'hxCol hxSpan-6'" style="padding-top: 20px;">
   <hx-text-control [formGroup]="group" (keyup)="convertInt($event.target.value)" [attr.hx-dirty]="(group.get(config.name).dirty || group.get(config.name).touched)">
     <input [formControlName]="config.name" [placeholder]="config.label"
   [required]="group.get(config.name).hasError('required') && (group.get(config.name).dirty || group.get(config.name).touched)"
