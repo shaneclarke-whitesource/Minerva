@@ -27,7 +27,10 @@ hx-text-control > input{
 hx-checkbox-control > label {
   text-transform: capitalize;
 }
-hx-select-control>select~label {
+hx-text-control > span{
+  text-transform: capitalize;
+}
+hx-select-control >select~label {
   color: #616161;
   font-size: 1rem;
   text-transform: capitalize;
