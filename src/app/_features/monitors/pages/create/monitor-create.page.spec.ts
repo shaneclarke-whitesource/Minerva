@@ -211,4 +211,21 @@ let spyMonitorService;
     expect(component.subManager.unsubscribe).toHaveBeenCalled();
   });
 
+  it('should convert numeric intervals to ISO Durations', () => {
+    component.selectedMonitor = 'Ping';
+    component.loadMonitorForm(component.selectedMonitor);
+    component.createMonitorForm.value['details'] = {
+        type: 'remote',
+        plugin: {
+          type: 'ping',
+          target: "192.168.0.1",
+          pingInterval: 60,
+          timeout: 120
+        }
+    };
+    component.parseInISO();
+    expect(component.createMonitorForm.value['details'].plugin.pingInterval).toEqual('PT1M');
+    expect(component.createMonitorForm.value['details'].plugin.timeout).toEqual('PT2M');
+  });
+
 });

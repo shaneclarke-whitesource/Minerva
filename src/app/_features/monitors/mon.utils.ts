@@ -1,143 +1,187 @@
-import {
-    CreateMonitor
-} from 'src/app/_models/salus.monitor'
 import { FieldConfig, Validator } from './interfaces/field.interface';
 import { Validators } from '@angular/forms';
 
-
-export class MonotorUtil{
-/**
- *
- * @param monitor a monitor based on schema type
- * @returns FieldConfig[]
- */
- static CreateMonitorConfig(monitor: any): FieldConfig[] {
-    let fields: FieldConfig[] = [];
-    for (const field in monitor.properties) {
-        if (field === "type") {
-            continue;
-        }
-        const config: FieldConfig = MonotorUtil.createField(monitor, field);
-        fields.push(config);
-    }
-    return fields;
+export enum CntrlAttribute {
+    string = "string",
+    number = "number",
+    checkbox="checkbox",
+    select="select",
+    datetime = "date-time",
+    text="text",
+    boolean="boolean",
+    integer="integer",
+    pattern="pattern",
+    minimum="minimum",
+    maximum="maximum",
+    min="min",
+    max="max",
+    type="type",
+    enum="enum",
+    default="default",
+    format="format",
+    required="required",
+    minLength="minLength",
+    input="input"
 }
 
-static ParseMonitorTypeEnum(monitor: any): string {
-    let type: string;
-    for (const field in monitor.properties) {
-        if (field === "type") {
-            type = monitor.properties[field].enum[0];
-            break;
+
+export class MonotorUtil {
+    /**
+     *
+     * @param monitor a monitor based on schema type
+     * @returns FieldConfig[]
+     */
+    static CreateMonitorConfig(monitor: any): FieldConfig[] {
+        let fields: FieldConfig[] = [];
+        for (const field in monitor.properties) {
+            if (field === CntrlAttribute.type) {
+                continue;
+            }
+            const config: FieldConfig = MonotorUtil.createField(monitor, field);
+            fields.push(config);
         }
-    }
-    return type;
-}
-
-/**
- *
- * @param monitor a monitor based on schema type
- * @param fieldName name of field of monitor.properties
- */
- static createField(monitor, fieldName): FieldConfig  {
-
-    let field = monitor.properties[fieldName];
-
-
-    let label = () => {
-        let _label = fieldName;
-        return _label;
+        return fields;
     }
 
-    return {
-        type: MonotorUtil.type(field),
-        ...(label() && {label: label(), name: label()}),
-        ...(MonotorUtil.inputType(field) && {inputType: MonotorUtil.inputType(field)}),
-        ...(MonotorUtil.defaultValue(field) && {value: MonotorUtil.defaultValue(field)}),
-        ...(MonotorUtil.validators(monitor,field,fieldName) && {validations: MonotorUtil.validators(monitor,field,fieldName)}),
-        ...(MonotorUtil.options(field)&& {options:MonotorUtil.options(field)})
+    static ParseMonitorTypeEnum(monitor: any): string {
+        let type: string;
+        for (const field in monitor.properties) {
+            if (field === CntrlAttribute.type) {
+                type = monitor.properties[field].enum[0];
+                break;
+            }
+        }
+        return type;
+    }
+
+    /**
+     *
+     * @param monitor a monitor based on schema type
+     * @param fieldName name of field of monitor.properties
+     */
+    static createField(monitor, fieldName): FieldConfig {
+
+        let field = monitor.properties[fieldName];
+
+        let label = () => {
+            let _label = fieldName;
+            return _label;
+        }
+
+        let fieldType = MonotorUtil.type(field);
+        let fieldLabel = label();
+        let fieldInputType = MonotorUtil.inputType(field);
+        let fieldValidation = MonotorUtil.validators(monitor, field, fieldName);
+        let fieldDefaultValue = MonotorUtil.defaultValue(field);
+        let fieldOption = MonotorUtil.options(field);
+
+        return {
+            type: fieldType,
+            ...(fieldLabel && { label: fieldLabel, name: fieldLabel }),
+            ...(fieldInputType && { inputType: fieldInputType }),
+            ...(fieldDefaultValue && { value: fieldDefaultValue }),
+            ...(fieldValidation && { validations: fieldValidation }),
+            ...(fieldOption && { options: fieldOption })
+        };
+    }
+
+    private static options(field) {
+        if (field.type === "string" && field.hasOwnProperty('enum')) {
+            return field.enum;
+        }
+        return null;
+    }
+
+    private static defaultValue(field): string | null {
+        let value;
+        if (field.hasOwnProperty(CntrlAttribute.default)) {
+            value = field.default;
+        }
+        return value || null;
     };
-}
-static options(field){
-    if (field.type === "string" && field.hasOwnProperty('enum')){
-        return field.enum;
-    }
-    return null;
-}
- static defaultValue(field): string | null {
-    let value;
-    if(field.hasOwnProperty('default')) {
-        value = field.default;
-    }
-    return value || null;
-};
 
- static inputType (field): string | null {
-    let _inputType;
-    if (field.type === "string") {
-        _inputType = 'text';
-    }
-    if(field.type ==="integer"){
-        _inputType="number";
-    }
-
-    if(field.type === "string" && field.hasOwnProperty('format')) {
-        if (field.format === "date-time") {
-            _inputType = "number";
+    private static inputType(field): string | null {
+        let _inputType;
+        if (field.type === CntrlAttribute.string) {
+            if (field.hasOwnProperty(CntrlAttribute.format) && field.format === CntrlAttribute.datetime) {
+                _inputType = CntrlAttribute.number;
+            } else {
+                _inputType = CntrlAttribute.text;
+            }
         }
+        if (field.type === CntrlAttribute.integer) {
+            _inputType = CntrlAttribute.number;
+        }
+        return _inputType || null;
     }
-    return _inputType || null;
-}
-    static type(field): string | null {
+
+    private static type(field): string {
         let _type;
         switch (true) {
-            case field.type === 'string' && field.hasOwnProperty('enum'):
-                _type = "select";
+            case field.type === CntrlAttribute.string && field.hasOwnProperty(CntrlAttribute.enum):
+                _type = CntrlAttribute.select;
                 break;
-            case field.type === 'boolean':
-                _type = "checkbox";
+            case field.type === CntrlAttribute.boolean:
+                _type = CntrlAttribute.checkbox;
                 break;
-            case field.type === 'string':
-            case field.type === 'integer':
-                _type = "input";
+            case field.type === CntrlAttribute.string:
+            case field.type === CntrlAttribute.integer:
+                _type = CntrlAttribute.input;
                 break;
             default:
                 throw `Field type ${field.type}  don't support`;
         }
-        return _type || null;
+        return _type;
     }
 
- static validators (monitor,field,fieldName): Validator[] | null  {
-    let vals = [];
-    // apply any required validators
-    if (monitor.required.includes(fieldName)) {
-        vals.push({
-            name: "required",
-            validator: Validators.required,
-            message: `${fieldName} Required`
-        })
+
+    private static validators(monitor, field, fieldName): Validator[] | null {
+        let vals = [];
+        // apply any required validators
+        if (monitor.required.includes(fieldName)) {
+            vals.push({
+                name: CntrlAttribute.required,
+                validator: Validators.required,
+                message: `${fieldName} Required`
+            })
+        }
+
+        // apply any pattern validators
+        if (field.type === CntrlAttribute.string && field.hasOwnProperty(CntrlAttribute.pattern)) {
+            vals.push({
+                name: CntrlAttribute.pattern,
+                validator: Validators.pattern(field.pattern),
+                message: `${fieldName} format incorrect`
+            });
+        }
+
+        // apply any minimum validators
+        if (field.type === CntrlAttribute.string && field.hasOwnProperty(CntrlAttribute.minLength)) {
+            vals.push({
+                name: CntrlAttribute.minimum,
+                validator: Validators.minLength(parseInt(field.minLength)),
+                message: `${fieldName} must be at least ${field.minLength} character(s)`
+            })
+        }
+        // Apply min and max validation over the number field
+        if (field.type === CntrlAttribute.integer) {
+            if (field.hasOwnProperty(CntrlAttribute.minimum)) {
+                vals.push({
+                    name: CntrlAttribute.min,
+                    validator: Validators.min(parseInt(field.minimum)),
+                    message: `The minimum value to accept for this input ${field.minimum}`
+                })
+            }
+            if (field.hasOwnProperty(CntrlAttribute.maximum)) {
+                vals.push({
+                    name: CntrlAttribute.max,
+                    validator: Validators.max(parseInt(field.maximum)),
+                    message: `The maximum value to accept for this input ${field.maximum}`
+                })
+            }
+        }
+        return vals.length > 0 ? vals : null;
     }
 
-    // apply any pattern validators
-    if (field.type === "string" && field.hasOwnProperty('pattern')) {
-        vals.push({
-            name: "pattern",
-            validator: Validators.pattern(field.pattern),
-            message: `${fieldName} format incorrect`
-        });
-    }
-
-    // apply any minimum validators
-    if (field.type === "string" && field.hasOwnProperty('minLength')) {
-        vals.push({
-            name: "minimum",
-            validator: Validators.minLength(parseInt(field.minLength)),
-            message: `${fieldName} must be at least ${field.minLength} character(s)`
-        })
-    }
-    return vals.length > 0 ? vals : null;
 }
 
-}
-
-// export { CreateMonitorConfig, ParseMonitorTypeEnum }

@@ -8,10 +8,11 @@ import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { FieldConfig } from '../../interfaces/field.interface';
 import { transformKeyPairs } from 'src/app/_shared/utils';
-import { MonotorUtil } from '../../mon.utils';
+import { MonotorUtil,CntrlAttribute } from '../../mon.utils';
 import { MarkFormGroupTouched } from "src/app/_shared/utils";
 import { config as MonitorConfigs } from '../../config/index';
 import { duration } from "moment";
+
 
 
 @Component({
@@ -110,7 +111,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
     };
 
     // delete drop down selection value, it's not needed
-    delete this.createMonitorForm.value['type'];
+    delete this.createMonitorForm.value[CntrlAttribute.type];
     this.parseInISO();
     const result = this.schemaService.validateData(this.createMonitorForm.value);
     if (result.isValid) {
@@ -126,7 +127,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
   parseInISO(){
     let definitions =this.schemaService.schema.definitions[this.selectedMonitor]
     for(var pr in this.schemaService.schema.definitions[this.selectedMonitor].properties){
-      if(definitions.properties[pr].hasOwnProperty('format'))
+      if(definitions.properties[pr].hasOwnProperty(CntrlAttribute.format))
        if(this.createMonitorForm.value.details.plugin.hasOwnProperty(pr)){
          this.createMonitorForm.value.details.plugin[pr]=  duration(parseInt(this.createMonitorForm.value.details.plugin[pr]),'seconds').toISOString();
        }
