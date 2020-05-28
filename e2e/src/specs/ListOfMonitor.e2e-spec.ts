@@ -51,7 +51,9 @@ describe("Monitor List", () => {
   element(by.xpath(strxpath)).click();
   element(by.xpath("//tr[3]//td[1]//hx-checkbox-control[1]//label[1]//hx-checkbox[1]")).click();
   element(by.xpath("//tr[2]//td[1]")).click();
+  browser.sleep(1000);
   expect(element(by.xpath("//button[contains(text(),'Create Suppression')]")).isEnabled()).toBe(true);
+  browser.sleep(1000);
   expect(element(by.xpath("//button[contains(text(),'Copy Monitor')]")).isEnabled()).toBe(true);
 
   });
