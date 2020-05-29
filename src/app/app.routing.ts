@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SchemaResolver } from './_features/monitors/monitor.resolve';
+import { AdminviewComponent } from 'projects/admin/src/app/adminview/adminview.component';
 
 const routes: Routes = [
   { path: 'resources', loadChildren: () => import('./_features/resources/resources.module').then(m => m.ResourcesModule),
@@ -18,6 +19,10 @@ const routes: Routes = [
       breadcrumb: 'VISUALIZE'
     }
   },
+  {
+    path:'adminlazy', loadChildren:() => import('projects/admin/src/app/app.module').then(m =>m.AppModule)
+  },
+  { path: 'admin', component: AdminviewComponent},
   { path: '', redirectTo: '/resources', pathMatch: 'full'},
   { path: '**', redirectTo: '/resources'}
 ];

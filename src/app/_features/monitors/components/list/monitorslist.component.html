@@ -69,7 +69,7 @@
       </td>
       <td><a [routerLink]="['/monitors/details', monitor.id]">{{monitor.name}}</a></td>
       <td><hx-status *ngFor="let label of Object.keys(monitor.labelSelector)">
-        {{monitor.labelSelector[label]}}</hx-status></td>
+        {{label}}</hx-status></td>
       <td>{{monitor.details.type}}</td>
       <td>{{monitor.details.plugin.type}}</td>
     </tr>
