@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { trigger, transition, animate, style, group, state } from '@angular/animations'
 import { ActivatedRoute, Router } from '@angular/router';
-import { MonitorService } from '../../../../_services/monitors/monitor.service';
+import { Animations } from 'src/app/_shared/animations';
 import { Observable } from 'rxjs';
+import { MonitorService } from 'src/app/_services/monitors/monitor.service';
 import { Monitor } from 'src/app/_models/monitors';
 
 
@@ -13,38 +13,7 @@ declare const window: any;
   templateUrl: './monitor-details.page.html',
   styleUrls: ['./monitor-details.page.scss'],
   animations: [
-    trigger('slideInOut', [
-      state('in', style({
-        'opacity': '1', 'visibility': 'visible'
-      })),
-      state('out', style({
-        'max-height': '0px', 'opacity': '0', 'visibility': 'hidden'
-      })),
-      transition('in => out', [group([
-        animate('400ms ease-in-out', style({
-          'opacity': '0'
-        })),
-        animate('500ms ease-in-out', style({
-          'max-height': '0px'
-        })),
-        animate('900ms ease-in-out', style({
-          'visibility': 'hidden'
-        }))
-      ]
-      )]),
-      transition('out => in', [group([
-        animate('1ms ease-in-out', style({
-          'visibility': 'visible'
-        })),
-        animate('600ms ease-in-out', style({
-          'max-height': '500px'
-        })),
-        animate('800ms ease-in-out', style({
-          'opacity': '1'
-        }))
-      ]
-      )])
-    ])
+    Animations.slideUpDownTrigger
   ]
 })
 export class MonitorDetailsPage implements OnInit {

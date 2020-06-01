@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service';
@@ -52,6 +53,7 @@ let spyMonitorService;
         MonitorCreatePage, MonitorsPage, DynamicFormComponent
       ],
       imports: [
+        BrowserAnimationsModule,
         RouterTestingModule.withRoutes(
           [{path: 'monitors', component: MonitorsPage}]
         ),
@@ -123,10 +125,11 @@ let spyMonitorService;
     expect(component.selectedMonitor).toBeDefined();
     expect(component.markFormGroupTouched).toEqual(MarkFormGroupTouched);
     expect(component.mf).toBeDefined();
+    expect(component.additionalSettings).toEqual('out');
   });
 
   it('should get monitor form (mf) and return createMonitorForm controls', () => {
-    expect(Object.keys(component.mf).length).toEqual(2);
+    expect(Object.keys(component.mf).length).toEqual(7);
   });
 
   it('should be invalid createMonitorForm', () => {
@@ -186,14 +189,6 @@ let spyMonitorService;
     });
   });
 
-  it('should return dynamic form invalid', () => {
-    component.selectedMonitor = 'Disk';
-    component['dynamicFormValid'].subscribe((data) => {
-      console.log("**Valid response ", data);
-    });
-    component['dynamicFormSubmit'].next();
-  });
-
   it('should make selectedMonitor equal to dropdown selection', () => {
     component.loadMonitorForm('Disk');
     expect(component.selectedMonitor).toEqual('Disk');
@@ -214,6 +209,7 @@ let spyMonitorService;
   it('should convert numeric intervals to ISO Durations', () => {
     component.selectedMonitor = 'Ping';
     component.loadMonitorForm(component.selectedMonitor);
+    component.createMonitorForm.value.interval = 120;
     component.createMonitorForm.value['details'] = {
         type: 'remote',
         plugin: {
@@ -224,6 +220,7 @@ let spyMonitorService;
         }
     };
     component.parseInISO();
+    expect(component.createMonitorForm.value.interval).toEqual('PT2M');
     expect(component.createMonitorForm.value['details'].plugin.pingInterval).toEqual('PT1M');
     expect(component.createMonitorForm.value['details'].plugin.timeout).toEqual('PT2M');
   });

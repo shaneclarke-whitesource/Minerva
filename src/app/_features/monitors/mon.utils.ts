@@ -21,7 +21,8 @@ export enum CntrlAttribute {
     format="format",
     required="required",
     minLength="minLength",
-    input="input"
+    input="input",
+    interval="interval"
 }
 
 
