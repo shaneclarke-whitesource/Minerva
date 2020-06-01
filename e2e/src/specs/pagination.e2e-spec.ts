@@ -109,25 +109,25 @@ it("Should check if next page button is enabled on initial load",()=>
 expect(element(by.xpath("//button[@class='hxBtn nextPage']")).isEnabled()).toBe(true);
 });
 
-it("Should check if last-page button is disabled on navigating to last page",()=>
+fit("Should check if last-page button is disabled on navigating to last page",()=>
 {
   element(by.xpath("//button[@class='hxBtn lastPage']")).click();
 expect(element(by.xpath("//button[@class='hxBtn lastPage']")).isEnabled()).toBe(false);
 });
 
-it("Should check if next-page button is disabled on navigating to last page",()=>
+fit("Should check if next-page button is disabled on navigating to last page",()=>
 {
   element(by.xpath("//button[@class='hxBtn lastPage']")).click();
 expect(element(by.xpath("//button[@class='hxBtn nextPage']")).isEnabled()).toBe(false);
 });
 
-it("Should check if first-page button is enabled on navigating to last page",()=>
+fit("Should check if first-page button is enabled on navigating to last page",()=>
 {
   element(by.xpath("//button[@class='hxBtn lastPage']")).click();
 expect(element(by.xpath("//button[@class='hxBtn firstPage']")).isEnabled()).toBe(true);
 });
 
-it("Should check if previous-page button is enabled on navigating to last page",()=>
+fit("Should check if previous-page button is enabled on navigating to last page",()=>
 {
   element(by.xpath("//button[@class='hxBtn lastPage']")).click();
 expect(element(by.xpath("//button[@class='hxBtn prevPage']")).isEnabled()).toBe(true);
