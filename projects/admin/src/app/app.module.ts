@@ -1,25 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdminviewComponent } from './adminview/adminview.component';
-import { NavComponent } from './nav/nav.component';
+
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-const providers = []
+import { AuthGuardService } from './auth/auth-gaurd.service';
+
+const providers = [AuthGuardService]
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AdminviewComponent,
-    NavComponent
+    AppComponent  
   ],
   imports: [       
-    AppRoutingModule
+    AppRoutingModule   
   ],
   providers: providers,
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
 
@@ -28,7 +28,7 @@ export class AdminAppModule{
     static forRoot(): ModuleWithProviders {
     return {
       ngModule: AppModule,
-      providers:providers
+      providers:providers,      
     }
   }
 }
