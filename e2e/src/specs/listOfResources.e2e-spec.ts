@@ -2,16 +2,16 @@ import { navigations } from "../commons/navigations";
 import { browser, element, by } from "protractor";
 import { AppPage } from "../pageObjects/app.po";
 import { async } from "@angular/core/testing";
-import { LoadResources } from "../feature/Resources/ListOfResources";
+
 
 
 describe("Resources List", () => {
     let page: AppPage;
-  let check: LoadResources;
+  
 
   beforeEach(() => {
     page = new AppPage();
-    check = new LoadResources();
+  
     page.navigateTo();
   });
 
@@ -23,7 +23,7 @@ describe("Resources List", () => {
   it("Check if Delete button is enabled" , () => {
     
     element.all(by.xpath("//th[@class='hxControl']//hx-checkbox-control//label//hx-checkbox")).click();
-    browser.sleep(20000);
+    browser.sleep(1000);
     expect(element(by.xpath("//button[contains(text(),'Delete')]")).isEnabled()).toBe(true);
   });
 
@@ -31,7 +31,7 @@ describe("Resources List", () => {
     
     
         element.all(by.xpath("//th[@class='hxControl']//hx-checkbox-control//label//hx-checkbox")).click();
-        browser.sleep(20000);
+        browser.sleep(1000);
         expect(element(by.xpath("//button[contains(text(),'Create Multiple Monitors')]")).isEnabled()).toBe(true);
        
   });
@@ -39,7 +39,7 @@ describe("Resources List", () => {
   it("check if Create Supression button is enabled",  () => {
     
    element.all(by.xpath("//th[@class='hxControl']//hx-checkbox-control//label//hx-checkbox")).click();
-    browser.sleep(20000);
+    browser.sleep(1000);
     expect(element(by.xpath("//button[contains(text(),'Create Suppression')]")).isEnabled()).toBe(true);
   });
  it("should have Add resources button", () => {
