@@ -109,12 +109,12 @@ this.addMonLoading=true; this.labelSubmit.next()">
 </div>
 </div>
 
-<div class="hxRow hxSpan-9" *ngIf="!createMonitorForm.value.resourceId">
+<div class="hxRow hxSpan-9">
   <div class="hxCol hxSpan-6">
     <p>Label Selector</p>
   </div>
   <div class="hxCol hxSpan-12">
-    <app-add-fields [validateForm]="labelSubmit.asObservable()" [listOfKeys]="listOfKeys"
+    <app-add-fields [validateForm]="labelSubmit.asObservable()" [disable]="createMonitorForm.value.resourceId" [listOfKeys]="listOfKeys"
       [listOfValues]="listOfValues" (formValuesChanged)="labelsUpdated($event)" (formValid)="labelFormValid.next($event)">
       </app-add-fields>
   </div>

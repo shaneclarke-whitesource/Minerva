@@ -18,6 +18,7 @@ import { ResourcesService } from 'src/app/_services/resources/resources.service'
 import { map } from 'rxjs/operators';
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
+import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fields.component';
 
 
 @Component({
@@ -47,7 +48,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
   resources$ = new Observable<Resource[]>();
 
   showLabelSelectors = true;
-
+change = false;
   // #ngForm reference needed for view
   get mf() { return this.createMonitorForm.controls; }
 
@@ -66,7 +67,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
   // viewchild for dynamic sub form for monitors
   @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
 
-
+  @ViewChild(AddFieldsComponent) labelSelectorForm: AddFieldsComponent;
   constructor(private monitorService: MonitorService, private fb: FormBuilder,
     private labelService: LabelService, private router: Router, private readonly schemaService: SchemaService,
     private resourceService: ResourcesService, private logService: LoggingService) {
@@ -139,17 +140,23 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
     // delete drop down selection value, it's not needed
     delete this.createMonitorForm.value[CntrlAttribute.type];
 
-
     Object.keys(this.createMonitorForm.value).forEach(key => {
       // delete any form fields that are empty strings
       this.createMonitorForm.value[key] === "" && delete this.createMonitorForm.value[key];
       // remove key string array of excludedResourceIds and replace with an array of strings
       if (key === 'excludedResourceIds') {
-        let excluded = [];
-        this.createMonitorForm.value[key].forEach((item, index) => {
-          excluded.push(item.resource);
-        });
-        this.createMonitorForm.value[key] = excluded;
+          let excluded = [];
+          this.createMonitorForm.value[key].forEach((item, index) => {
+            if (item.resource != "") {
+              excluded.push(item.resource);
+            }
+          });
+          // if there are strings in the array we'll include with the form, if not we'll delete the property
+          if (excluded.length === 0) {
+            delete this.createMonitorForm.value[key];
+            // in this case we will also not need the label property
+            delete this.createMonitorForm.value['labelSelector'];
+          }
       }
     });
 

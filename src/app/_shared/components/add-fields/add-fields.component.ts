@@ -31,6 +31,10 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   @Input()
   listOfValues: [];
 
+  // disable input fields
+  @Input()
+  disable: boolean;
+
   // Output emitters will update the components as to changes in the form
   // and whether they are valid
   @Output()
@@ -44,6 +48,7 @@ export class AddFieldsComponent implements OnInit, OnChanges {
 
   public keyValueForm: FormGroup;
   private addArray = [];
+
 
   ngOnInit() {
     // Begin by pushing all intialData key pairs to the form and
