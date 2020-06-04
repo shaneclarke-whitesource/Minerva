@@ -47,7 +47,6 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
   additionalSettings: string = 'out';
   resources$ = new Observable<Resource[]>();
 
-  showLabelSelectors = true;
 change = false;
   // #ngForm reference needed for view
   get mf() { return this.createMonitorForm.controls; }

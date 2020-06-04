@@ -1,5 +1,5 @@
   <div class="hxPagination hxBtnGroup" *ngIf="total > perPage">
-    <button class="hxBtn firstPage" (click)="onPage(1)" [disabled]="page === 0">
+    <button class="hxBtn firstPage" (click)="onPage(0)" [disabled]="page === 0">
       <hx-icon type="angle-start"></hx-icon>
     </button>
     <button class="hxBtn prevPage" (click)="onPrev()" [disabled]="page === 0">

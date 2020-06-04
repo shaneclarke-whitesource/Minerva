@@ -16,6 +16,8 @@ import ajv from 'ajv';
 import { MonitorsPage } from '../monitors/monitors.page';
 import { MarkFormGroupTouched } from 'src/app/_shared/utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
+import { Observable } from 'rxjs';
+import { Resource } from 'src/app/_models/resources';
 
 const keyPair = {
   keysandvalues: [
@@ -126,6 +128,7 @@ let spyMonitorService;
     expect(component.markFormGroupTouched).toEqual(MarkFormGroupTouched);
     expect(component.mf).toBeDefined();
     expect(component.additionalSettings).toEqual('out');
+    expect(component.resources$).toEqual(new Observable<Resource[]>());
   });
 
   it('should get monitor form (mf) and return createMonitorForm controls', () => {
