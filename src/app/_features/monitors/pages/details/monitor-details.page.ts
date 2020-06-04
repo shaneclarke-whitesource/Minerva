@@ -2,8 +2,10 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { trigger, transition, animate, style, group, state } from '@angular/animations'
 import { ActivatedRoute, Router } from '@angular/router';
 import { MonitorService } from '../../../../_services/monitors/monitor.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Monitor } from 'src/app/_models/monitors';
+import { SchemaService } from 'src/app/_services/monitors/schema.service';
+import { MonotorUtil } from '../../mon.utils';
 
 
 declare const window: any;
@@ -49,23 +51,32 @@ declare const window: any;
 })
 export class MonitorDetailsPage implements OnInit {
   id: string;
+  private labelsSubmit: Subject<void> = new Subject<void>();
+  private labelFormSubmit: Subject<boolean> = new Subject<boolean>();
+  private dynamicFormSubmit: Subject<void> = new Subject<void>();
 
-  monitor$: Observable<Monitor>;
+  monitor: Monitor;
   Object = window.Object;
   additionalSettings: string = 'out';
+  test: any;
 
-  @ViewChild('delMonLink') delMonitor :ElementRef;
+  @ViewChild('delMonLink') delMonitor: ElementRef;
   @ViewChild('delMonitorFail') delMonitorFailure: ElementRef;
-  deleteLoading:boolean = false;
+  deleteLoading: boolean = false;
+  dynaConfig: import("/home/prashant/Rackspace Repo/Minerva/src/app/_features/monitors/interfaces/field.interface").FieldConfig[];
 
 
   constructor(private route: ActivatedRoute, private router: Router,
+    private readonly schemaService: SchemaService,
     private monitorService: MonitorService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = params['id'];
-      this.monitor$ = this.monitorService.getMonitor(this.id);
+      this.monitorService.getMonitor(this.id).subscribe(dt => {
+        this.monitor = dt;
+        this.monitorDetailsubForm(this.monitor);
+      });
     });
   }
 
@@ -88,4 +99,22 @@ export class MonitorDetailsPage implements OnInit {
     });
   }
 
+  monitorUpdated(event) {
+
+
+
+  }
+
+ /**
+  * get monitor type and creat and dynamic form as per Moniotor type 
+  * @param monitor 
+  */
+  monitorDetailsubForm(monitor) {
+    Object.keys(this.schemaService.schema.definitions).forEach(prop => {
+      if (this.schemaService.schema.definitions[prop].title === monitor.details.plugin.type) {
+        let definitions = this.schemaService.schema.definitions[prop];
+        this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
+      }
+    })
+  }
 }

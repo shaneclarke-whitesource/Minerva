@@ -1,4 +1,4 @@
-<div *ngIf="monitor$ | async as monitor">
+<div *ngIf="monitor">
   <div class="hxRow monitor-header">
     <div class="hxCol hxSpan-12">
         <app-breadcrumb [routeDetails]="monitor.name || monitor.details.plugin.type"></app-breadcrumb>
@@ -94,19 +94,38 @@
     </div>
 
     <div class="hxRow hxSpan-9" style="padding-top: 20px;">
-      <div class="hxCol hxSpan-6"><h4>{{monitor.details.plugin.type}} monitor Details</h4></div>
+      <div class="hxCol hxSpan-6"><h4>{{monitor.details.plugin.type}} monitor Details</h4>        
+      </div>
       <div class="hxCol hxSpan-6">
+        <hx-disclosure aria-controls="mntrDetailPop" #labelpop id="labelpop" class="editclick">
+          <hx-icon type="pencil"></hx-icon></hx-disclosure>
         <div class="hxRow" *ngFor="let pluginField of Object.keys(monitor.details.plugin)">
         <ng-container *ngIf="pluginField != 'type'">
           <div class="hxCol hxSpan-6">
             {{pluginField}}
           </div>
-          <div class="hxCol hxSpan-6">
+          <div class="hxCol hxSpan-3">
             {{monitor.details.plugin[pluginField]}}
           </div>
+          <hx-popover id="mntrDetailPop" position="right-middle">
+            <header>
+              {{monitor.details.plugin.type}} monitor Details
+            </header>      
+               <hx-div scroll="vertical">
+              <monitor-dynamic-form [config]="dynaConfig" [validateForm]="dynamicFormSubmit.asObservable()" (formValid)="dynamicFormValid.next($event)">
+              </monitor-dynamic-form>
+            </hx-div>
+            <footer>
+              <button class="hxBtn hxPrimary" [disabled]="labelsLoading" (click)="labelsLoading = true; labelsSubmit.next()">
+                <hx-busy class="popover-busy" *ngIf="labelsLoading"></hx-busy>
+                Submit</button>
+              <button class="hxBtn" [disabled]="labelsLoading" (click)="labelPopPencil.nativeElement.click()" aria-controls="metaPopover">Cancel</button>
+            </footer>
+          </hx-popover>
         </ng-container>
         </div>
       </div>
+      
     </div>
 
 
