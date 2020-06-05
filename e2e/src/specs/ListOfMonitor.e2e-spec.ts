@@ -2,7 +2,7 @@ import { navigations } from "../commons/navigations";
 import { browser, element, by } from "protractor";
 import { AppPage } from "../pageObjects/app.po";
 import { async } from "@angular/core/testing";
-import { LoadResources } from "../feature/Resources/ListOfResources";
+
 
 
 describe("Monitor List", () => {
@@ -28,21 +28,21 @@ describe("Monitor List", () => {
 
   it("Check if Create Suppression button is enabled" , () => {
      nav.navigateToMonitor();
-    browser.sleep(10000);
+    browser.sleep(1000);
     element.all(by.xpath(strxpath)).click();
-    browser.sleep(20000);
+    browser.sleep(1000);
     expect(element(by.xpath("//button[contains(text(),'Create Suppression')]")).isEnabled()).toBe(true);
   });
   it("Check if Copy Monitor button is enabled" , () => {
      nav.navigateToMonitor();
-    browser.sleep(10000);
+    browser.sleep(1000);
     element.all(by.xpath(strxpath)).click();
-    browser.sleep(20000);
+    browser.sleep(10000);
     expect(element(by.xpath("//button[contains(text(),'Copy Monitor')]")).isEnabled()).toBe(true);
   });
   it("Check if Create Monitor button is present" , () => {
      nav.navigateToMonitor();
-    browser.sleep(10000);
+    browser.sleep(1000);
     expect(element(by.xpath("//button[@class='hxBtn hxPrimary']")).isPresent()).toBe(true);
   });
   it("Check few checkbox selected and deseleted if all buttons are enabled" , () => {
@@ -60,13 +60,13 @@ describe("Monitor List", () => {
   
   it("Should have search option", ()=>{
      nav.navigateToMonitor();
-    browser.sleep(10000);
+    browser.sleep(1000);
     expect(element(by.xpath("//input[@id='txtSearch']")).isPresent()).toBe(true);
  });
  it("should display 25 rows", async()=>
 {  
     await nav.navigateToMonitor();
-    browser.sleep(5000);
+    browser.sleep(1000);
     var arrRows = await element(by.css("table.hxTable tbody")).all(by.tagName("tr"));
     expect(arrRows.length).toEqual(25);
 });

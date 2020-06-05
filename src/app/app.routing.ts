@@ -18,6 +18,9 @@ const routes: Routes = [
       breadcrumb: 'VISUALIZE'
     }
   },
+  {
+    path:'adminlazy', loadChildren:() => import('projects/admin/src/app/app.module').then(m =>m.AppModule)
+  },  
   { path: '', redirectTo: '/resources', pathMatch: 'full'},
   { path: '**', redirectTo: '/resources'}
 ];
