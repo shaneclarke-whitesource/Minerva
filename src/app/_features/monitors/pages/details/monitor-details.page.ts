@@ -6,6 +6,9 @@ import { Observable, Subject } from 'rxjs';
 import { Monitor } from 'src/app/_models/monitors';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { MonotorUtil } from '../../mon.utils';
+import { FormGroup } from '@angular/forms';
+import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
+import { tap } from 'rxjs/operators';
 
 
 declare const window: any;
@@ -51,11 +54,14 @@ declare const window: any;
 })
 export class MonitorDetailsPage implements OnInit {
   id: string;
-  private labelsSubmit: Subject<void> = new Subject<void>();
-  private labelFormSubmit: Subject<boolean> = new Subject<boolean>();
   private dynamicFormSubmit: Subject<void> = new Subject<void>();
+  private dynamicFormValid: Subject<boolean> = new Subject<boolean>();
+  @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
+  monitorUpdateLoad:boolean;
+  updateMonitorForm: FormGroup;
+  @ViewChild('monitorPopup') monitorPopPencil:ElementRef; 
 
-  monitor: Monitor;
+  monitor$: Observable<Monitor>;
   Object = window.Object;
   additionalSettings: string = 'out';
   test: any;
@@ -63,7 +69,10 @@ export class MonitorDetailsPage implements OnInit {
   @ViewChild('delMonLink') delMonitor: ElementRef;
   @ViewChild('delMonitorFail') delMonitorFailure: ElementRef;
   deleteLoading: boolean = false;
+  activeUpdatepanel=false;
+  // isLoaded=false;
   dynaConfig: import("/home/prashant/Rackspace Repo/Minerva/src/app/_features/monitors/interfaces/field.interface").FieldConfig[];
+  monitoryType: string;
 
 
   constructor(private route: ActivatedRoute, private router: Router,
@@ -73,11 +82,13 @@ export class MonitorDetailsPage implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = params['id'];
-      this.monitorService.getMonitor(this.id).subscribe(dt => {
-        this.monitor = dt;
-        this.monitorDetailsubForm(this.monitor);
-      });
-    });
+      this.monitor$=this.monitorService.getMonitor(this.id).pipe(
+        tap( data => {
+          this.monitoryType = data.details.plugin.type;
+          // this.isLoaded=true;
+        })
+      );      
+    });    
   }
 
   deleteMonitor(id: string): void {
@@ -100,18 +111,20 @@ export class MonitorDetailsPage implements OnInit {
   }
 
   monitorUpdated(event) {
+  }
 
-
-
+  pencilClick(){
+    this.monitorDetailsubForm();
+    this.activeUpdatepanel=true;
   }
 
  /**
   * get monitor type and creat and dynamic form as per Moniotor type 
   * @param monitor 
   */
-  monitorDetailsubForm(monitor) {
+  monitorDetailsubForm() {
     Object.keys(this.schemaService.schema.definitions).forEach(prop => {
-      if (this.schemaService.schema.definitions[prop].title === monitor.details.plugin.type) {
+      if (this.schemaService.schema.definitions[prop].title === this.monitoryType) {
         let definitions = this.schemaService.schema.definitions[prop];
         this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
       }

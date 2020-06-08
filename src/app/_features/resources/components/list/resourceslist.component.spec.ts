@@ -196,7 +196,7 @@ describe('ResourcesListComponent', () => {
     spyOn(component['ngUnsubscribe'], 'next');
     spyOn(component['ngUnsubscribe'], 'complete');
     component.ngOnDestroy();
-    expect(component['ngUnsubscribe'].next).toHaveBeenCalledTimes(1);
-    expect(component['ngUnsubscribe'].complete).toHaveBeenCalledTimes(1);
+    expect(component['ngUnsubscribe'].next()).toHaveBeenCalledTimes(1);
+    expect(component['ngUnsubscribe'].complete()).toHaveBeenCalledTimes(1);
   });
 });

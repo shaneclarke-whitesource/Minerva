@@ -1,16 +1,22 @@
-<div *ngIf="monitor">
-  <div class="hxRow monitor-header">
-    <div class="hxCol hxSpan-12">
+<!-- <div class="loader" *ngIf="!isLoaded">
+    <hx-busy></hx-busy>
+</div> -->
+<div *ngIf="monitor$ | async as monitor">
+  <!-- <div *ngIf="isLoaded"> -->
+    <div>
+
+    <div class="hxRow monitor-header">
+      <div class="hxCol hxSpan-12">
         <app-breadcrumb [routeDetails]="monitor.name || monitor.details.plugin.type"></app-breadcrumb>
-    </div>
-    <div class="hxCol hxSpan-9 monitor-title">
-      <h2>{{monitor.name}}</h2>
-    </div>
-    <div class="hxCol hxSpan-3 cog-menu-div align-right">
+      </div>
+      <div class="hxCol hxSpan-9 monitor-title">
+        <h2>{{monitor.name}}</h2>
+      </div>
+      <div class="hxCol hxSpan-3 cog-menu-div align-right">
         <hx-disclosure class="hxBtn" aria-controls="basicMenuId">
-            <hx-icon type="cog"></hx-icon>
-            <span>Actions</span>
-            <hx-icon class="hxPrimary" type="angle-down"></hx-icon>
+          <hx-icon type="cog"></hx-icon>
+          <span>Actions</span>
+          <hx-icon class="hxPrimary" type="angle-down"></hx-icon>
         </hx-disclosure>
         <hx-menu id="basicMenuId">
           <section>
@@ -22,19 +28,20 @@
             <hx-menuitem>Modify Status</hx-menuitem>
             <hx-menuitem>Modify Parameters</hx-menuitem>
             <hx-menuitem>Modify Options</hx-menuitem>
-            <hx-menuitem><hx-disclosure #delMonLink
-              aria-controls="delMonModal">Delete Monitor</hx-disclosure></hx-menuitem>
+            <hx-menuitem>
+              <hx-disclosure #delMonLink aria-controls="delMonModal">Delete Monitor</hx-disclosure>
+            </hx-menuitem>
           </section>
         </hx-menu>
+      </div>
     </div>
-    </div>
-
+  
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-9">
         <h3>Monitor Details</h3>
       </div>
     </div>
-
+  
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-6">
         <h4>Monitor Type</h4>
@@ -52,7 +59,7 @@
         </div>
       </div>
     </div>
-
+  
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-6">
         <h4>Monitor Scope</h4>
@@ -63,122 +70,122 @@
           Additional Settings</a>
       </div>
     </div>
-
+  
     <div class="hxRow hxSpan-9" style="margin-top:-15px" [@slideInOut]="additionalSettings">
       <div class="hxCol hxSpan-6 hxOffset-6">
         <div class="hxRow hxSpan-12">
-        <div class="hxCol hxSpan-6">
-          <h4>Period (seconds)</h4>
-          {{monitor.interval | durationSeconds}}
+          <div class="hxCol hxSpan-6">
+            <h4>Period (seconds)</h4>
+            {{monitor.interval | durationSeconds}}
+          </div>
+          <div class="hxCol hxSpan-6" *ngIf="monitor.excludedResourceIds.length > 0">
+            <h4>Excluded Resources</h4>
+            <ng-container *ngFor="let item of monitor.excludedResourceIds, let i = index ">
+              {{item}} <br />
+            </ng-container>
+          </div>
+          <div class="hxCol hxSpan-6" *ngIf="monitor.resourceId">
+            <h4>Resource ID</h4>
+            {{monitor.resourceId}}
+          </div>
+          <div class="hxCol hxSpan-6">
+            <h4>Label Selector Method</h4>
+            {{monitor.labelSelectorMethod}}
+          </div>
+          <div class="hxCol hxSpan-6">
+            <h4>Policy</h4>
+            {{monitor.policy}}
+          </div>
         </div>
-        <div class="hxCol hxSpan-6" *ngIf="monitor.excludedResourceIds.length > 0">
-          <h4>Excluded Resources</h4>
-          <ng-container *ngFor="let item of monitor.excludedResourceIds, let i = index ">
-            {{item}} <br/>
+      </div>
+    </div>
+  
+    <div class="hxRow hxSpan-9">
+      <div class="hxCol hxSpan-6">
+        <h4>{{monitor.details.plugin.type}} monitor Details <hx-icon id="pencilIcn" (click)="pencilClick()" type="pencil">
+          </hx-icon>
+        </h4>
+      </div>
+      <div *ngIf="!activeUpdatepanel" class="hxCol hxSpan-6">
+        <div class="hxRow" *ngFor="let pluginField of Object.keys(monitor.details.plugin)">
+          <ng-container *ngIf="pluginField != 'type'">
+            <div class="hxCol hxSpan-6">
+              {{pluginField}}
+            </div>
+            <div class="hxCol hxSpan-3">
+              {{monitor.details.plugin[pluginField]}}
+            </div>
+  
           </ng-container>
         </div>
-        <div class="hxCol hxSpan-6" *ngIf="monitor.resourceId">
-          <h4>Resource ID</h4>
-          {{monitor.resourceId}}
-        </div>
-        <div class="hxCol hxSpan-6">
-        <h4>Label Selector Method</h4>
-        {{monitor.labelSelectorMethod}}
       </div>
-      <div class="hxCol hxSpan-6">
-        <h4>Policy</h4>
-        {{monitor.policy}}
-      </div>
-    </div>
-    </div>
-    </div>
-
-    <div class="hxRow hxSpan-9" style="padding-top: 20px;">
-      <div class="hxCol hxSpan-6"><h4>{{monitor.details.plugin.type}} monitor Details</h4>        
-      </div>
-      <div class="hxCol hxSpan-6">
-        <hx-disclosure aria-controls="mntrDetailPop" #labelpop id="labelpop" class="editclick">
-          <hx-icon type="pencil"></hx-icon></hx-disclosure>
-        <div class="hxRow" *ngFor="let pluginField of Object.keys(monitor.details.plugin)">
-        <ng-container *ngIf="pluginField != 'type'">
-          <div class="hxCol hxSpan-6">
-            {{pluginField}}
-          </div>
-          <div class="hxCol hxSpan-3">
-            {{monitor.details.plugin[pluginField]}}
-          </div>
-          <hx-popover id="mntrDetailPop" position="right-middle">
-            <header>
-              {{monitor.details.plugin.type}} monitor Details
-            </header>      
-               <hx-div scroll="vertical">
-              <monitor-dynamic-form [config]="dynaConfig" [validateForm]="dynamicFormSubmit.asObservable()" (formValid)="dynamicFormValid.next($event)">
-              </monitor-dynamic-form>
-            </hx-div>
-            <footer>
-              <button class="hxBtn hxPrimary" [disabled]="labelsLoading" (click)="labelsLoading = true; labelsSubmit.next()">
-                <hx-busy class="popover-busy" *ngIf="labelsLoading"></hx-busy>
-                Submit</button>
-              <button class="hxBtn" [disabled]="labelsLoading" (click)="labelPopPencil.nativeElement.click()" aria-controls="metaPopover">Cancel</button>
-            </footer>
-          </hx-popover>
-        </ng-container>
+      <div id="updateForm" *ngIf="dynaConfig && activeUpdatepanel" class="hxBox hxLg minWidth">
+        <monitor-dynamic-form [config]="dynaConfig" [validateForm]="dynamicFormSubmit.asObservable()"
+          (formValid)="dynamicFormValid.next($event)" (_ngChange)="dynamicFormValid.next($event)">
+        </monitor-dynamic-form>
+        <div class="topMargin">
+          <button type="submit" class="hxBtn hxPrimary" (click)="monitorUpdateLoad = true;dynamicFormSubmit.next()">
+            <hx-busy class="popover-busy" [disabled]="!monitorUpdateLoad" *ngIf="monitorUpdateLoad"></hx-busy>
+            Submit
+          </button>
+          <button class="hxBtn" [disabled]="monitorUpdateLoad" (click)="activeUpdatepanel=false"
+            aria-controls="metaPopover">Cancel</button>
         </div>
       </div>
-      
     </div>
-
-
-  <div class="hxRow hxSpan-9 last-item">
-    <div class="hxCol hxSpan-6">
-      <h4>Updated</h4>
-      {{monitor.updatedTimestamp |  date:'MM/dd/yyyy'}}
-    </div>
-    <div class="hxCol hxSpan-6">
-      <h4>Created</h4>
-      {{monitor.createdTimestamp |  date:'MM/dd/yyyy'}}
-    </div>
-  </div>
-  <hx-modal class="hxSm"
-    id="delMonModal">
-    <header>
-      <h2>Delete {{monitor.name || monitor.details.plugin.type}} monitor</h2>
-    </header>
-    <hx-div>
-      Are you sure you'd like to delete this Monitor?
-    </hx-div>
-    <footer>
-      <button class="hxBtn hxPrimary" (click)="deleteMonitor(monitor.id)">
-          <hx-busy class="popover-busy" *ngIf="deleteLoading"></hx-busy>Confirm</button>
-      <button class="hxBtn" (click)="delMonitor.nativeElement.click()">Cancel</button>
-    </footer>
-  </hx-modal>
-  <hx-disclosure aria-controls="delErrorModal" #delMonitorFail class="nodisplaClick"></hx-disclosure>
-<hx-modal class="hxSm"
-  id="delErrorModal">
-  <header>
-    <h2>Delete for {{monitor.name || monitor.details.plugin.type}} failed</h2>
-  </header>
-  <hx-div>
-    <h4>Please try again</h4>
-  </hx-div>
-  <footer>
-    <button class="hxBtn hxPrimary" (click)="delMonitorFailure.nativeElement.click()">Close</button>
-  </footer>
-</hx-modal>
-  </div>
-    <div class="hxRow hxSpan-9">
-      <div class="hxCol">
-        <h3>Events</h3>
-      </div>
-    </div>
-
-    <div class="hxRow hxSpan-9">
-      <div class="hxCol">
-          <p>These are events related to this measurement on the basis of label</p>
-      </div>
-    </div>
-
+  
+  
     <div class="hxRow hxSpan-9 last-item">
-    <pre><code>[Events Grid here]</code></pre>
+      <div class="hxCol hxSpan-6">
+        <h4>Updated</h4>
+        {{monitor.updatedTimestamp |  date:'MM/dd/yyyy'}}
+      </div>
+      <div class="hxCol hxSpan-6">
+        <h4>Created</h4>
+        {{monitor.createdTimestamp |  date:'MM/dd/yyyy'}}
+      </div>
     </div>
+    <hx-modal class="hxSm" id="delMonModal">
+      <header>
+        <h2>Delete {{monitor.name || monitor.details.plugin.type}} monitor</h2>
+      </header>
+      <hx-div>
+        Are you sure you'd like to delete this Monitor?
+      </hx-div>
+      <footer>
+        <button class="hxBtn hxPrimary" (click)="deleteMonitor(monitor.id)">
+          <hx-busy class="popover-busy" *ngIf="deleteLoading"></hx-busy>Confirm
+        </button>
+        <button class="hxBtn" (click)="delMonitor.nativeElement.click()">Cancel</button>
+      </footer>
+    </hx-modal>
+    <hx-disclosure aria-controls="delErrorModal" #delMonitorFail class="nodisplaClick"></hx-disclosure>
+    <hx-modal class="hxSm" id="delErrorModal">
+      <header>
+        <h2>Delete for {{monitor.name || monitor.details.plugin.type}} failed</h2>
+      </header>
+      <hx-div>
+        <h4>Please try again</h4>
+      </hx-div>
+      <footer>
+        <button class="hxBtn hxPrimary" (click)="delMonitorFailure.nativeElement.click()">Close</button>
+      </footer>
+    </hx-modal>
+  </div>
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol">
+      <h3>Events</h3>
+    </div>
+  </div>
+  
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol">
+      <p>These are events related to this measurement on the basis of label</p>
+    </div>
+  </div>
+  
+  <div class="hxRow hxSpan-9 last-item">
+    <pre><code>[Events Grid here]</code></pre>
+  </div>
+</div>
+
