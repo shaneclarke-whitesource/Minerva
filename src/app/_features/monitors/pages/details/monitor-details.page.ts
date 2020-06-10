@@ -9,6 +9,7 @@ import { MonotorUtil, CntrlAttribute } from '../../mon.utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { tap } from 'rxjs/operators';
 import { duration} from "moment";
+import { FieldConfig } from '../../interfaces/field.interface';
 
 declare const window: any;
 
@@ -69,7 +70,7 @@ export class MonitorDetailsPage implements OnInit {
   deleteLoading: boolean = false;
   isUpdtPnlActive = false;
   // isLoaded=false;
-  dynaConfig: import("/home/prashant/Rackspace Repo/Minerva/src/app/_features/monitors/interfaces/field.interface").FieldConfig[];
+  dynaConfig: FieldConfig[];
   monDetails: Monitor;
   formatProp=[];
 
