@@ -140,8 +140,8 @@ export class MonitorDetailsPage implements OnInit {
     let patchBody = [];
     Object.keys(form.value).forEach(item => {
       if (this.formatProp.filter(a => a === item).length > 0) {
-        let second: any = duration(this.monDetails.details.plugin[item], 'second');
-        if (second / 1000 !== form.value[item]) {
+        let second = this.cnvrtDurtnToSec(this.monDetails.details.plugin[item]);
+        if (second !== form.value[item]) {
           patchBody.push({ op: "replace", path: `/details/plugin/${item}`, "value": form.value[item] });
         }
       } else if (this.monDetails.details.plugin[item] !== form.value[item]) {
@@ -182,8 +182,7 @@ export class MonitorDetailsPage implements OnInit {
       if (definitions.properties[prop].hasOwnProperty(CntrlAttribute.format)) {
         if (this.monDetails.details.plugin[prop]) {
           this.formatProp.push(prop);
-          let second: any = duration(this.monDetails.details.plugin[prop], 'second');
-          definitions.properties[prop].default = second / 1000;
+          definitions.properties[prop].default = this.cnvrtDurtnToSec(this.monDetails.details.plugin[prop]);
         }
       } else {
         definitions.properties[prop].default = this.monDetails.details.plugin[prop];
@@ -192,6 +191,10 @@ export class MonitorDetailsPage implements OnInit {
     }
     )
     return definitions;
+  }
+  cnvrtDurtnToSec(dura){
+    let second: any = duration(dura, 'second');
+    return second/1000;
   }
   ngOnDestroy() {
     this.gc.unsubscribe();
