@@ -224,7 +224,6 @@ let spyMonitorService;
   });
 
   it('should add excludedResources form control', ()=> {
-    console.log("**Length of Resources: ", component.excludedResources.length)
     component.addExcludedResource();
     expect(component.excludedResources.length).toEqual(2);
   });
