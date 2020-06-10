@@ -74,6 +74,21 @@ router.post('/', (req, res) => {
         });
 });
 
+router.patch('/:id', (req, res) => {
+    let monitor = req.body;
+    let id = req.params.id
+    axios.patch(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/monitors/${id}`,
+        monitor, { headers: { 'x-auth-token': Identity.info().token.id,
+        'Content-Type': 'application/json-patch+json'    
+    } })
+        .then((data) => {
+            res.send(data.data).sendStatus(data.status);
+        })
+        .catch((err) => {
+            res.sendStatus(parseInt(err.response.status)).json(err);
+        });
+});
+
 
 
 

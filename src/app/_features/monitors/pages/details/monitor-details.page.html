@@ -102,39 +102,37 @@
   
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-6">
-        <h4>{{monitor.details.plugin.type}} monitor Details <hx-icon id="pencilIcn" (click)="pencilClick()" type="pencil">
+        <h4>{{monDetails.details.plugin.type}} monitor Details <hx-icon id="pencilIcn" (click)="pencilClick()" type="pencil">
           </hx-icon>
         </h4>
       </div>
-      <div *ngIf="!activeUpdatepanel" class="hxCol hxSpan-6">
-        <div class="hxRow" *ngFor="let pluginField of Object.keys(monitor.details.plugin)">
+      <div *ngIf="!isUpdtPnlActive" class="hxCol hxSpan-6">
+        <div class="hxRow" *ngFor="let pluginField of Object.keys(monDetails.details.plugin)">
           <ng-container *ngIf="pluginField != 'type'">
             <div class="hxCol hxSpan-6">
               {{pluginField}}
             </div>
             <div class="hxCol hxSpan-3">
-              {{monitor.details.plugin[pluginField]}}
+              {{monDetails.details.plugin[pluginField]}}
             </div>
   
           </ng-container>
         </div>
       </div>
-      <div id="updateForm" *ngIf="dynaConfig && activeUpdatepanel" class="hxBox hxLg minWidth">
+      <div id="updateForm" *ngIf="dynaConfig && isUpdtPnlActive" class="hxBox hxLg minWidth">
         <monitor-dynamic-form [config]="dynaConfig" [validateForm]="dynamicFormSubmit.asObservable()"
-          (formValid)="dynamicFormValid.next($event)" (_ngChange)="dynamicFormValid.next($event)">
+          (formValid)="dynamicFormValid.next($event)">
         </monitor-dynamic-form>
         <div class="topMargin">
           <button type="submit" class="hxBtn hxPrimary" (click)="monitorUpdateLoad = true;dynamicFormSubmit.next()">
             <hx-busy class="popover-busy" [disabled]="!monitorUpdateLoad" *ngIf="monitorUpdateLoad"></hx-busy>
             Submit
           </button>
-          <button class="hxBtn" [disabled]="monitorUpdateLoad" (click)="activeUpdatepanel=false"
+          <button class="hxBtn" [disabled]="monitorUpdateLoad" (click)="isUpdtPnlActive=false"
             aria-controls="metaPopover">Cancel</button>
         </div>
       </div>
     </div>
-  
-  
     <div class="hxRow hxSpan-9 last-item">
       <div class="hxCol hxSpan-6">
         <h4>Updated</h4>

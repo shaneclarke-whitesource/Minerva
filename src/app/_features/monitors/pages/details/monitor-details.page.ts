@@ -2,14 +2,13 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { trigger, transition, animate, style, group, state } from '@angular/animations'
 import { ActivatedRoute, Router } from '@angular/router';
 import { MonitorService } from '../../../../_services/monitors/monitor.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Monitor } from 'src/app/_models/monitors';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
-import { MonotorUtil } from '../../mon.utils';
-import { FormGroup } from '@angular/forms';
+import { MonotorUtil, CntrlAttribute } from '../../mon.utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { tap } from 'rxjs/operators';
-
+import { duration} from "moment";
 
 declare const window: any;
 
@@ -57,22 +56,22 @@ export class MonitorDetailsPage implements OnInit {
   private dynamicFormSubmit: Subject<void> = new Subject<void>();
   private dynamicFormValid: Subject<boolean> = new Subject<boolean>();
   @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
-  monitorUpdateLoad:boolean;
-  updateMonitorForm: FormGroup;
-  @ViewChild('monitorPopup') monitorPopPencil:ElementRef; 
+  monitorUpdateLoad: boolean;
+  @ViewChild('monitorPopup') monitorPopPencil: ElementRef;
 
   monitor$: Observable<Monitor>;
   Object = window.Object;
   additionalSettings: string = 'out';
-  test: any;
+  gc = new Subscription();
 
   @ViewChild('delMonLink') delMonitor: ElementRef;
   @ViewChild('delMonitorFail') delMonitorFailure: ElementRef;
   deleteLoading: boolean = false;
-  activeUpdatepanel=false;
+  isUpdtPnlActive = false;
   // isLoaded=false;
   dynaConfig: import("/home/prashant/Rackspace Repo/Minerva/src/app/_features/monitors/interfaces/field.interface").FieldConfig[];
-  monitoryType: string;
+  monDetails: Monitor;
+  formatProp=[];
 
 
   constructor(private route: ActivatedRoute, private router: Router,
@@ -82,13 +81,22 @@ export class MonitorDetailsPage implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = params['id'];
-      this.monitor$=this.monitorService.getMonitor(this.id).pipe(
-        tap( data => {
-          this.monitoryType = data.details.plugin.type;
-          // this.isLoaded=true;
+      this.monitor$ = this.monitorService.getMonitor(this.id).pipe(
+        tap((data) => {
+          this.monDetails = data;          
         })
-      );      
-    });    
+      );
+    });
+    this.gc.add(
+      this.dynamicFormValid.subscribe((valid) => {
+        if (valid) {
+          this.monitorUpdate();
+        }else{
+          this.monitorUpdateLoad=false;
+          throw "Form is not valid!";
+        }
+      })
+    )
   }
 
   deleteMonitor(id: string): void {
@@ -110,24 +118,82 @@ export class MonitorDetailsPage implements OnInit {
     });
   }
 
-  monitorUpdated(event) {
+  /**
+   * Update Monitors plugin details
+   */
+  monitorUpdate() {
+    let updateBody=this.pluginProps(this.subForm.form);
+    this.monitorService.updateMonitorTypeDetails(this.id,updateBody).subscribe(data =>{
+      this.monDetails = data;
+      this.monitorUpdateLoad=false;
+      this.isUpdtPnlActive=false;
+    });   
   }
 
-  pencilClick(){
-    this.monitorDetailsubForm();
-    this.activeUpdatepanel=true;
-  }
-
- /**
-  * get monitor type and creat and dynamic form as per Moniotor type 
-  * @param monitor 
-  */
-  monitorDetailsubForm() {
-    Object.keys(this.schemaService.schema.definitions).forEach(prop => {
-      if (this.schemaService.schema.definitions[prop].title === this.monitoryType) {
-        let definitions = this.schemaService.schema.definitions[prop];
-        this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
+  /**
+   * Create patch objects to update monitor plugin
+   * IF it plugin value is belong to datetime "format" then convet into seconds and match with form value
+   * else match defualt value form value  
+   */
+  pluginProps(form) {
+    let patchBody = [];
+    Object.keys(form.value).forEach(item => {
+      if (this.formatProp.filter(a => a === item).length > 0) {
+        let second: any = duration(this.monDetails.details.plugin[item], 'second');
+        if (second / 1000 !== form.value[item]) {
+          patchBody.push({ op: "replace", path: `/details/plugin/${item}`, "value": form.value[item] });
+        }
+      } else if (this.monDetails.details.plugin[item] !== form.value[item]) {
+        patchBody.push({ op: "replace", path: `/details/plugin/${item}`, "value": form.value[item] });
       }
-    })
+    });
+    return patchBody;
   }
+
+  pencilClick() {
+    this.creatDynamicConfig();
+    this.isUpdtPnlActive = true;
+  }
+
+  /**
+   * Get monitor type and creat and dynamic form as per Moniotor type 
+   * @param monitor 
+   */
+  creatDynamicConfig() {    
+    let keys=Object.keys(this.schemaService.schema.definitions);
+    for (let index = 0; index < keys.length; index++) {
+      const element = this.schemaService.schema.definitions[keys[index]];
+      if (element.title === this.monDetails.details.plugin.type) {
+        let definitions = this.setDefaultValue(element)
+        this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
+        return;
+      }
+      
+    }
+  }
+
+  /**
+   * Set Default value for dynamic form
+   * @param definitions 
+   */
+  setDefaultValue(definitions) {
+    Object.keys(definitions.properties).forEach(prop => {
+      if (definitions.properties[prop].hasOwnProperty(CntrlAttribute.format)) {
+        if (this.monDetails.details.plugin[prop]) {
+          this.formatProp.push(prop);
+          let second: any = duration(this.monDetails.details.plugin[prop], 'second');
+          definitions.properties[prop].default = second / 1000;
+        }
+      } else {
+        definitions.properties[prop].default = this.monDetails.details.plugin[prop];
+      }
+
+    }
+    )
+    return definitions;
+  }
+  ngOnDestroy() {
+    this.gc.unsubscribe();
+  }
+
 }

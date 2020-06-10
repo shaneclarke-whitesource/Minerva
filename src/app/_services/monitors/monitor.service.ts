@@ -162,4 +162,20 @@ export class MonitorService {
       }
 
   }
+  
+  updateMonitorTypeDetails(id:string,details:any): Observable<Monitor> {
+    if(environment.mock){
+     this._monitor = this.mockedMonitors.single;
+     return of<Monitor>(this.mockedMonitors.single);
+    }else{
+      return this.http.patch(`${environment.api.salus}/monitors/${id}`,details, httpOptions).pipe(
+        tap((data:Monitor) =>{
+          this._monitor = data;
+          this.logService.log(`Monitor: ${data}`, LogLevels.info)
+        })
+      );
+     }
+    }
+   
+
 }
