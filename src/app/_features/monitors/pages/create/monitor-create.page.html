@@ -55,7 +55,7 @@ this.addMonLoading=true; this.labelSubmit.next()">
       *ngFor="let item of createMonitorForm.get('excludedResourceIds')['controls']; let i = index">
       <ng-container [formGroupName]="i">
         <hx-select-control class="excluded-resources">
-          <select formControlName="resource" >
+          <select formControlName="resource" [attr.disabled]="createMonitorForm.value.resourceId ? '' : null">
             <option value="">Select a Resource</option>
              <option *ngFor="let resource of resources$ | async"
             [value]="resource.resourceId">{{resource.resourceId}}</option>
@@ -65,10 +65,11 @@ this.addMonLoading=true; this.labelSubmit.next()">
       </ng-container>
       <div class="buttonRow">
         <button class="hxBtn space-right inline-button" *ngIf="(i != 0 && totalExcluded() > 1) || (i === 0 && totalExcluded() > 1)"
-          (click)="deleteExcludedResource(i);$event.preventDefault()">
+          (click)="deleteExcludedResource(i);$event.preventDefault()"  [attr.disabled]="createMonitorForm.value.resourceId ? '' : null">
           <hx-icon type="minus"></hx-icon>
         </button>
-        <button class="hxBtn inline-button" *ngIf="(i+1) === totalExcluded()" (click)="addExcludedResource();$event.preventDefault()">
+        <button class="hxBtn inline-button" *ngIf="(i+1) === totalExcluded()" (click)="addExcludedResource();$event.preventDefault()"
+        [attr.disabled]="createMonitorForm.value.resourceId ? '' : null">
           <hx-icon type="plus"></hx-icon>
         </button>
       </div>
@@ -95,15 +96,6 @@ this.addMonLoading=true; this.labelSubmit.next()">
       </select>
       <hx-select></hx-select>
     </hx-select-control>
-  </div>
-  <div class="hxCol hxSpan-6">
-    <h4>Policy</h4>
-    <hx-checkbox-control>
-      <input formControlName="policy" type="checkbox" id="chkPolicy" />
-      <label for="chkPolicy">
-        <hx-checkbox></hx-checkbox>
-      </label>
-    </hx-checkbox-control>
   </div>
 </div>
 </div>

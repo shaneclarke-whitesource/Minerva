@@ -22,7 +22,9 @@ export enum CntrlAttribute {
     required="required",
     minLength="minLength",
     input="input",
-    interval="interval"
+    interval="interval",
+    excludedResourceIds="excludedResourceIds",
+    resourceId="resourceId"
 }
 
 

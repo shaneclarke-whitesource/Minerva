@@ -13,11 +13,13 @@ import { SchemaService, AJV_INSTANCE } from 'src/app/_services/monitors/schema.s
 import {routes } from '../../monitors.routes';
 import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module';
 import ajv from 'ajv';
+import { CntrlAttribute } from '../../mon.utils';
 import { MonitorsPage } from '../monitors/monitors.page';
 import { MarkFormGroupTouched } from 'src/app/_shared/utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { Observable } from 'rxjs';
 import { Resource } from 'src/app/_models/resources';
+import { FormArray, FormControl } from '@angular/forms';
 
 const keyPair = {
   keysandvalues: [
@@ -108,6 +110,19 @@ let spyMonitorService;
     component.createMonitorForm.controls['type'].setValue(type);
   }
 
+  function updateExcludedResourcesArray() {
+    let fbGroup1 = this.fb.group({
+      resource: new FormControl('12345'),
+    });
+
+    let fbGroup2 = this.fb.group({
+      resource: new FormControl('456'),
+    });
+
+    component.excludedResources.push(fbGroup1)
+    component.excludedResources.push(fbGroup2);
+  }
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -132,7 +147,7 @@ let spyMonitorService;
   });
 
   it('should get monitor form (mf) and return createMonitorForm controls', () => {
-    expect(Object.keys(component.mf).length).toEqual(7);
+    expect(Object.keys(component.mf).length).toEqual(6);
   });
 
   it('should be invalid createMonitorForm', () => {
@@ -202,6 +217,24 @@ let spyMonitorService;
     expect(JSON.stringify(component.dynaConfig))
     .toEqual(`[{"type":"input","label":"mount","name":"mount","inputType":"text","validations":[{"name":"required","message":"mount Required"},{"name":"pattern","message":"mount format incorrect"},{"name":"minimum","message":"mount must be at least 1 character(s)"}]}]`)
   });
+
+  it('should change additional settings value', ()=> {
+    component.showAdditionalSettings();
+    expect(component.additionalSettings).toEqual('in');
+  });
+
+  it('should add excludedResources form control', ()=> {
+    console.log("**Length of Resources: ", component.excludedResources.length)
+    component.addExcludedResource();
+    expect(component.excludedResources.length).toEqual(2);
+  });
+  it('should delete excludedResources form control', ()=> {
+    component.addExcludedResource();
+    component.deleteExcludedResource(0);
+    expect(component.excludedResources.length).toEqual(1);
+  });
+
+
 
   it('should unsubscribe on ngOnDestroy', () => {
     spyOn(component.subManager, 'unsubscribe');

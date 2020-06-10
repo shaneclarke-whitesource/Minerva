@@ -86,8 +86,7 @@ change = false;
         excludedResourceIds: this.fb.array([this.fb.group({
           resource: new FormControl('')})]),
         labelSelectorMethod: [''],
-        resourceId: [''],
-        policy: ['']
+        resourceId: ['']
       });
 
       let labelFormSubscrip = this.labelFormValid.subscribe((valid) => {
@@ -142,19 +141,27 @@ change = false;
     Object.keys(this.createMonitorForm.value).forEach(key => {
       // delete any form fields that are empty strings
       this.createMonitorForm.value[key] === "" && delete this.createMonitorForm.value[key];
+
+      // if the form has a resourceId in this case we don't need either excludedResourceIds & labelSelector
+      if (key === CntrlAttribute.resourceId && this.createMonitorForm.value.hasOwnProperty(CntrlAttribute.resourceId)) {
+        delete this.createMonitorForm.value[CntrlAttribute.excludedResourceIds]
+        delete this.createMonitorForm.value['labelSelector'];
+      }
+
       // remove key string array of excludedResourceIds and replace with an array of strings
-      if (key === 'excludedResourceIds') {
+      if (key === CntrlAttribute.excludedResourceIds && this.createMonitorForm.value[CntrlAttribute.resourceId] === "") {
           let excluded = [];
           this.createMonitorForm.value[key].forEach((item, index) => {
             if (item.resource != "") {
               excluded.push(item.resource);
             }
           });
-          // if there are strings in the array we'll include with the form, if not we'll delete the property
+          // if there are no strings in the array we'll delete the property otherwise add
           if (excluded.length === 0) {
             delete this.createMonitorForm.value[key];
-            // in this case we will also not need the label property
-            delete this.createMonitorForm.value['labelSelector'];
+          }
+          else {
+            this.createMonitorForm.value[key] = excluded;
           }
       }
     });
@@ -171,7 +178,7 @@ change = false;
       });
     }
     else {
-      this.logService.log("Monitor data is invalid", LogLevels.error)
+      this.logService.log(`Monitor data invalid - ${result.errorsText}`, LogLevels.error)
       this.addMonLoading = false;
     }
   }
@@ -226,7 +233,7 @@ change = false;
   }
 
   /**
-   * Adds new dropdown control to array of formcontrols
+   * Adds new dropdown control to array of excludedResources formcontrols
    */
   addExcludedResource() {
     this.excludedResources.push(this.fb.group({
@@ -234,7 +241,11 @@ change = false;
     }));
   }
 
-  deleteExcludedResource(index) {
+  /**
+   * Deletes excludedResource control dropdown
+   * @param index number
+   */
+  deleteExcludedResource(index:number) {
     this.excludedResources.removeAt(index);
   }
 
