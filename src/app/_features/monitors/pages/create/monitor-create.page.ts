@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import {  Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service.js';
 import { LabelService } from 'src/app/_services/labels/label.service';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
@@ -11,17 +11,23 @@ import { transformKeyPairs } from 'src/app/_shared/utils';
 import { MonotorUtil,CntrlAttribute } from '../../mon.utils';
 import { MarkFormGroupTouched } from "src/app/_shared/utils";
 import { config as MonitorConfigs } from '../../config/index';
+import { Animations } from 'src/app/_shared/animations';
+import { Resource } from 'src/app/_models/resources';
 import { duration } from "moment";
-
+import { ResourcesService } from 'src/app/_services/resources/resources.service';
+import { map } from 'rxjs/operators';
+import { LoggingService } from 'src/app/_services/logging/logging.service';
+import { LogLevels } from 'src/app/_enums/log-levels.enum';
+import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fields.component';
 
 
 @Component({
   selector: 'app-monitor-create',
   templateUrl: './monitor-create.page.html',
-  styleUrls: ['./monitor-create.page.scss']
+  styleUrls: ['./monitor-create.page.scss'],
+  animations: [ Animations.slideUpDownTrigger ]
 })
 export class MonitorCreatePage implements OnInit, OnDestroy {
-
   private labelSubmit: Subject<void> = new Subject<void>();
   private labelFormValid: Subject<boolean> = new Subject<boolean>();
   private dynamicFormSubmit: Subject<void> = new Subject<void>();
@@ -38,16 +44,32 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
   typesOfMonitors: string[] = [];
   selectedMonitor = null;
   markFormGroupTouched = MarkFormGroupTouched;
+  additionalSettings: string = 'out';
+  resources$ = new Observable<Resource[]>();
 
+change = false;
   // #ngForm reference needed for view
   get mf() { return this.createMonitorForm.controls; }
+
+  get excludedResources() {
+    return this.createMonitorForm.get('excludedResourceIds') as FormArray;
+  }
+
+  /**
+   * Returns the total of pairs
+   * @returns number
+   */
+  totalExcluded(): number {
+    return this.excludedResources.length;
+  }
 
   // viewchild for dynamic sub form for monitors
   @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
 
-
+  @ViewChild(AddFieldsComponent) labelSelectorForm: AddFieldsComponent;
   constructor(private monitorService: MonitorService, private fb: FormBuilder,
-    private labelService: LabelService, private router: Router, private readonly schemaService: SchemaService) {
+    private labelService: LabelService, private router: Router, private readonly schemaService: SchemaService,
+    private resourceService: ResourcesService, private logService: LoggingService) {
     }
 
     ngOnInit() {
@@ -59,7 +81,12 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
 
       this.createMonitorForm = this.fb.group({
         name: [''],
-        type: ['', Validators.required]
+        type: ['', Validators.required],
+        interval: [''],
+        excludedResourceIds: this.fb.array([this.fb.group({
+          resource: new FormControl('')})]),
+        labelSelectorMethod: [''],
+        resourceId: ['']
       });
 
       let labelFormSubscrip = this.labelFormValid.subscribe((valid) => {
@@ -98,9 +125,7 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
     }
 
     // add selector label fields
-    if (this.updatedLabelFields) {
-      this.createMonitorForm.value['labelSelector'] = this.updatedLabelFields;
-    }
+    this.createMonitorForm.value['labelSelector'] = this.updatedLabelFields || {};
 
     this.createMonitorForm.value['details'] = {
       type: MonitorConfigs[this.selectedMonitor].type,
@@ -112,26 +137,66 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
 
     // delete drop down selection value, it's not needed
     delete this.createMonitorForm.value[CntrlAttribute.type];
+
+    Object.keys(this.createMonitorForm.value).forEach(key => {
+      // delete any form fields that are empty strings
+      this.createMonitorForm.value[key] === "" && delete this.createMonitorForm.value[key];
+
+      // if the form has a resourceId in this case we don't need either excludedResourceIds & labelSelector
+      if (key === CntrlAttribute.resourceId && this.createMonitorForm.value.hasOwnProperty(CntrlAttribute.resourceId)) {
+        delete this.createMonitorForm.value[CntrlAttribute.excludedResourceIds]
+        delete this.createMonitorForm.value['labelSelector'];
+      }
+
+      // remove key string array of excludedResourceIds and replace with an array of strings
+      if (key === CntrlAttribute.excludedResourceIds && this.createMonitorForm.value[CntrlAttribute.resourceId] === "") {
+          let excluded = [];
+          this.createMonitorForm.value[key].forEach((item, index) => {
+            if (item.resource != "") {
+              excluded.push(item.resource);
+            }
+          });
+          // if there are no strings in the array we'll delete the property otherwise add
+          if (excluded.length === 0) {
+            delete this.createMonitorForm.value[key];
+          }
+          else {
+            this.createMonitorForm.value[key] = excluded;
+          }
+      }
+    });
+
     this.parseInISO();
     const result = this.schemaService.validateData(this.createMonitorForm.value);
     if (result.isValid) {
       this.monitorService.createMonitor(this.createMonitorForm.value).subscribe(data => {
         this.addMonLoading = false;
         this.router.navigate(['/monitors']);
-      }, (error) => this.addMonLoading = false);
+      }, (error) => {
+        this.addMonLoading = false;
+        this.logService.log(`Create monitor failed - ${JSON.stringify(error)}`, LogLevels.error)
+      });
     }
     else {
+      this.logService.log(`Monitor data invalid - ${result.errorsText}`, LogLevels.error)
       this.addMonLoading = false;
     }
   }
-  parseInISO(){
-    let definitions =this.schemaService.schema.definitions[this.selectedMonitor]
-    for(var pr in this.schemaService.schema.definitions[this.selectedMonitor].properties){
-      if(definitions.properties[pr].hasOwnProperty(CntrlAttribute.format))
-       if(this.createMonitorForm.value.details.plugin.hasOwnProperty(pr)){
-         this.createMonitorForm.value.details.plugin[pr]=  duration(parseInt(this.createMonitorForm.value.details.plugin[pr]),'seconds').toISOString();
-       }
-          }
+  /**
+   * @description parse interval numeric time values and convert to ISO Duration
+   */
+  parseInISO(): void {
+    let definitions = this.schemaService.schema.definitions[this.selectedMonitor]
+    for (var pr in this.schemaService.schema.definitions[this.selectedMonitor].properties) {
+      if (definitions.properties[pr].hasOwnProperty(CntrlAttribute.format))
+        if (this.createMonitorForm.value.details.plugin.hasOwnProperty(pr)) {
+          this.createMonitorForm.value.details.plugin[pr] = duration(parseInt(this.createMonitorForm.value.details.plugin[pr]), 'seconds').toISOString();
+        }
+    }
+
+    if (this.createMonitorForm.value.hasOwnProperty(CntrlAttribute.interval)) {
+      this.createMonitorForm.value.interval = duration(parseInt(this.createMonitorForm.value.interval), 'seconds').toISOString()
+    }
   }
 
   /**
@@ -150,6 +215,38 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
     this.selectedMonitor = value;
     let definitions = this.schemaService.schema.definitions[this.selectedMonitor];
     this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
+  }
+
+  /**
+   * Toggles div for showing additional settings & gets list of resources
+   */
+  showAdditionalSettings(): void {
+    this.additionalSettings = this.additionalSettings === 'in' ? 'out': 'in';
+    this.resources$ = this.resourceService.resourceItems.pipe(
+      map((items) => {
+        return items;
+      })
+    );
+    //TODO: This function will eventually need some kind of paging component with endless
+    // scroll or a similar mechanism
+    this.resourceService.getResources(25, 0).subscribe();
+  }
+
+  /**
+   * Adds new dropdown control to array of excludedResources formcontrols
+   */
+  addExcludedResource() {
+    this.excludedResources.push(this.fb.group({
+      resource: new FormControl('')
+    }));
+  }
+
+  /**
+   * Deletes excludedResource control dropdown
+   * @param index number
+   */
+  deleteExcludedResource(index:number) {
+    this.excludedResources.removeAt(index);
   }
 
   ngOnDestroy() {
