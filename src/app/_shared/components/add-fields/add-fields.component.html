@@ -5,7 +5,7 @@
 <ng-container [formGroupName]="i">
 <div class="hxCol hxSpan-6">
 <hx-text-control [attr.hx-dirty]="getGroupControl(i, 'key').dirty" [attr.hx-touched]="getGroupControl(i, 'key').touched">
-    <input id="txtKey" list="list-keys" placeholder="key" [required]="(keyValueForm.controls.keysandvalues.controls[i].errors?.keyRequired ||
+    <input id="txtKey" list="list-keys" placeholder="key" [attr.disabled]="disable ? '' : null" [required]="(keyValueForm.controls.keysandvalues.controls[i].errors?.keyRequired ||
     getGroupControl(i, 'key').hasError('required')) && getGroupControl(i, 'key').touched" [attr.agent_discovered]="getGroupControl(i, 'key').hasError('disallow') && getGroupControl(i, 'key').touched"
     formControlName="key" type="text" />
 </hx-text-control>
@@ -18,7 +18,7 @@
 </div>
 <div class="hxCol hxSpan-6">
     <hx-text-control [attr.hx-dirty]="getGroupControl(i, 'value').dirty" [attr.hx-touched]="getGroupControl(i, 'value').touched">
-        <input id="txtValue" list="list-values" placeholder="value" [required]="(keyValueForm.controls.keysandvalues.controls[i].errors?.valRequired ||
+        <input id="txtValue" list="list-values" placeholder="value" [attr.disabled]="disable ? '' : null" [required]="(keyValueForm.controls.keysandvalues.controls[i].errors?.valRequired ||
         getGroupControl(i, 'value').hasError('required')) && getGroupControl(i, 'value').touched" formControlName="value" type="text" />
     </hx-text-control>
     <datalist id="list-values">
@@ -27,10 +27,11 @@
         </option>
     </datalist>
 </div>
-<button class="hxBtn space-right inline-button" *ngIf="(i != 0 && totalItems() > 1) || (i === 0 && totalItems() > 1)" (click)="removeRow(i)">
+<button class="hxBtn space-right inline-button" *ngIf="(i != 0 && totalItems() > 1) || (i === 0 && totalItems() > 1)"
+    (click)="removeRow(i)" [attr.disabled]="disable ? '' : null">
     <hx-icon type="minus"></hx-icon>
 </button>
-<button class="hxBtn inline-button" *ngIf="(i+1) === totalItems()" (click)="addRow()">
+<button class="hxBtn inline-button" *ngIf="(i+1) === totalItems()" (click)="addRow()" [attr.disabled]="disable ? '' : null">
     <hx-icon type="plus"></hx-icon>
 </button>
 <br/>
