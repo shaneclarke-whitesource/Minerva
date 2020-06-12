@@ -10,6 +10,7 @@ import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form
 import { tap } from 'rxjs/operators';
 import { duration} from "moment";
 import { FieldConfig } from '../../interfaces/field.interface';
+import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 
 declare const window: any;
 
@@ -46,14 +47,17 @@ export class MonitorDetailsPage implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router,
     private readonly schemaService: SchemaService,
-    private monitorService: MonitorService) { }
+    private monitorService: MonitorService, private spnService: SpinnerService) {
+      this.spnService.changeLoadingStatus(true);
+     }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = params['id'];
       this.monitor$ = this.monitorService.getMonitor(this.id).pipe(
         tap((data) => {
-          this.monDetails = data;          
+          this.monDetails = data;
+          this.spnService.changeLoadingStatus(false);              
         })
       );
     });
