@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs'
 import { Resource, CreateResource } from 'src/app/_models/resources';
 import { Router } from '@angular/router';
+import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 
 @Component({
   selector: 'app-resourceslist',
@@ -30,7 +31,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   addResourceForm: FormGroup;
   constructor(private resourceService: ResourcesService,
     private validateResource: ValidateResource, private fb: FormBuilder,
-    private router: Router) { }
+    private router: Router, private spnService: SpinnerService) { this.spnService.changeLoadingStatus(true); }
 
   ngOnInit() {
     this.fetchResources = () => {
@@ -41,6 +42,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
           this.resources = this.resourceService.resources.content;
           this.total = this.resourceService.resources.totalElements;
           this.searchPlaceholderText = `Search ${this.total} Resources`;
+          this.spnService.changeLoadingStatus(false);
         });
     }
 
