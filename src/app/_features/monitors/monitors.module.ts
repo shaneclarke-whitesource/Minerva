@@ -51,6 +51,10 @@ export function createAjvInstance(AjvClass: any, config: Options) {
     InputComponent,
     CheckboxComponent,
     SelectComponent
+  ],
+  exports: [
+    MonitorslistComponent,
+    MonitorCreatePage
   ]
 })
 export class MonitorsModule { }

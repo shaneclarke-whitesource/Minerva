@@ -4,14 +4,16 @@ import { NgModule, ModuleWithProviders,CUSTOM_ELEMENTS_SCHEMA } from '@angular/c
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuardService } from './auth/auth-gaurd.service';
+import { SharedModule } from 'src/app/_shared/shared.module';
 const providers = [AuthGuardService]
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
-  imports: [       
-    AppRoutingModule   
+  imports: [
+    AppRoutingModule,
+    SharedModule
   ],
   providers: providers,
   bootstrap: [AppComponent],
@@ -24,7 +26,7 @@ export class AdminAppModule{
     static forRoot(): ModuleWithProviders {
     return {
       ngModule: AppModule,
-      providers:providers,      
+      providers:providers,
     }
   }
 }
