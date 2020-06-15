@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service';
@@ -12,9 +13,13 @@ import { SchemaService, AJV_INSTANCE } from 'src/app/_services/monitors/schema.s
 import {routes } from '../../monitors.routes';
 import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module';
 import ajv from 'ajv';
+import { CntrlAttribute } from '../../mon.utils';
 import { MonitorsPage } from '../monitors/monitors.page';
 import { MarkFormGroupTouched } from 'src/app/_shared/utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
+import { Observable } from 'rxjs';
+import { Resource } from 'src/app/_models/resources';
+import { FormArray, FormControl } from '@angular/forms';
 
 const keyPair = {
   keysandvalues: [
@@ -52,6 +57,7 @@ let spyMonitorService;
         MonitorCreatePage, MonitorsPage, DynamicFormComponent
       ],
       imports: [
+        BrowserAnimationsModule,
         RouterTestingModule.withRoutes(
           [{path: 'monitors', component: MonitorsPage}]
         ),
@@ -104,6 +110,19 @@ let spyMonitorService;
     component.createMonitorForm.controls['type'].setValue(type);
   }
 
+  function updateExcludedResourcesArray() {
+    let fbGroup1 = this.fb.group({
+      resource: new FormControl('12345'),
+    });
+
+    let fbGroup2 = this.fb.group({
+      resource: new FormControl('456'),
+    });
+
+    component.excludedResources.push(fbGroup1)
+    component.excludedResources.push(fbGroup2);
+  }
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -123,10 +142,12 @@ let spyMonitorService;
     expect(component.selectedMonitor).toBeDefined();
     expect(component.markFormGroupTouched).toEqual(MarkFormGroupTouched);
     expect(component.mf).toBeDefined();
+    expect(component.additionalSettings).toEqual('out');
+    expect(component.resources$).toEqual(new Observable<Resource[]>());
   });
 
   it('should get monitor form (mf) and return createMonitorForm controls', () => {
-    expect(Object.keys(component.mf).length).toEqual(2);
+    expect(Object.keys(component.mf).length).toEqual(6);
   });
 
   it('should be invalid createMonitorForm', () => {
@@ -186,14 +207,6 @@ let spyMonitorService;
     });
   });
 
-  it('should return dynamic form invalid', () => {
-    component.selectedMonitor = 'Disk';
-    component['dynamicFormValid'].subscribe((data) => {
-      console.log("**Valid response ", data);
-    });
-    component['dynamicFormSubmit'].next();
-  });
-
   it('should make selectedMonitor equal to dropdown selection', () => {
     component.loadMonitorForm('Disk');
     expect(component.selectedMonitor).toEqual('Disk');
@@ -205,6 +218,23 @@ let spyMonitorService;
     .toEqual(`[{"type":"input","label":"mount","name":"mount","inputType":"text","validations":[{"name":"required","message":"mount Required"},{"name":"pattern","message":"mount format incorrect"},{"name":"minimum","message":"mount must be at least 1 character(s)"}]}]`)
   });
 
+  it('should change additional settings value', ()=> {
+    component.showAdditionalSettings();
+    expect(component.additionalSettings).toEqual('in');
+  });
+
+  it('should add excludedResources form control', ()=> {
+    component.addExcludedResource();
+    expect(component.excludedResources.length).toEqual(2);
+  });
+  it('should delete excludedResources form control', ()=> {
+    component.addExcludedResource();
+    component.deleteExcludedResource(0);
+    expect(component.excludedResources.length).toEqual(1);
+  });
+
+
+
   it('should unsubscribe on ngOnDestroy', () => {
     spyOn(component.subManager, 'unsubscribe');
     component.ngOnDestroy();
@@ -214,6 +244,7 @@ let spyMonitorService;
   it('should convert numeric intervals to ISO Durations', () => {
     component.selectedMonitor = 'Ping';
     component.loadMonitorForm(component.selectedMonitor);
+    component.createMonitorForm.value.interval = 120;
     component.createMonitorForm.value['details'] = {
         type: 'remote',
         plugin: {
@@ -224,6 +255,7 @@ let spyMonitorService;
         }
     };
     component.parseInISO();
+    expect(component.createMonitorForm.value.interval).toEqual('PT2M');
     expect(component.createMonitorForm.value['details'].plugin.pingInterval).toEqual('PT1M');
     expect(component.createMonitorForm.value['details'].plugin.timeout).toEqual('PT2M');
   });

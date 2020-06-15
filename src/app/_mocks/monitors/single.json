@@ -16,7 +16,15 @@
         "type": "local",
         "plugin": {
             "type": "network",
-            "additional": "add0"
+            "additional": "add0",
+            "expect": "done",
+            "host": "rackspace.com",
+            "port": 6000,
+            "protocol": "udp",
+            "readTimeout": "PT2M3S",
+            "send": "testing",
+            "timeout": "PT6M40S"
+
         }
     },
     "createdTimestamp": "2019-12-31T19:04:51Z",

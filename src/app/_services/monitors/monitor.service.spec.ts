@@ -82,6 +82,12 @@ describe('MonitorService', () => {
         expect(data.content[0].monitorId).toEqual(new monitorsMock().boundMonitor.content[0].monitorId);
       });
     });
+    it('should update monitors', () => {
+      let monid=new monitorsMock().single.id
+      service.updateMonitorTypeDetails(monid,{}).subscribe(data => {
+        expect(data.id).toEqual(monid);
+      });
+    });
 
   });
 });

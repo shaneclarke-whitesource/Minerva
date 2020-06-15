@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, throwError, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
@@ -21,6 +21,11 @@ export class ResourcesService {
 
   private _resources: Resources;
   private _resource: Resource;
+
+  private _resourcesSubject = new BehaviorSubject<Resource[]>([])
+
+  readonly resourceItems = this._resourcesSubject.asObservable();
+
   private mockedResources = new resourcesMock();
 
   constructor(private http:HttpClient, private logService: LoggingService) { }
@@ -53,6 +58,7 @@ export class ResourcesService {
       let slicedData = [... mocks.content.slice(page * size, (page + 1) * size)];
       this.resources = mocks;
       this.resources.content = slicedData;
+      this._resourcesSubject.next(slicedData);
       return of<Resources>(this.resources);
     }
     else {
@@ -60,6 +66,7 @@ export class ResourcesService {
     .pipe(
       tap(data =>
         { this._resources = data;
+          this._resourcesSubject.next(data.content);
           this.logService.log(this.resources, LogLevels.info);
         }));
     }
