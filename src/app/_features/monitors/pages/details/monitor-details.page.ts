@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Animations } from 'src/app/_shared/animations';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, of } from 'rxjs';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service';
 import { Monitor } from 'src/app/_models/monitors';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
@@ -10,8 +10,14 @@ import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form
 import { tap } from 'rxjs/operators';
 import { duration} from "moment";
 import { FieldConfig } from '../../interfaces/field.interface';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 declare const window: any;
+export enum UpdateSection {
+  additional = "additional",
+  name = "name",
+  plugin = "plugin"
+}
 
 @Component({
   selector: 'app-monitor-detail',
@@ -28,7 +34,7 @@ export class MonitorDetailsPage implements OnInit {
   @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
   monitorUpdateLoad: boolean;
   @ViewChild('monitorPopup') monitorPopPencil: ElementRef;
-
+  @ViewChild('updateMonPen') updateMonNamePencil:ElementRef;
   monitor$: Observable<Monitor>;
   Object = window.Object;
   additionalSettings: string = 'out';
@@ -38,37 +44,48 @@ export class MonitorDetailsPage implements OnInit {
   @ViewChild('delMonitorFail') delMonitorFailure: ElementRef;
   deleteLoading: boolean = false;
   isUpdtPnlActive = false;
-  // isLoaded=false;
+  updateMonNameLoading: boolean = false;
+
   dynaConfig: FieldConfig[];
   monDetails: Monitor;
+  updateMonNameForm: FormGroup;
   formatProp=[];
 
 
   constructor(private route: ActivatedRoute, private router: Router,
-    private readonly schemaService: SchemaService,
+    private readonly schemaService: SchemaService, private fb: FormBuilder,
     private monitorService: MonitorService) { }
 
   ngOnInit() {
+    // popover form for updating Monitor name
+    this.updateMonNameForm = this.fb.group({
+      name: ['']
+    });
+
     this.route.params.subscribe(params => {
       this.id = params['id'];
       this.monitor$ = this.monitorService.getMonitor(this.id).pipe(
         tap((data) => {
-          this.monDetails = data;          
+          this.monDetails = data;
         })
       );
     });
     this.gc.add(
       this.dynamicFormValid.subscribe((valid) => {
         if (valid) {
-          this.monitorUpdate();
+          this.monitorUpdate(this.pluginProps(this.subForm.form), UpdateSection.plugin);
         }else{
           this.monitorUpdateLoad=false;
           throw "Form is not valid!";
         }
       })
-    )
+    );
   }
 
+  /**
+   * Delete a monitor
+   * @param id string
+   */
   deleteMonitor(id: string): void {
     this.deleteLoading = true;
     this.monitorService.deleteMonitor(id).subscribe((resp) => {
@@ -90,20 +107,33 @@ export class MonitorDetailsPage implements OnInit {
 
   /**
    * Update Monitors plugin details
+   * @param updateBody any
+   * @param updateSection string - section of the monitor being updated
    */
-  monitorUpdate() {
-    let updateBody=this.pluginProps(this.subForm.form);
-    this.monitorService.updateMonitorTypeDetails(this.id,updateBody).subscribe(data =>{
-      this.monDetails = data;
-      this.monitorUpdateLoad=false;
-      this.isUpdtPnlActive=false;
-    });   
+  monitorUpdate(updateBody:any, updateSection: string) {
+    this.monitorService.updateMonitor(this.id, updateBody).subscribe(data =>{
+      this.monitor$ = of<Monitor>(this.monitorService.monitor).pipe(
+        tap((data) => {
+          this.monDetails = data;
+        })
+      );
+      switch(updateSection) {
+        case 'plugin':
+          this.monitorUpdateLoad=false;
+          this.isUpdtPnlActive=false;
+          break;
+        case 'name':
+          this.updateMonNameLoading = false;
+          this.updateMonNamePencil.nativeElement.click();
+          break;
+      }
+    });
   }
 
   /**
    * Create patch objects to update monitor plugin
    * IF it plugin value is belong to datetime "format" then convet into seconds and match with form value
-   * else match defualt value form value  
+   * else match defualt value form value
    */
   pluginProps(form) {
     let patchBody = [];
@@ -126,10 +156,19 @@ export class MonitorDetailsPage implements OnInit {
   }
 
   /**
-   * Get monitor type and creat and dynamic form as per Moniotor type 
-   * @param monitor 
+   * Update Monitor name function
+   * @param monitorName FormGroup
    */
-  creatDynamicConfig() {    
+  updateMonitorName(monitorName: FormGroup) {
+    let patchBody = [{op: "replace", path: `/name`, value: monitorName.value.name }];
+    this.monitorUpdate(patchBody, UpdateSection.name);
+  }
+
+  /**
+   * Get monitor type and creat and dynamic form as per Moniotor type
+   * @param monitor
+   */
+  creatDynamicConfig() {
     let keys=Object.keys(this.schemaService.schema.definitions);
     for (let index = 0; index < keys.length; index++) {
       const element = this.schemaService.schema.definitions[keys[index]];
@@ -138,16 +177,15 @@ export class MonitorDetailsPage implements OnInit {
         this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
         return;
       }
-      
+
     }
   }
 
   /**
    * Set Default value for dynamic form
-   * @param definitions 
+   * @param definitions
    */
-  setDefaultValue(definitions) {
-    Object.keys(definitions.properties).forEach(prop => {
+  setDefaultValue(definitions) {    Object.keys(definitions.properties).forEach(prop => {
       if (definitions.properties[prop].hasOwnProperty(CntrlAttribute.format)) {
         if (this.monDetails.details.plugin[prop]) {
           this.formatProp.push(prop);
@@ -156,7 +194,6 @@ export class MonitorDetailsPage implements OnInit {
       } else {
         definitions.properties[prop].default = this.monDetails.details.plugin[prop];
       }
-
     }
     )
     return definitions;
