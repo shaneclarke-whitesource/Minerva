@@ -17,11 +17,11 @@
             <h5>Rename Monitor</h5>
           </header>
           <hx-div>
-          <form id="updateMonNameForm" [formGroup]="updateMonNameForm" (ngSubmit)="this.updateMonNameLoading = true; updateMonitorName(updateMonNameForm)">
+          <form id="updateMonNameForm" [formGroup]="updateMonNameForm" (ngSubmit)="updateMonitorName(updateMonNameForm)">
             <div class="hxRow">
             <div class="hxCol hxSpan-6">
               <hx-text-control>
-                <input id="txtResource" formControlName="name" [ngModel]="monitor.name" type="text"/>
+                <input id="txtResource" formControlName="name" type="text"/>
               </hx-text-control>
             </div>
             <div class="hxCol hxSpan-6">

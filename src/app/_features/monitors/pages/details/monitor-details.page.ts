@@ -67,6 +67,7 @@ export class MonitorDetailsPage implements OnInit {
       this.monitor$ = this.monitorService.getMonitor(this.id).pipe(
         tap((data) => {
           this.monDetails = data;
+          this.updateMonNameForm.controls['name'].setValue(this.monDetails.name || {});
         })
       );
     });
@@ -160,6 +161,7 @@ export class MonitorDetailsPage implements OnInit {
    * @param monitorName FormGroup
    */
   updateMonitorName(monitorName: FormGroup) {
+    this.updateMonNameLoading = true;
     let patchBody = [{op: "replace", path: `/name`, value: monitorName.value.name }];
     this.monitorUpdate(patchBody, UpdateSection.name);
   }
