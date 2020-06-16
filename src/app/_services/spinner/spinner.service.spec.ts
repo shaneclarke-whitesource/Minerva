@@ -15,11 +15,16 @@ describe('SpinnerService', () => {
   });
 
   it('should have isLoading asObservable', () => {
-     service.isLoading.subscribe((value) => {
+    service.isLoading.subscribe((value) => {
       expect(value).toBe(false);
-     }); 
+    });
   });
 
-
+  it('should changeLoadingStatus', () => {
+    service.changeLoadingStatus(true);
+    service.isLoading.subscribe((value) => {
+      expect(value).toBe(true);
+    });
+  });
 
 });
