@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TabRoutingModule } from './tabset-routing.module';
 import { TabsetComponent } from './tabset.component';
 import { MonitorsModule } from 'src/app/_features/monitors/monitors.module';
+import { ResourcesModule } from 'src/app/_features/resources/resources.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { MonitorsModule } from 'src/app/_features/monitors/monitors.module';
   imports: [
     CommonModule,
     TabRoutingModule,
-    MonitorsModule
+    MonitorsModule,
+    ResourcesModule
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
