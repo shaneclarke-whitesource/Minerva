@@ -2,7 +2,7 @@ import { navigations } from "../commons/navigations";
 import { browser } from "protractor";
 import { AppPage } from "../pageObjects/app.po";
 import { async } from "@angular/core/testing";
-import { LoadResources } from "../feature/Resources/ListOfResources";
+
 
 describe("App Navigations", () => {
   let nav: navigations;
