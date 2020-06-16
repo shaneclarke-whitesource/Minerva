@@ -148,6 +148,7 @@ export class MonitorService {
  * @param resourceId string
  */
   getBoundMonitor(resourceId:string):Observable<BoundMonitorPaging>{
+    // TODO: Add paging mechanism to this service
     if (environment.mock) {
       this._boundMonitor=this.mockedMonitors.boundMonitor;
       return of<BoundMonitorPaging>(this._boundMonitor);
@@ -162,7 +163,7 @@ export class MonitorService {
       }
 
   }
-  
+
   updateMonitorTypeDetails(id:string,details:any): Observable<Monitor> {
     if(environment.mock){
      this._monitor = this.mockedMonitors.single;
@@ -176,6 +177,6 @@ export class MonitorService {
       );
      }
     }
-   
+
 
 }
