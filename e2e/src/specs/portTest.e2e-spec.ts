@@ -21,7 +21,7 @@ describe("Min Max Port field create monitor", () => {
   it("Testing when entered negative value check for validation message", ()=> {
     element(by.xpath("//input[@placeholder='port']")).sendKeys("-87644");
     browser.sleep(10000);
-    var errMsg = element(by.xpath("//span[@class='required']"));
+    var errMsg = element(by.xpath("//span[@class='required ng-star-inserted']"));
     expect(errMsg.getText()).toEqual("The minimum value to accept for this input 1");    
     
   });
@@ -30,7 +30,7 @@ describe("Min Max Port field create monitor", () => {
   it("Testing when entered greater then 65535 value check for validation message", () => {
     element(by.xpath("//input[@placeholder='port']")).sendKeys("98765");
     browser.sleep(10000);
-    var errMsg = element(by.xpath("//span[@class='required']"));
+    var errMsg = element(by.xpath("//span[@class='required ng-star-inserted']"));
     expect(errMsg.getText()).toEqual("The maximum value to accept for this input 65535");
     
   });
