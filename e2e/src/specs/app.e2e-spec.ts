@@ -15,12 +15,5 @@ describe("workspace-project App", () => {
   it("should display Helix UI", () => {
     page.navigateTo();
     expect(page.getHelixNavCssClass()).toBe("hxNav");
-  });
-  
-
-
-
-
-
-  
+  });  
 });

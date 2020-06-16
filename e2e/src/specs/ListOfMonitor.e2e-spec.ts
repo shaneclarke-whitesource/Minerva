@@ -42,7 +42,7 @@ describe("Monitor List", () => {
   });
   it("Check if Create Monitor button is present" , () => {
      nav.navigateToMonitor();
-    browser.sleep(1000);
+    browser.sleep(5000);
     expect(element(by.xpath("//button[@class='hxBtn hxPrimary']")).isPresent()).toBe(true);
   });
   it("Check few checkbox selected and deseleted if all buttons are enabled" , () => {
@@ -66,15 +66,16 @@ describe("Monitor List", () => {
  it("should display 25 rows", async()=>
 {  
     await nav.navigateToMonitor();
-    browser.sleep(1000);
-    var arrRows = await element(by.css("table.hxTable tbody")).all(by.tagName("tr"));
-    expect(arrRows.length).toEqual(25);
+    browser.sleep(3000);
+    var arrRows =  element(by.css("table.hxTable tbody")).all(by.tagName("tr"));
+    var rowsarr = await arrRows.getAttribute("childElementCount");
+    expect(rowsarr.length).toEqual(25);
 });
 
 it("Should display 5 columns ", async()=>
 {
     await nav.navigateToMonitor();
-    browser.sleep(1000);
+    browser.sleep(2000);
   var path =  element.all(by.xpath("//tbody//tr[2]//td"));
   var colNum = await path.getAttribute("childElementCount");
   expect(colNum.length).toEqual(5);
