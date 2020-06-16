@@ -7,16 +7,15 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs'
 import { Resource, CreateResource } from 'src/app/_models/resources';
 import { Router } from '@angular/router';
-
+import { LoggingService } from 'src/app/_services/logging/logging.service';
+import { LogLevels } from 'src/app/_enums/log-levels.enum';
 @Component({
   selector: 'app-resourceslist',
   templateUrl: './resourceslist.component.html',
   styleUrls: ['./resourceslist.component.scss']
 })
 export class ResourcesListComponent implements OnInit, OnDestroy {
-
   @ViewChild('addResButton', { static: true }) addButton:ElementRef;
-
   private ngUnsubscribe = new Subject();
   searchPlaceholderText: string;
   resources: Resource[];
@@ -30,8 +29,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   addResourceForm: FormGroup;
   constructor(private resourceService: ResourcesService,
     private validateResource: ValidateResource, private fb: FormBuilder,
-    private router: Router) { }
-
+    private router: Router, private logService: LoggingService) { }
   ngOnInit() {
     this.fetchResources = () => {
       return this.resourceService.getResources(this.defaultAmount, this.page)
@@ -43,16 +41,13 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
           this.searchPlaceholderText = `Search ${this.total} Resources`;
         });
     }
-
     this.fetchResources();
-
     // popover form for adding a Resource
     this.addResourceForm = this.fb.group({
       name: ['', Validators.required],
       enabled: ['']
     });
   }
-
   /**
    * @description check column event for items in tables, selects resource item
    * @param event any
@@ -69,7 +64,6 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
       e["checked"] = event.target.checked;
     });
   }
-
   /**
    * @description <app-pagination>
    * @param n number
@@ -79,7 +73,6 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     this.page = n;
     this.fetchResources();
   }
-
   /**
    * @description <app-pagination>
    */
@@ -87,7 +80,6 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     this.page++;
     this.fetchResources();
   }
-
   /**
    * @description <app-pagination>
    */
@@ -95,7 +87,6 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     this.page--;
     this.fetchResources();
   }
-
   /**
    * @description Add selected resources to an array for actions
    * @param resource Resource
@@ -109,7 +100,6 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
       );
     }
   }
-
 /**
  * @description Adds a resource after validating resource id
  * @param resourceForm FormGroup
@@ -137,12 +127,19 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
             this.resourceService.createResource(resource).subscribe((result) => {
               this.addResLoading = false;
               this.router.navigate(['/resources', result.resourceId]);
-            })
+            }, error => {
+              this.addResLoading = false;
+              this.logService.log(error, LogLevels.error)
+            }
+            )
+          }
+          else {
+            this.addResLoading = false;
+            this.logService.log(`Resource could not be added`, LogLevels.error);
           }
         })
     }
   }
-
   ngOnDestroy() {
     //unsubcribe once component is done
     this.ngUnsubscribe.next();
