@@ -129,7 +129,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
               this.router.navigate(['/resources', result.resourceId]);
             }, error => {
               this.addResLoading = false;
-              this.logService.log(error, LogLevels.error)
+              this.logService.log(JSON.stringify(error), LogLevels.error)
             }
             )
           }

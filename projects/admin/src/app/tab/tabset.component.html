@@ -1,0 +1,30 @@
+<div class="hxRow">
+  <div class="hxCol hxSpan-5">
+    <hx-search-control>
+      <input id="demoSearch" type="search" placeholder="Account Search" />
+      <button type="button" class="hxClear" aria-label="Clear search" hidden>
+        <hx-icon type="times"></hx-icon>
+      </button>
+      <hx-search></hx-search>
+    </hx-search-control>
+  </div>
+</div>
+
+<div class="hxRow">
+  <div class="hxCol">
+    <hx-tabset current-tab="0">
+      <hx-tablist>
+        <hx-tab id="tab-1" current="true"> Monitors</hx-tab>
+        <hx-tab id="tab-2">Resources</hx-tab>
+      </hx-tablist>
+      <hx-tabcontent>
+        <hx-tabpanel id="panel-1" open>
+          <app-monitorslist></app-monitorslist>
+        </hx-tabpanel>
+        <hx-tabpanel id="panel-2">  
+<app-resourceslist></app-resourceslist>
+        </hx-tabpanel>
+      </hx-tabcontent>
+    </hx-tabset>
+  </div>
+</div>

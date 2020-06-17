@@ -40,6 +40,9 @@ const routes: Routes = [
   providers: [
     ResourcesService,
     ValidateResource
+  ],
+  exports: [
+    ResourcesListComponent
   ]
 })
 export class ResourcesModule { }
