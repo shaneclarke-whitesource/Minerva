@@ -10,7 +10,31 @@
         <app-breadcrumb [routeDetails]="monitor.name || monitor.details.plugin.type"></app-breadcrumb>
       </div>
       <div class="hxCol hxSpan-9 monitor-title">
-        <h2>{{monitor.name}}</h2>
+        <h2 class="inline-icon">{{monitor.name}}</h2><hx-disclosure aria-controls="editMonPopover" #updateMonPen id="updateMonNamePen" class="editclick">
+          <hx-icon type="pencil"></hx-icon></hx-disclosure>
+        <hx-popover id="editMonPopover" position="bottom-right" class="popExpand">
+          <header>
+            <h5>Rename Monitor</h5>
+          </header>
+          <hx-div>
+          <form id="updateMonNameForm" [formGroup]="updateMonNameForm" (ngSubmit)="updateMonitorName(updateMonNameForm)">
+            <div class="hxRow">
+            <div class="hxCol hxSpan-6">
+              <hx-text-control>
+                <input id="txtResource" formControlName="name" type="text"/>
+              </hx-text-control>
+            </div>
+            <div class="hxCol hxSpan-6">
+              <button type="submit" class="hxBtn hxPrimary su" [disabled]="updateMonNameLoading">
+                <hx-busy class="popover-busy" *ngIf="updateMonNameLoading"></hx-busy>
+                Submit
+              </button>
+              <button class="hxBtn" type="button" (click)="updateMonNamePencil.nativeElement.click()" aria-controls="editMonPopover">Cancel</button>
+            </div>
+            </div>
+          </form>
+          </hx-div>
+        </hx-popover>
       </div>
       <div class="hxCol hxSpan-3 cog-menu-div align-right">
         <hx-disclosure class="hxBtn" aria-controls="basicMenuId">
@@ -21,7 +45,9 @@
         <hx-menu id="basicMenuId">
           <section>
             <header>Identity</header>
-            <hx-menuitem>Rename Monitor</hx-menuitem>
+            <hx-menuitem>
+              <hx-disclosure aria-controls="editMonPopover">Rename Monitor</hx-disclosure>
+            </hx-menuitem>
           </section>
           <section>
             <header>Manage Monitor</header>
@@ -35,13 +61,13 @@
         </hx-menu>
       </div>
     </div>
-  
+
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-9">
         <h3>Monitor Details</h3>
       </div>
     </div>
-  
+
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-6">
         <h4>Monitor Type</h4>
@@ -59,7 +85,7 @@
         </div>
       </div>
     </div>
-  
+
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-6">
         <h4>Monitor Scope</h4>
@@ -99,7 +125,7 @@
         </div>
       </div>
     </div>
-  
+
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-6">
         <h4>{{monDetails.details.plugin.type}} monitor Details <hx-icon id="pencilIcn" (click)="pencilClick()" type="pencil">
@@ -115,7 +141,7 @@
             <div class="hxCol hxSpan-3">
               {{monDetails.details.plugin[pluginField]}}
             </div>
-  
+
           </ng-container>
         </div>
       </div>
@@ -192,15 +218,13 @@
       <h3>Events</h3>
     </div>
   </div>
-  
+
   <div class="hxRow hxSpan-9">
     <div class="hxCol">
       <p>These are events related to this measurement on the basis of label</p>
     </div>
   </div>
-  
+
   <div class="hxRow hxSpan-9 last-item">
     <pre><code>[Events Grid here]</code></pre>
   </div>
-</div>
-
