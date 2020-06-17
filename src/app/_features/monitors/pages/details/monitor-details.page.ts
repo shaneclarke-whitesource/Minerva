@@ -11,6 +11,7 @@ import { tap } from 'rxjs/operators';
 import { duration} from "moment";
 import { FieldConfig } from '../../interfaces/field.interface';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 
 declare const window: any;
 export enum UpdateSection {
@@ -54,7 +55,7 @@ export class MonitorDetailsPage implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router,
     private readonly schemaService: SchemaService, private fb: FormBuilder,
-    private monitorService: MonitorService) { }
+    private monitorService: MonitorService, private spnService: SpinnerService) { this.spnService.changeLoadingStatus(true); }
 
   ngOnInit() {
     // popover form for updating Monitor name
@@ -68,6 +69,7 @@ export class MonitorDetailsPage implements OnInit {
         tap((data) => {
           this.monDetails = data;
           this.updateMonNameForm.controls['name'].setValue(this.monDetails.name || {});
+          this.spnService.changeLoadingStatus(false);              
         })
       );
     });
