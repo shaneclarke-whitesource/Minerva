@@ -10,8 +10,8 @@ import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form
 import { tap } from 'rxjs/operators';
 import { duration} from "moment";
 import { FieldConfig } from '../../interfaces/field.interface';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 declare const window: any;
 export enum UpdateSection {
@@ -53,10 +53,10 @@ export class MonitorDetailsPage implements OnInit {
   formatProp=[];
 
 
-  constructor(private route: ActivatedRoute, private router: Router,
-    private readonly schemaService: SchemaService, private fb: FormBuilder,
-    private monitorService: MonitorService, private spnService: SpinnerService) { this.spnService.changeLoadingStatus(true); }
-
+  constructor(private route: ActivatedRoute, private router: Router,private readonly schemaService: SchemaService, private fb: FormBuilder, private monitorService: MonitorService, private spnService: SpinnerService) {
+      this.spnService.changeLoadingStatus(true);
+     }
+  
   ngOnInit() {
     // popover form for updating Monitor name
     this.updateMonNameForm = this.fb.group({
@@ -68,8 +68,8 @@ export class MonitorDetailsPage implements OnInit {
       this.monitor$ = this.monitorService.getMonitor(this.id).pipe(
         tap((data) => {
           this.monDetails = data;
-          this.updateMonNameForm.controls['name'].setValue(this.monDetails.name || {});
           this.spnService.changeLoadingStatus(false);              
+          this.updateMonNameForm.controls['name'].setValue(this.monDetails.name || {});
         })
       );
     });
