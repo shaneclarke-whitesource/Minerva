@@ -16,7 +16,7 @@ import { routes } from '../../monitors.routes';
 import { SchemaService, AJV_INSTANCE } from 'src/app/_services/monitors/schema.service';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 
 describe('MonitorDetailComponent', () => {
   let injector: TestBed;
@@ -63,8 +63,10 @@ describe('MonitorDetailComponent', () => {
     "expect": {
       "type": "string"
     }
-  }}
+  }};
 
+  // create new instance of FormBuilder
+  const formBuilder: FormBuilder = new FormBuilder();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -78,7 +80,9 @@ describe('MonitorDetailComponent', () => {
         BrowserAnimationsModule,
         HttpClientModule,
         RouterTestingModule,
-        SharedModule
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule
       ],
       providers: [
         {
@@ -111,8 +115,11 @@ describe('MonitorDetailComponent', () => {
     fixture = TestBed.createComponent(MonitorDetailsPage);
     schemaService.loadSchema();
     component = fixture.componentInstance;
+    component.updateMonNameForm = formBuilder.group({
+      name: ['']
+    });
     fixture.detectChanges();
-    component.monDetails=new monitorsMock().single;
+    component.monDetails = new monitorsMock().single;
   });
 
   it('should create', () => {
@@ -126,8 +133,18 @@ describe('MonitorDetailComponent', () => {
     expect(component.delMonitor).toBeDefined();
     expect(component.delMonitorFailure).toBeDefined();
     expect(component.additionalSettings).toEqual('out');
+    expect(component.isUpdtPnlActive).toEqual(false);
+    expect(component.updateMonNameLoading).toEqual(false);
+    expect(component.formatProp).toEqual([]);
+    expect(component.monDetails).toBeDefined();
   });
 
+
+  it('should set mondetails to monitor', ()=> {
+    fixture.whenStable().then(() => {
+      expect(component.monDetails).toEqual(new monitorsMock().single);
+    });
+  });
 
   it('should set to a single monitor', (done) => {
     component.monitor$.subscribe((monitor) => {
@@ -147,7 +164,6 @@ describe('MonitorDetailComponent', () => {
     expect(component.Object).toEqual(Object);
   });
   it('should initialize the dynamic config object', (done)=>{
-
     ["cpu","net_response",].forEach(element => {
       component.monDetails.details.plugin.type=element;
       component.creatDynamicConfig();
@@ -155,8 +171,8 @@ describe('MonitorDetailComponent', () => {
       done();
     });
   });
-  it('should set default values to dynamic component',(done)=>{    
-    
+  it('should set default values to dynamic component',(done)=>{
+
     let def=component.setDefaultValue(definitions);
     expect(def.properties.timeout.default).toBe(400);
     done();
@@ -192,11 +208,28 @@ describe('MonitorDetailComponent', () => {
     let res = component.pluginProps(form);
     expect(res[0].value).toBe(form.value.host);
     done();
-  })
+  });
+
+  it('should update Monitor name', () => {
+    let spyCompMethod = spyOn(component, 'monitorUpdate');
+    component.updateMonitorName(component.updateMonNameForm);
+    expect(spyCompMethod).toHaveBeenCalled();
+  });
+
+
+  it('should excute Monitor update service', () => {
+    let spyService = spyOn(monitorService, 'updateMonitor')
+    .and.returnValue(of(new monitorsMock().single));
+    component.monitorUpdate([], 'name');
+    expect(spyService).toHaveBeenCalled();
+  });
+
+
   it('should unsubscribe on ngOnDestroy',done =>{
     spyOn(component.gc, 'unsubscribe');
     component.ngOnDestroy();
     expect(component.gc.unsubscribe).toHaveBeenCalled();
     done();
-  })
+  });
+
 });
