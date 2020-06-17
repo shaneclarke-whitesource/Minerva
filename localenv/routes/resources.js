@@ -5,6 +5,20 @@ const Settings = require('../config/index');
 var Identity = require('../services/identity/token');
 const config = new Settings();
 
+router.get(`/bound-monitors`, (req, res) =>{
+    let {monitorId}=req.query;
+    axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/bound-monitors?monitorId=${monitorId}`,
+    {
+        headers: { 'x-auth-token': Identity.info().token.id }
+    }
+    ).then((result) =>{
+        res.send(result.data);
+    })
+    .catch((err) =>{
+        res.sendStatus(parseInt(err.response.status)).json(err);
+    })
+});
+
 router.get('/', (req, res) => {
     let page = req.query.page;
     let size = req.query.size;
