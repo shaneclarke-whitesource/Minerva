@@ -185,11 +185,11 @@ export class ResourcesService {
       this._boundMonitor=this.mockedMonitors.boundMonitor;
       return of<BoundMonitorPaging>(this._boundMonitor);
       }else {
-        return this.http.get<BoundMonitorPaging>(`${environment.api.salus}/resources/bound-monitors?monitorId=${monitorId}`, httpOptions)
+        return this.http.get<BoundMonitorPaging>(`${environment.api.salus}/monitors/bound-monitors?monitorId=${monitorId}`, httpOptions)
         .pipe(
           tap(data => {
             this._boundMonitor = data;
-            this.logService.log(`Bound Monitor: ${data}`, LogLevels.info);
+            this.logService.log(`Bound Resource: ${data}`, LogLevels.info);
           })
         );
       }

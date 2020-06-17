@@ -6,8 +6,17 @@ var Identity = require('../services/identity/token');
 const config = new Settings();
 
 router.get(`/bound-monitors`, (req, res) =>{
-    let {resourceId}=req.query;
-    axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/bound-monitors?resourceId=${resourceId}`,
+    var param, keys;
+    keys = Object.keys(req.query);
+    if(keys[0] == 'resourceId') {
+        let {resourceId}=req.query;
+        param = `resourceId=${resourceId}`;   
+    } else {
+        let {monitorId}=req.query;
+        param = `monitorId=${monitorId}`;
+    }
+
+    axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/bound-monitors?${param}`,
     {
         headers: { 'x-auth-token': Identity.info().token.id }
     }
