@@ -32,7 +32,7 @@ describe('MonitorService', () => {
       ]
     });
     injector = getTestBed();
-    service = injector.get(MonitorService);    
+    service = injector.get(MonitorService);
 });
 
   it('should be created', () => {
@@ -83,8 +83,8 @@ describe('MonitorService', () => {
       });
     });
     it('should update monitors', () => {
-      let monid=new monitorsMock().single.id
-      service.updateMonitorTypeDetails(monid,{}).subscribe(data => {
+      let monid = new monitorsMock().single.id
+      service.updateMonitor(monid,[]).subscribe(data => {
         expect(data.id).toEqual(monid);
       });
     });
