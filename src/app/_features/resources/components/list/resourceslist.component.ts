@@ -7,6 +7,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs'
 import { Resource, CreateResource } from 'src/app/_models/resources';
 import { Router } from '@angular/router';
+import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
+
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
 @Component({
@@ -29,7 +31,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   addResourceForm: FormGroup;
   constructor(private resourceService: ResourcesService,
     private validateResource: ValidateResource, private fb: FormBuilder,
-    private router: Router, private logService: LoggingService) { }
+    private router: Router, private spnService: SpinnerService, private logService: LoggingService) { this.spnService.changeLoadingStatus(true); }
   ngOnInit() {
     this.fetchResources = () => {
       return this.resourceService.getResources(this.defaultAmount, this.page)
@@ -39,6 +41,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
           this.resources = this.resourceService.resources.content;
           this.total = this.resourceService.resources.totalElements;
           this.searchPlaceholderText = `Search ${this.total} Resources`;
+          this.spnService.changeLoadingStatus(false);
         });
     }
     this.fetchResources();
