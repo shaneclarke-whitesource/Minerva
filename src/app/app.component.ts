@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { LoggingService } from './_services/logging/logging.service';
+import { SpinnerService } from './_services/spinner/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +11,13 @@ import { LoggingService } from './_services/logging/logging.service';
 export class AppComponent implements OnInit  {
   title = 'minerva';
   message: string = undefined;
+  isLoading: boolean;
   constructor(private lgService:LoggingService,
-     private changeDetector: ChangeDetectorRef){}
+     private changeDetector: ChangeDetectorRef, private spnService:SpinnerService){}
 
   ngOnInit() {
     this.subscribeError();
+    this.spnService.isLoading.subscribe(isLoading => this.isLoading = isLoading);
   }
   private subscribeError(){
     this.lgService.getAlertMsg().subscribe(msg =>{
