@@ -5,6 +5,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import  { transformKeyPairs } from '../../../../_shared/utils';
 import { Resource } from 'src/app/_models/resources';
 import { tap } from 'rxjs/operators';
+import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 
 declare const window: any;
 @Component({
@@ -35,14 +36,18 @@ export class ResourceDetailsPage implements OnInit {
   updatedLabelFields: any;
 
   constructor(private route: ActivatedRoute, private router: Router,
-    private resourceService: ResourcesService) { }
+    private resourceService: ResourcesService, private spnService: SpinnerService) { this.spnService.changeLoadingStatus(true); }
 
   // TODO(optional): attempt to move this logic to a route resolve as opposed
   // to connecting the subscription to the request within the component
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = params['id'];
-      this.resource$ = this.resourceService.getResource(this.id);      
+      this.resource$ = this.resourceService.getResource(this.id).pipe(
+        tap(() => {
+          this.spnService.changeLoadingStatus(false);
+        })
+      );
     });
 
     let metaFormSubscrip = this.metaFormSubmit.subscribe((valid) => {
