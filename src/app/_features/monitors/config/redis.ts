@@ -1,26 +1,20 @@
 import { Configs } from '../interfaces/config.interface';
-export class ApacheConfig implements Configs {
+export class RedisConfig implements Configs {
 
-    friendlyName = 'Apache';
+    friendlyName = 'Redis';
     type = 'local';
     fields = {
         url: {
-            label: "url",
-          },
-          username: {
-            label: "userName",
+            label: "url"
           },
           password: {
-            label: "password",
-          },
-          timeout: {
-            label: "timeout",
+            label: "password"
           },
           tlsCa: {
-            label: "tlsCa",
+            label: "tlsCa"
           },
           tlsCert: {
-            label: "tlsCert",
+            label: "tlsCert"
           },
           tlsKey: {
             label: "tlsKey"

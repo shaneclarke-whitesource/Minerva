@@ -28,7 +28,7 @@ import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fi
   animations: [ Animations.slideUpDownTrigger ]
 })
 export class MonitorCreatePage implements OnInit, OnDestroy {
-  private labelSubmit: Subject<void> = new Subject<void>();
+  public labelSubmit: Subject<void> = new Subject<void>();
   private labelFormValid: Subject<boolean> = new Subject<boolean>();
   private dynamicFormSubmit: Subject<void> = new Subject<void>();
   private dynamicFormValid: Subject<boolean> = new Subject<boolean>();
