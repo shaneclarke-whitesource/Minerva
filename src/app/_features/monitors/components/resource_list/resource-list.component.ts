@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BoundMonitor } from 'src/app/_models/resources';
-import { ResourcesService } from '../../../../_services/resources/resources.service';
+import { MonitorService } from '../../../../_services/monitors/monitor.service';
 import { Subscription } from 'rxjs';
 import { ConstantPool } from '@angular/compiler';
 @Component({
@@ -12,7 +12,7 @@ export class ResourceListComponent implements OnInit {
   resources:BoundMonitor[]; 
   @Input() monitorId:string;
   subscriber = new Subscription();
-  constructor(private rsService : ResourcesService) { }
+  constructor(private mntor : MonitorService) { }
 
   /**
    * @description Default (ngOnInit) function called when component loads for the first time.
@@ -28,7 +28,7 @@ export class ResourceListComponent implements OnInit {
   */
 
   getResources(){
-    this.subscriber=this.rsService.getBoundResource(this.monitorId).subscribe(data =>{      
+    this.subscriber=this.mntor.getBoundMonitor("", this.monitorId).subscribe(data =>{      
       this.resources = data.content;
     })
   }

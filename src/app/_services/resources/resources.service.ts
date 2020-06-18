@@ -6,8 +6,7 @@ import { environment } from '../../../environments/environment';
 import { LoggingService } from '../../_services/logging/logging.service';
 import { LogLevels } from '../../_enums/log-levels.enum';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
-import { monitorsMock } from '../../_mocks/monitors/monitors.service.mock';
-import { Resource, Resources, CreateResource, BoundMonitorPaging } from '../../_models/resources';
+import { Resource, Resources, CreateResource } from '../../_models/resources';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -28,9 +27,6 @@ export class ResourcesService {
   readonly resourceItems = this._resourcesSubject.asObservable();
 
   private mockedResources = new resourcesMock();
-  private mockedMonitors  = new monitorsMock();
-  private _boundMonitor: BoundMonitorPaging;
-
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
   get resources(): Resources {
@@ -175,24 +171,4 @@ export class ResourcesService {
       )
     }
   }
-
- /**
- * @description Get bound resources list associated with a monitor.
- * @param monitorId string
- */
-  getBoundResource(monitorId:string):Observable<BoundMonitorPaging>{
-    if (environment.mock) {
-      this._boundMonitor=this.mockedMonitors.boundMonitor;
-      return of<BoundMonitorPaging>(this._boundMonitor);
-      }else {
-        return this.http.get<BoundMonitorPaging>(`${environment.api.salus}/monitors/bound-monitors?monitorId=${monitorId}`, httpOptions)
-        .pipe(
-          tap(data => {
-            this._boundMonitor = data;
-            this.logService.log(`Bound Resource: ${data}`, LogLevels.info);
-          })
-        );
-      }
-  }
-
 }

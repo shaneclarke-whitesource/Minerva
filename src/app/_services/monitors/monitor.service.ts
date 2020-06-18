@@ -161,14 +161,15 @@ export class MonitorService {
 /**
  * @description Get monitors list associated with a resource.
  * @param resourceId string
+ * @param monitorId string
  */
-  getBoundMonitor(resourceId:string):Observable<BoundMonitorPaging>{
+  getBoundMonitor(resourceId:string, monitorId:string):Observable<BoundMonitorPaging>{
     // TODO: Add paging mechanism to this service
     if (environment.mock) {
       this._boundMonitor=this.mockedMonitors.boundMonitor;
       return of<BoundMonitorPaging>(this._boundMonitor);
       }else {
-        return this.http.get<BoundMonitorPaging>(`${environment.api.salus}/monitors/bound-monitors?resourceId=${resourceId}`, httpOptions)
+        return this.http.get<BoundMonitorPaging>(`${environment.api.salus}/monitors/bound-monitors?resourceId=${resourceId}&monitorId=${monitorId}`, httpOptions)
         .pipe(
           tap(data => {
             this._boundMonitor = data;
