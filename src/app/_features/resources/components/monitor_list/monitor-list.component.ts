@@ -24,7 +24,7 @@ export class MonitorListComponent implements OnInit {
   }
 
   getMonitors(){
-    this.subscriber=this.mntor.getBoundMonitor(this.resourceId, "").subscribe(data =>{      
+    this.subscriber=this.mntor.getBoundMonitor({resourceId : this.resourceId}).subscribe(data =>{      
       this.monitors= data.content;
       this.spnService.changeLoadingStatus(false);
     })

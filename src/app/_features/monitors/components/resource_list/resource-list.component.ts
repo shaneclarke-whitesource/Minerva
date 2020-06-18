@@ -28,7 +28,7 @@ export class ResourceListComponent implements OnInit {
   */
 
   getResources(){
-    this.subscriber=this.mntor.getBoundMonitor("", this.monitorId).subscribe(data =>{      
+    this.subscriber=this.mntor.getBoundMonitor({monitorId : this.monitorId}).subscribe(data =>{      
       this.resources = data.content;
     })
   }
