@@ -65,13 +65,7 @@ describe('ResourcesService', () => {
         expect(data).toEqual(new resourcesMock().single);
       })
     });
-
-    it('should get bound resources', () => {
-      service.getBoundResource("").subscribe(data => {
-        expect(data.content[0].resourceId).toEqual(new resourcesMock().boundResource.content[0].resourceId);
-      });
-    });
-
+    
     it('should validate a resource ID', (done) => {
       service.validateResourceId('newcool-server').subscribe(() => {
       }, error => {
