@@ -17,7 +17,7 @@ export class MonitorListComponent implements OnInit {
   @Input() resourceId:string;
   subscriber = new Subscription();
 
-  constructor(private mntor:MonitorService, private spnService: SpinnerService) { this.spnService.changeLoadingStatus(true); }
+  constructor(private mntor:MonitorService) { }
 
   ngOnInit(): void {
     this.getMonitors();
@@ -26,7 +26,6 @@ export class MonitorListComponent implements OnInit {
   getMonitors(){
     this.subscriber=this.mntor.getBoundMonitor({resourceId : this.resourceId}).subscribe(data =>{      
       this.monitors= data.content;
-      this.spnService.changeLoadingStatus(false);
     })
   }
   
