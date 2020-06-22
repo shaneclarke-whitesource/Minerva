@@ -18,7 +18,9 @@ this.addMonLoading=true; this.labelSubmit.next()">
     <select formControlName="type" [required]="createMonitorForm.get('type').hasError('required') && mf.type.touched" id="selType"
     (change)="loadMonitorForm($event.target.value)">
       <option value="">Select an option</option>
-      <option *ngFor="let type of typesOfMonitors">{{type}}</option>
+      <optgroup *ngFor="let monitor of monitors" label="{{monitor.type}}" >
+      <option *ngFor="let name of monitor.monitor">{{name}}</option>
+    </optgroup>
     </select>
     <hx-select></hx-select>
   </hx-select-control>

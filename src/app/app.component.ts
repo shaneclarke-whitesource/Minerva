@@ -25,4 +25,7 @@ export class AppComponent implements OnInit  {
       this.changeDetector.detectChanges();
     })
   }
+  alertDismiss(){
+    this.lgService.setAlertMsg("");
+  }
  }

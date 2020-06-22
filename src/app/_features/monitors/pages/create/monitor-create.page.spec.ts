@@ -172,7 +172,7 @@ let spyMonitorService;
   });
 
   it('should add typesOfMonitors', () => {
-    expect(component.typesOfMonitors).toEqual(Object.keys(new monitorsMock().schema.definitions));
+    expect(component.monitors[0].type).toEqual('Local');
   });
 
   it('should add listOfKeys & listOfValues', () => {
@@ -232,9 +232,6 @@ let spyMonitorService;
     component.deleteExcludedResource(0);
     expect(component.excludedResources.length).toEqual(1);
   });
-
-
-
   it('should unsubscribe on ngOnDestroy', () => {
     spyOn(component.subManager, 'unsubscribe');
     component.ngOnDestroy();
@@ -259,5 +256,4 @@ let spyMonitorService;
     expect(component.createMonitorForm.value['details'].plugin.pingInterval).toEqual('PT1M');
     expect(component.createMonitorForm.value['details'].plugin.timeout).toEqual('PT2M');
   });
-
 });
