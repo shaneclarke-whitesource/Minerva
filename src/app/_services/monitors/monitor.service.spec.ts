@@ -78,7 +78,7 @@ describe('MonitorService', () => {
       });
     });
     it('should get bound monitors', () => {
-      service.getBoundMonitor("").subscribe(data => {
+      service.getBoundMonitor({monitorId : ""}).subscribe(data => {
         expect(data.content[0].monitorId).toEqual(new monitorsMock().boundMonitor.content[0].monitorId);
       });
     });

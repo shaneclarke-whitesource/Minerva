@@ -15,6 +15,7 @@ import { SelectComponent } from './components/select/select.component';
 import { DynamicFieldDirective } from './components/dynamic-field/dynamic-field.directive';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
+import { ResourceListComponent } from './components/resource_list/resource-list.component';
 
 export const AJV_CLASS = new InjectionToken<Ajv>('The AJV Class Instance');
 export const AJV_CONFIG = new InjectionToken<Ajv>('The AJV Class config');
@@ -36,7 +37,8 @@ export function createAjvInstance(AjvClass: any, config: Options) {
     CheckboxComponent,
     SelectComponent,
     DynamicFieldDirective,
-    DynamicFormComponent
+    DynamicFormComponent,
+    ResourceListComponent
   ],
   imports: [
     SharedModule,
