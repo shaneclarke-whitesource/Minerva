@@ -65,7 +65,7 @@ describe('ResourcesService', () => {
         expect(data).toEqual(new resourcesMock().single);
       })
     });
-
+    
     it('should validate a resource ID', (done) => {
       service.validateResourceId('newcool-server').subscribe(() => {
       }, error => {

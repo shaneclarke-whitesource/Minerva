@@ -27,7 +27,6 @@ export class ResourcesService {
   readonly resourceItems = this._resourcesSubject.asObservable();
 
   private mockedResources = new resourcesMock();
-
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
   get resources(): Resources {
@@ -172,5 +171,4 @@ export class ResourcesService {
       )
     }
   }
-
 }

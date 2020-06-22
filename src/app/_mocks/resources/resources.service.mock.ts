@@ -1,6 +1,7 @@
 import { default as resourceMockCollection} from './collection.json';
 import {default as resourceMockSingle } from './single.json';
 import { Resource, Resources } from 'src/app/_models/resources.js';
+import { default as boundResource } from './boundResource.json';
 
 let resource: Resource = <Resource>{
     tenantId: resourceMockSingle.tenantId,
@@ -20,4 +21,5 @@ let resource: Resource = <Resource>{
 export class resourcesMock {
     collection: Resources = resourceMockCollection;
     single: Resource = resource;
+    boundResource = boundResource;
 }

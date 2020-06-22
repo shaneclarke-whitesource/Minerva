@@ -1,0 +1,17 @@
+<table class="hxTable">
+  <thead>
+    <tr>
+      <th>RESOURCE</th>
+      <th>ZONE NAME</th>
+      <th>ENVOY ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let resource of resources">
+      <td>{{resource.resourceId}}</td> 
+      <td>{{resource.zoneName}}</td>
+      <td>{{resource.envoyId}}</td>
+    </tr>
+  </tbody>
+</table>
+  
