@@ -7,11 +7,16 @@ import { Monitor } from 'src/app/_models/monitors';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { MonotorUtil, CntrlAttribute } from '../../mon.utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { duration} from "moment";
 import { FieldConfig } from '../../interfaces/field.interface';
 import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { AdditionalSettingsComponent } from '../../components/additional-settings/additional-settings.component';
+import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
+import { Resources, Resource } from 'src/app/_models/resources';
+import { ResourcesService } from 'src/app/_services/resources/resources.service';
+
 
 declare const window: any;
 export enum UpdateSection {
@@ -36,6 +41,7 @@ export class MonitorDetailsPage implements OnInit {
   monitorUpdateLoad: boolean;
   @ViewChild('monitorPopup') monitorPopPencil: ElementRef;
   @ViewChild('updateMonPen') updateMonNamePencil:ElementRef;
+  @ViewChild('pencilAddSettings') updateSettingPencil: ElementRef;
   monitor$: Observable<Monitor>;
   Object = window.Object;
   additionalSettings: string = 'out';
@@ -46,21 +52,35 @@ export class MonitorDetailsPage implements OnInit {
   deleteLoading: boolean = false;
   isUpdtPnlActive = false;
   updateMonNameLoading: boolean = false;
+  updateAdditionalLoading:boolean = false;
 
   dynaConfig: FieldConfig[];
   monDetails: Monitor;
+
+  additionalSettingEdit = false;
   updateMonNameForm: FormGroup;
+  udpateSettingForm: FormGroup;
   formatProp=[];
 
-
-  constructor(private route: ActivatedRoute, private router: Router,private readonly schemaService: SchemaService, private fb: FormBuilder, private monitorService: MonitorService, private spnService: SpinnerService) {
+  @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
+  constructor(private route: ActivatedRoute, private router: Router,private readonly schemaService: SchemaService,
+    private fb: FormBuilder, private monitorService: MonitorService, private spnService: SpinnerService,
+    private pipeSeconds: DurationSecondsPipe, private resourceService: ResourcesService) {
       this.spnService.changeLoadingStatus(true);
-     }
-  
+  }
+
   ngOnInit() {
     // popover form for updating Monitor name
     this.updateMonNameForm = this.fb.group({
       name: ['']
+    });
+
+    this.udpateSettingForm = this.fb.group({
+      interval: [''],
+      excludedResourceIds: this.fb.array([this.fb.group({
+        resource: new FormControl('')})]),
+      labelSelectorMethod: [''],
+      resourceId: ['']
     });
 
     this.route.params.subscribe(params => {
@@ -68,7 +88,7 @@ export class MonitorDetailsPage implements OnInit {
       this.monitor$ = this.monitorService.getMonitor(this.id).pipe(
         tap((data) => {
           this.monDetails = data;
-          this.spnService.changeLoadingStatus(false);              
+          this.spnService.changeLoadingStatus(false);
           this.updateMonNameForm.controls['name'].setValue(this.monDetails.name || {});
         })
       );
@@ -121,13 +141,16 @@ export class MonitorDetailsPage implements OnInit {
         })
       );
       switch(updateSection) {
-        case 'plugin':
+        case UpdateSection.plugin:
           this.monitorUpdateLoad=false;
           this.isUpdtPnlActive=false;
           break;
-        case 'name':
+        case UpdateSection.name:
           this.updateMonNameLoading = false;
           this.updateMonNamePencil.nativeElement.click();
+          break;
+        case UpdateSection.additional:
+          this.additionalSettingEdit = false;
           break;
       }
     });
@@ -142,7 +165,7 @@ export class MonitorDetailsPage implements OnInit {
     let patchBody = [];
     Object.keys(form.value).forEach(item => {
       if (this.formatProp.filter(a => a === item).length > 0) {
-        let second = this.cnvrtDurtnToSec(this.monDetails.details.plugin[item]);
+        let second = this.pipeSeconds.transform(this.monDetails.details.plugin[item]);
         if (second !== form.value[item]) {
           patchBody.push({ op: "replace", path: `/details/plugin/${item}`, "value": form.value[item] });
         }
@@ -166,6 +189,27 @@ export class MonitorDetailsPage implements OnInit {
     this.updateMonNameLoading = true;
     let patchBody = [{op: "replace", path: `/name`, value: monitorName.value.name }];
     this.monitorUpdate(patchBody, UpdateSection.name);
+  }
+
+  /**
+   * Update Monitor additional settings
+   * @param settingsForm FormGroup
+   */
+  updateMonitorSettings(settingsForm: FormGroup) {
+    let updateBody = [];
+    let addForm = this.additionalSettingsForm.value;
+    Object.keys(addForm).map((value) => {
+      if (addForm[value]) {
+        let updateObject = {op: "replace", patch: `/${value}`, value: `${addForm[value]}`};
+        updateBody.push(updateObject);
+      }
+    });
+    this.monitorUpdate(updateBody, UpdateSection.additional);
+  }
+
+  modifySettings() {
+    this.additionalSettings = 'in';
+    this.additionalSettingEdit = true;
   }
 
   /**
@@ -193,7 +237,7 @@ export class MonitorDetailsPage implements OnInit {
       if (definitions.properties[prop].hasOwnProperty(CntrlAttribute.format)) {
         if (this.monDetails.details.plugin[prop]) {
           this.formatProp.push(prop);
-          definitions.properties[prop].default = this.cnvrtDurtnToSec(this.monDetails.details.plugin[prop]);
+          definitions.properties[prop].default = this.pipeSeconds.transform(this.monDetails.details.plugin[prop]);
         }
       } else {
         definitions.properties[prop].default = this.monDetails.details.plugin[prop];
@@ -202,10 +246,7 @@ export class MonitorDetailsPage implements OnInit {
     )
     return definitions;
   }
-  cnvrtDurtnToSec(dura){
-    let second: any = duration(dura, 'second');
-    return second/1000;
-  }
+
   ngOnDestroy() {
     this.gc.unsubscribe();
   }

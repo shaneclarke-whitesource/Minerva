@@ -135,6 +135,8 @@ describe('MonitorDetailComponent', () => {
     expect(component.additionalSettings).toEqual('out');
     expect(component.isUpdtPnlActive).toEqual(false);
     expect(component.updateMonNameLoading).toEqual(false);
+    expect(component.updateAdditionalLoading).toEqual(false);
+    expect(component.additionalSettingEdit).toEqual(false);
     expect(component.formatProp).toEqual([]);
     expect(component.monDetails).toBeDefined();
   });
@@ -214,6 +216,12 @@ describe('MonitorDetailComponent', () => {
     let spyCompMethod = spyOn(component, 'monitorUpdate');
     component.updateMonitorName(component.updateMonNameForm);
     expect(spyCompMethod).toHaveBeenCalled();
+  });
+
+  it('should modifySettings()', () => {
+    component.modifySettings();
+    expect(component.additionalSettings).toEqual('in');
+    expect(component.additionalSettingEdit).toEqual(true);
   });
 
 
