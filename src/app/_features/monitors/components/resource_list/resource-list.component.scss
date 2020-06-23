@@ -1,0 +1,18 @@
+.resource-paging {
+    margin-top: 10px !important;
+}
+hx-busy.rsc-spinner-show {
+    position: absolute !important;
+    width: 2em;
+    height: 2em;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    transform-origin: unset;
+    padding: 0;
+}
+pre.rsc-position {
+    position: relative !important;
+}
