@@ -30,8 +30,8 @@ export enum UpdateSection {
 })
 export class MonitorDetailsPage implements OnInit {
   id: string;
-  private dynamicFormSubmit: Subject<void> = new Subject<void>();
-  private dynamicFormValid: Subject<boolean> = new Subject<boolean>();
+  dynamicFormSubmit: Subject<void> = new Subject<void>();
+  dynamicFormValid: Subject<boolean> = new Subject<boolean>();
   @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
   monitorUpdateLoad: boolean;
   @ViewChild('monitorPopup') monitorPopPencil: ElementRef;

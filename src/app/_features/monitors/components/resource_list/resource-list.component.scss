@@ -1,18 +1,24 @@
-.resource-paging {
-    margin-top: 10px !important;
+
+.tabelop{
+    opacity: 0.3;
 }
-hx-busy.rsc-spinner-show {
-    position: absolute !important;
-    width: 2em;
-    height: 2em;
-    top: 50%;
-    left: 50%;
-    -moz-transform: translateX(-50%) translateY(-50%);
-    -webkit-transform: translateX(-50%) translateY(-50%);
-    transform: translateX(-50%) translateY(-50%);
-    transform-origin: unset;
-    padding: 0;
+.spinner-show {
+    margin-left: 24rem;
+    margin-top: 12rem;
+    position: absolute;
+}
+.spinner-dis{
+    display:none;
 }
 pre.rsc-position {
     position: relative !important;
+}
+#resctble{
+    border: 2px solid #e0e0e0;;
+}
+.header{
+    width: 15rem;
+}
+.EnvHeader{
+    width: 30rem;
 }
