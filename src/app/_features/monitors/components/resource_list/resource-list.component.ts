@@ -3,15 +3,20 @@ import { BoundMonitor } from 'src/app/_models/resources';
 import { MonitorService } from '../../../../_services/monitors/monitor.service';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Pagination } from 'src/app/_models/common';
 @Component({
   selector: 'app-resource-list',
   templateUrl: './resource-list.component.html',
   styleUrls: ['./resource-list.component.scss']
 })
 export class ResourceListComponent implements OnInit {
+  public pagination:Pagination={
+    totalElements:5,
+    number:0
+  }
   total: number;
-  page: number = 0;
-  perPageElements: number = environment.pagination.pageSize;
+  page = 0;
+  perPageElements = 5;
 
   isLoading: boolean = false;
   //perPage: number = environment.pagination.pageSize;
@@ -34,9 +39,9 @@ export class ResourceListComponent implements OnInit {
   */
 
   getResources(){
-    this.subscriber=this.mntor.getBoundMonitor({monitorId : this.monitorId, size: this.perPageElements, page: this.page}).subscribe(data =>{     
+    this.subscriber=this.mntor.getBoundMonitor({monitorId : this.monitorId, size: this.pagination.totalElements, page: this.pagination.number}).subscribe(data =>{     
       this.resources = data.content;
-      this.total = data.totalElements;
+      this.pagination.totalPages = data.totalElements;
       this.isLoading = false;
     })
   }
@@ -47,7 +52,7 @@ export class ResourceListComponent implements OnInit {
    * @returns void
   */
  goToPage(n: number): void {
-  this.page = n;
+  this.pagination.number = n;
   this.isLoading = true;
   this.getResources();
 }
@@ -56,7 +61,7 @@ export class ResourceListComponent implements OnInit {
  * @description <app-pagination>
  */
 nextPage(): void {
-  this.page++;
+  this.pagination.number++;
   this.isLoading = true;
   this.getResources();
 }
@@ -65,7 +70,7 @@ nextPage(): void {
  * @description <app-pagination>
  */
 prevPage(): void {
-  this.page--;
+  this.pagination.number--;
   this.isLoading = true;
   this.getResources();
 }
