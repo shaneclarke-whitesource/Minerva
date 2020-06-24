@@ -19,9 +19,9 @@
   <div class="hxRow resource-paging">
     <div class="hxCol">
       <app-pagination
-        [total]="total"
-        [page]="page"
-        [perPage]="defaultAmount"
+        [total]="pagination?.totalPages"
+        [page]="pagination?.number"
+        [perPage]="pagination?.totalElements"
         [pagesToShow]="5"
         (goPrev)="prevPage()"
         (goNext)="nextPage()"

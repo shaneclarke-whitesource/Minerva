@@ -5,12 +5,18 @@ import { BoundMonitorPaging, BoundMonitor } from 'src/app/_models/resources';
 import { Subscription } from 'rxjs';
 import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 import { environment } from 'src/environments/environment';
+import { Pagination } from 'src/app/_models/common';
 @Component({
   selector: 'app-monitor-list',
   templateUrl: './monitor-list.component.html',
   styleUrls: ['./monitor-list.component.scss']
 })
 export class MonitorListComponent implements OnInit {
+
+  public pagination:Pagination= {
+    totalElements:5,
+    number:0
+  }
   total: number;
   page: number = 0;
   defaultAmount:number = environment.pagination.pageSize;
@@ -26,10 +32,10 @@ export class MonitorListComponent implements OnInit {
   }
 
   getMonitors(){
-    this.subscriber=this.mntor.getBoundMonitor({resourceId : this.resourceId, size: this.defaultAmount, page: this.page}).subscribe(data =>{      
+    this.subscriber=this.mntor.getBoundMonitor({resourceId : this.resourceId, size: this.pagination.totalElements, page: this.pagination.number}).subscribe(data =>{      
       this.monitors= data.content;
-      this.total = data.totalElements;
-      //this.isLoading = false;
+      this.pagination.totalPages = data.totalElements;
+      this.isLoading = false;
     })
   }
 
@@ -39,8 +45,8 @@ export class MonitorListComponent implements OnInit {
    * @returns void
   */
   goToPage(n: number): void {
-    this.page = n;
-    //this.isLoading = true;
+    this.pagination.number = n;
+    this.isLoading = true;
     this.getMonitors();
   }
 
@@ -48,8 +54,8 @@ export class MonitorListComponent implements OnInit {
    * @description <app-pagination>
    */
   nextPage(): void {
-    this.page++;
-    //this.isLoading = true;
+    this.pagination.number++;
+    this.isLoading = true;
     this.getMonitors();
   }
 
@@ -57,8 +63,8 @@ export class MonitorListComponent implements OnInit {
    * @description <app-pagination>
    */
   prevPage(): void {
-    this.page--;
-    //this.isLoading = true;
+    this.pagination.number--;
+    this.isLoading = true;
     this.getMonitors();
   }
   

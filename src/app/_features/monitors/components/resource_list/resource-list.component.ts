@@ -14,10 +14,6 @@ export class ResourceListComponent implements OnInit {
     totalElements:5,
     number:0
   }
-  total: number;
-  page = 0;
-  perPageElements = 5;
-
   isLoading: boolean = false;
   //perPage: number = environment.pagination.pageSize;
   resources:BoundMonitor[]; 
