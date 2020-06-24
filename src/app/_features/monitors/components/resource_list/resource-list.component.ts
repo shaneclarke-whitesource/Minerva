@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class ResourceListComponent implements OnInit {
   total: number;
   page: number = 0;
-  perPageElements: number = 5;
+  perPageElements: number = environment.pagination.pageSize;
 
   isLoading: boolean = false;
   //perPage: number = environment.pagination.pageSize;
