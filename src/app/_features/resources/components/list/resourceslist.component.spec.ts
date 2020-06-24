@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, getTestBed, } from '@angular/core/tes
 import {ReactiveFormsModule, FormsModule, FormBuilder, Validators} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ResourcesListComponent } from './resourceslist.component';
 import { ResourcesPage } from '../../pages/resources/resources.page';
 import { ResourceDetailsPage } from '../../pages/details/resource-details.page';
@@ -12,6 +12,7 @@ import { Resource } from 'src/app/_models/resources';
 import { ValidateResource } from '../../../../_shared/validators/resourceName.validator';
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
 import { Router } from '@angular/router';
+import { throwError } from 'rxjs';
 
 var mockResource: Resource = {
   "resourceId": "development:1",
@@ -31,6 +32,15 @@ var mockResource: Resource = {
   "createdTimestamp": new Date(),
   "updatedTimestamp": new Date()
 };
+
+let mockValidateResource = {
+  valid: () => {
+    return throwError(new HttpErrorResponse({
+      error: 'Not Found',
+      status: 404
+    }));
+  }
+}
 
 describe('ResourcesListComponent', () => {
   let injector: TestBed;
@@ -56,9 +66,9 @@ describe('ResourcesListComponent', () => {
       ],
       providers: [
         ResourcesService,
-        ValidateResource,
         // reference the new instance of formBuilder from above
-        { provide: FormBuilder, useValue: formBuilder }
+        { provide: FormBuilder, useValue: formBuilder },
+        { provide: ValidateResource, useValue: mockValidateResource}
       ]
     })
     .compileComponents();

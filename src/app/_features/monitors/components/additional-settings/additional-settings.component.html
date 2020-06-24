@@ -48,8 +48,8 @@
     <hx-select-control>
       <select formControlName="labelSelectorMethod">
         <option value="">Select an option</option>
-        <option value="AND" [selected]="initialData.labelSelectorMethod == 'AND'">AND</option>
-        <option value="OR" [selected]="initialData.labelSelectorMethod == 'OR'">OR</option>
+        <option value="AND" [selected]="initialData?.labelSelectorMethod == 'AND'">AND</option>
+        <option value="OR" [selected]="initialData?.labelSelectorMethod == 'OR'">OR</option>
       </select>
       <hx-select></hx-select>
     </hx-select-control>

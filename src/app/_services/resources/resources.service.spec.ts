@@ -1,10 +1,11 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ResourcesService } from './resources.service';
 import { environment } from '../../../environments/environment';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
 import { Resource, CreateResource } from 'src/app/_models/resources';
 import { map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 describe('ResourcesService', () => {
   let injector: TestBed;

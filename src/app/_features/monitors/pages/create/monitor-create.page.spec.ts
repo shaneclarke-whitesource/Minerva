@@ -13,13 +13,14 @@ import { SchemaService, AJV_INSTANCE } from 'src/app/_services/monitors/schema.s
 import {routes } from '../../monitors.routes';
 import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module';
 import ajv from 'ajv';
-import { CntrlAttribute } from '../../mon.utils';
 import { MonitorsPage } from '../monitors/monitors.page';
 import { MarkFormGroupTouched } from 'src/app/_shared/utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { Observable } from 'rxjs';
 import { Resource } from 'src/app/_models/resources';
-import { FormArray, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+import { AdditionalSettingsComponent } from '../../components/additional-settings/additional-settings.component';
+import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
 
 const keyPair = {
   keysandvalues: [
@@ -47,14 +48,13 @@ let component: MonitorCreatePage;
 let fixture: ComponentFixture<MonitorCreatePage>;
 let schemaService: SchemaService;
 let monitorService: MonitorService;
-let subFormComponent: DynamicFormComponent
 let spySubManager;
 let spyMonitorService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [
-        MonitorCreatePage, MonitorsPage, DynamicFormComponent
+        MonitorCreatePage, MonitorsPage, DynamicFormComponent, AdditionalSettingsComponent
       ],
       imports: [
         BrowserAnimationsModule,
@@ -75,6 +75,7 @@ let spyMonitorService;
         MonitorService,
         LabelService,
         SchemaService,
+        DurationSecondsPipe,
         { provide: AJV_CLASS, useValue: ajv },
         { provide: AJV_CONFIG, useValue: { useDefaults: true } },
         {
@@ -110,19 +111,6 @@ let spyMonitorService;
     component.createMonitorForm.controls['type'].setValue(type);
   }
 
-  function updateExcludedResourcesArray() {
-    let fbGroup1 = this.fb.group({
-      resource: new FormControl('12345'),
-    });
-
-    let fbGroup2 = this.fb.group({
-      resource: new FormControl('456'),
-    });
-
-    component.excludedResources.push(fbGroup1)
-    component.excludedResources.push(fbGroup2);
-  }
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -147,7 +135,7 @@ let spyMonitorService;
   });
 
   it('should get monitor form (mf) and return createMonitorForm controls', () => {
-    expect(Object.keys(component.mf).length).toEqual(6);
+    expect(Object.keys(component.mf).length).toEqual(2);
   });
 
   it('should be invalid createMonitorForm', () => {
@@ -222,18 +210,6 @@ let spyMonitorService;
     component.showAdditionalSettings();
     expect(component.additionalSettings).toEqual('in');
   });
-
-  it('should add excludedResources form control', ()=> {
-    component.addExcludedResource();
-    expect(component.excludedResources.length).toEqual(2);
-  });
-  it('should delete excludedResources form control', ()=> {
-    component.addExcludedResource();
-    component.deleteExcludedResource(0);
-    expect(component.excludedResources.length).toEqual(1);
-  });
-
-
 
   it('should unsubscribe on ngOnDestroy', () => {
     spyOn(component.subManager, 'unsubscribe');

@@ -62,6 +62,8 @@ export class MonitorDetailsPage implements OnInit {
   udpateSettingForm: FormGroup;
   formatProp=[];
 
+  updateBody = [];
+
   @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
   constructor(private route: ActivatedRoute, private router: Router,private readonly schemaService: SchemaService,
     private fb: FormBuilder, private monitorService: MonitorService, private spnService: SpinnerService,
@@ -195,16 +197,24 @@ export class MonitorDetailsPage implements OnInit {
    * Update Monitor additional settings
    * @param settingsForm FormGroup
    */
-  updateMonitorSettings(settingsForm: FormGroup) {
-    let updateBody = [];
-    let addForm = this.additionalSettingsForm.value;
+  updateMonitorSettings() {
+    this.updateBody = [];
+    let addForm = Object.assign({}, this.additionalSettingsForm.value);
     Object.keys(addForm).map((value) => {
-      if (addForm[value]) {
-        let updateObject = {op: "replace", patch: `/${value}`, value: `${addForm[value]}`};
-        updateBody.push(updateObject);
+      if (value === 'interval' || value === 'excludedResourceIds') {
+        this.updateBody.push({ op: "replace", path: `/${value}`, value: addForm[value]});
+      }
+      else if (value === 'resourceId') {
+        this.updateBody.push({ op: "replace", path: `/${value}`, value: `${addForm[value]}`});
+        this.updateBody.push({ op: "replace", path: '/labelSelector', value: null});
+        this.updateBody.push({ op: "replace", path: '/excludedResourceIds', value: []});
+      }
+      else {
+        this.updateBody.push({ op: "replace", path: `/${value}`, value: `${addForm[value]}`});
       }
     });
-    this.monitorUpdate(updateBody, UpdateSection.additional);
+
+    this.monitorUpdate(this.updateBody, UpdateSection.additional);
   }
 
   modifySettings() {

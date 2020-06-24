@@ -13,6 +13,11 @@ import { CntrlAttribute } from '../../mon.utils';
  * 1. Selecting a ResourceId disables excluded resources
  * 2. Selecting a ResourceId disables Label Selector
  * 3. resourceIdEmit emits whether ResourceId is selected
+ *
+ * Rules of API
+ * 1. Patch with resourceId cannot include excludedResourceIds
+ * 2. Patch with resourceId must nullify labelSelector
+ * 3. Patch with excludedResourceIds property cannot include resourceId
  */
 
 @Component({
@@ -25,9 +30,6 @@ export class AdditionalSettingsComponent implements OnInit {
   @Input()
   initialData: Monitor;
 
-  @Input()
-  disabled: boolean = false;
-
   // Output emitters will update the components as to changes in the form
   // and whether they are valid
   @Output()
@@ -39,7 +41,6 @@ export class AdditionalSettingsComponent implements OnInit {
   updateSettingForm: FormGroup;
 
   get value() {
-
     let formExport = Object.assign({}, this.updateSettingForm.value);
     if (formExport.resourceId) {
       delete formExport.excludedResourceIds
@@ -48,9 +49,7 @@ export class AdditionalSettingsComponent implements OnInit {
       delete formExport.resourceId;
       let excluded = [];
       formExport.excludedResourceIds.map((item) => {
-        console.log('**excludedResourceId Object: ', item);
         if (item['resource'] != "") {
-          console.log("**Adding resource: ", item['resource']);
           excluded.push(item['resource']);
         }
       });
@@ -58,25 +57,6 @@ export class AdditionalSettingsComponent implements OnInit {
     }
 
     return formExport;
-
-    /*
- Object.keys(addFormValue).map((value) => {
-        let updateObject;
-        if (value === 'excludedResourceIds') {
-          let excluded = [];
-          Object.keys(addFormValue[value]).map((item) => {
-            if (addFormValue[value][item] != "") {
-              excluded.push(addFormValue[value][item].resource);
-            }
-          });
-          updateObject = { op: "replace", patch: `/${value}`, value: excluded };
-        }
-        else {
-          updateObject = { op: "replace", patch: `/${value}`, value: `${addFormValue[value]}` };
-        }
-        updateBody.push(updateObject);
-
-    */
   }
 
   /**
@@ -92,14 +72,38 @@ export class AdditionalSettingsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    let interval = this.pipeSeconds.transform(this.initialData.interval);
+    if (this.initialData) {
+      let interval = this.pipeSeconds.transform(this.initialData.interval);
 
-    this.updateSettingForm = this.fb.group({
-      interval: new FormControl(interval),
-      excludedResourceIds: this.fb.array([]),
-      labelSelectorMethod: new FormControl(this.initialData.labelSelectorMethod),
-      resourceId: new FormControl(this.initialData.resourceId)
-    });
+      this.updateSettingForm = this.fb.group({
+        interval: new FormControl(interval),
+        excludedResourceIds: this.fb.array([]),
+        labelSelectorMethod: new FormControl(this.initialData.labelSelectorMethod),
+        resourceId: new FormControl(this.initialData.resourceId)
+      });
+
+      if (this.initialData.excludedResourceIds.length > 0) {
+        Object.keys(this.initialData.excludedResourceIds).map(key => {
+          let value = this.initialData.excludedResourceIds[key];
+          this.resourceDropdowns.push(this.fb.group({
+            resource: new FormControl(value)
+          }));
+        });
+      }
+      else {
+        this.resourceDropdowns.push(this.createItem());
+      }
+    }
+    else {
+      this.updateSettingForm = this.fb.group({
+        interval: new FormControl(''),
+        excludedResourceIds: this.fb.array([]),
+        labelSelectorMethod: new FormControl(''),
+        resourceId: new FormControl('')
+      });
+
+      this.resourceDropdowns.push(this.createItem());
+    }
 
     this.resources$ = this.resourceService.resourceItems.pipe(
       map((items) => {
@@ -108,19 +112,6 @@ export class AdditionalSettingsComponent implements OnInit {
     );
 
     let resourceSub = this.resourceService.getResources(25, 0).subscribe();
-    if (this.initialData.excludedResourceIds.length > 0) {
-      Object.keys(this.initialData.excludedResourceIds).map(key => {
-        let value = this.initialData.excludedResourceIds[key];
-        this.resourceDropdowns.push(this.fb.group({
-          resource: new FormControl(value)
-        }));
-      });
-    }
-    else {
-      this.resourceDropdowns.push(this.fb.group({
-        resource: new FormControl('')
-      }));
-    }
     this.subManager.add(resourceSub);
   }
 

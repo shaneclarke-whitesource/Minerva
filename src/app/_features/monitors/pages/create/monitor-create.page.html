@@ -41,7 +41,12 @@ this.addMonLoading=true; this.labelSubmit.next()">
 
 <div class="hxRow hxSpan-9" style="margin-top:-15px" [@slideUpDown]="additionalSettings">
   <div class="hxCol hxSpan-6 hxOffset-6">
-    <div class="hxRow hxSpan-12">
+    <monitor-additional-settings>
+    </monitor-additional-settings>
+
+
+
+    <!--<div class="hxRow hxSpan-12">
     <div class="hxCol hxSpan-3 numberCtrl">
       <h4>Period</h4>
       <hx-text-control>
@@ -97,7 +102,7 @@ this.addMonLoading=true; this.labelSubmit.next()">
       <hx-select></hx-select>
     </hx-select-control>
   </div>
-</div>
+</div> -->
 </div>
 </div>
 
@@ -106,7 +111,7 @@ this.addMonLoading=true; this.labelSubmit.next()">
     <p>Label Selector</p>
   </div>
   <div class="hxCol hxSpan-12">
-    <app-add-fields [validateForm]="labelSubmit.asObservable()" [disable]="createMonitorForm.value.resourceId" [listOfKeys]="listOfKeys"
+    <app-add-fields [validateForm]="labelSubmit.asObservable()" [disable]="additionalSettingsForm?.value.resourceId" [listOfKeys]="listOfKeys"
       [listOfValues]="listOfValues" (formValuesChanged)="labelsUpdated($event)" (formValid)="labelFormValid.next($event)">
       </app-add-fields>
   </div>

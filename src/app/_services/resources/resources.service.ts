@@ -145,7 +145,7 @@ export class ResourcesService {
     */
   validateResourceId(id:string): any {
     if (environment.mock) {
-      throw throwError(new HttpErrorResponse({
+      return throwError(new HttpErrorResponse({
         error: 'Not Found',
         status: 404
       }));
