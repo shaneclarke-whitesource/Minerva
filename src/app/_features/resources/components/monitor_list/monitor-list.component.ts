@@ -17,9 +17,6 @@ export class MonitorListComponent implements OnInit {
     totalElements:5,
     number:0
   }
-  total: number;
-  page: number = 0;
-  defaultAmount:number = environment.pagination.pageSize;
   isLoading: boolean = false;
   monitors:BoundMonitor[];
   @Input() resourceId:string;
