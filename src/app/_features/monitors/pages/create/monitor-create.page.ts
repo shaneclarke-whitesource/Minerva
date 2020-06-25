@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service.js';
@@ -15,7 +15,6 @@ import { Animations } from 'src/app/_shared/animations';
 import { Resource } from 'src/app/_models/resources';
 import { duration } from "moment";
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
-import { map } from 'rxjs/operators';
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
 import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fields.component';

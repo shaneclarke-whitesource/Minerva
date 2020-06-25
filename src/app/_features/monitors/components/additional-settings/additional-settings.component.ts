@@ -57,6 +57,10 @@ export class AdditionalSettingsComponent implements OnInit {
       formExport[CntrlAttribute.excludedResourceIds] = excluded;
     }
 
+    Object.keys(formExport).forEach((key) => {
+      if (formExport[key] === null || formExport[key] === '') { delete formExport[key] }
+    });
+
     return formExport;
   }
 
