@@ -126,7 +126,6 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
               resourceId: resourceForm.controls['name'].value,
               presenceMonitoringEnabled: resourceForm.controls['enabled'].value ? true : false
             }
-            // once valid, create the initial resource
             this.resourceService.createResource(resource).subscribe((result) => {
               this.addResLoading = false;
               this.router.navigate(['/resources', result.resourceId]);

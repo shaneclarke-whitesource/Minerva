@@ -12,7 +12,7 @@ import { Resource } from 'src/app/_models/resources';
 import { ValidateResource } from '../../../../_shared/validators/resourceName.validator';
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { throwError, of, Observable } from 'rxjs';
 
 var mockResource: Resource = {
   "resourceId": "development:1",
@@ -35,10 +35,7 @@ var mockResource: Resource = {
 
 let mockValidateResource = {
   valid: () => {
-    return throwError(new HttpErrorResponse({
-      error: 'Not Found',
-      status: 404
-    }));
+    return throwError({status: 404});
   }
 }
 
@@ -68,7 +65,7 @@ describe('ResourcesListComponent', () => {
         ResourcesService,
         // reference the new instance of formBuilder from above
         { provide: FormBuilder, useValue: formBuilder },
-        { provide: ValidateResource, useValue: mockValidateResource}
+        //{ provide: ValidateResource, useValue: mockValidateResource}
       ]
     })
     .compileComponents();
@@ -184,6 +181,7 @@ describe('ResourcesListComponent', () => {
     expect(component.addResourceForm.invalid).toBe(true);
   });
 
+
   it('should add Resource and navigate to details page', () => {
     const spy = spyOn(router, 'navigate');
     fixture.ngZone.run(() => {
@@ -193,20 +191,23 @@ describe('ResourcesListComponent', () => {
     });
   });
 
-  it('should add Resource and trigger services', () => {
-    const spy = spyOn(resourceService, 'createResource');
+  it('should add Resource and trigger services', (done) => {
+    const spy = spyOn(resourceService, 'createResource').and.returnValue({subscribe: () => { } });
     fixture.ngZone.run(() => {
       updateForm('newcool-server', false);
       component.addResource(component.addResourceForm);
       expect(spy).toHaveBeenCalled();
+      done();
     });
   });
 
-  it('should destroy subscriptions', () => {
-    spyOn(component['ngUnsubscribe'], 'next');
-    spyOn(component['ngUnsubscribe'], 'complete');
+  it('should destroy subscriptions', (done) => {
+    spyOn(validateResource, 'valid').and.returnValue(of({}));
+    const spy1 = spyOn(component['ngUnsubscribe'], 'next').and.returnValue({ subscribe: () => { } });
+    const spy2 = spyOn(component['ngUnsubscribe'], 'complete').and.returnValue({ subscribe: () => { } })
     component.ngOnDestroy();
-    expect(component['ngUnsubscribe'].next).toHaveBeenCalledTimes(1);
-    expect(component['ngUnsubscribe'].complete).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalled();
+    expect(spy2).toHaveBeenCalled();
+    done();
   });
 });
