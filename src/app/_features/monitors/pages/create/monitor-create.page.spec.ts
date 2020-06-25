@@ -18,7 +18,6 @@ import { MarkFormGroupTouched } from 'src/app/_shared/utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { Observable } from 'rxjs';
 import { Resource } from 'src/app/_models/resources';
-import { FormControl } from '@angular/forms';
 import { AdditionalSettingsComponent } from '../../components/additional-settings/additional-settings.component';
 import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
 
@@ -41,7 +40,6 @@ const keyPair = {
     value: 'fourthpair'
   }
 ]};
-
 describe('MonitorCreatePage', () => {
 let injector: TestBed;
 let component: MonitorCreatePage;
@@ -50,11 +48,15 @@ let schemaService: SchemaService;
 let monitorService: MonitorService;
 let spySubManager;
 let spyMonitorService;
+const addSettingsForm = jasmine.createSpyObj('AdditionalSettingsComponent', ['value']);
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [
-        MonitorCreatePage, MonitorsPage, DynamicFormComponent, AdditionalSettingsComponent
+        MonitorCreatePage,
+        MonitorsPage,
+        DynamicFormComponent,
+        AdditionalSettingsComponent
       ],
       imports: [
         BrowserAnimationsModule,
@@ -174,6 +176,7 @@ let spyMonitorService;
   });
 
   it('should addMonitor() using service', () => {
+    component.additionalSettingsForm = addSettingsForm;
     component.selectedMonitor = 'Cpu';
     component.dynaConfig = [
       {
@@ -235,5 +238,4 @@ let spyMonitorService;
     expect(component.createMonitorForm.value['details'].plugin.pingInterval).toEqual('PT1M');
     expect(component.createMonitorForm.value['details'].plugin.timeout).toEqual('PT2M');
   });
-
 });

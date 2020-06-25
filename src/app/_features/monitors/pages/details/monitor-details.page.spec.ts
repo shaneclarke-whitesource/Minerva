@@ -16,7 +16,7 @@ import { routes } from '../../monitors.routes';
 import { SchemaService, AJV_INSTANCE } from 'src/app/_services/monitors/schema.service';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module';
-import { FormGroup, FormControl, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
 
 describe('MonitorDetailComponent', () => {

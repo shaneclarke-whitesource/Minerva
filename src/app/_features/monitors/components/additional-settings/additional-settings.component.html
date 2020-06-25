@@ -14,7 +14,7 @@
         <hx-select-control class="excluded-resources">
           <select formControlName="resource" [attr.disabled]="updateSettingForm.value.resourceId ? '' : null">
             <option value="">Select a Resource</option>
-             <option *ngFor="let resource of resources$ | async"
+             <option *ngFor="let resource of resources"
             [value]="resource.resourceId">{{resource.resourceId}}</option>
           </select>
           <hx-select></hx-select>
@@ -37,7 +37,7 @@
     <hx-select-control>
       <select formControlName="resourceId" (change)="resourceIdEmit.emit(updateSettingForm.value.resourceId)">
         <option value="">Select a Resource</option>
-        <option *ngFor="let resource of resources$ | async"
+        <option *ngFor="let resource of resources"
         [value]="resource.resourceId">{{resource.resourceId}}</option>
       </select>
       <hx-select></hx-select>

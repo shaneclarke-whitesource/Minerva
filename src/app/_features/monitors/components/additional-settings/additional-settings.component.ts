@@ -3,10 +3,13 @@ import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { Monitor } from 'src/app/_models/monitors';
 import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
 import { Observable, Subscription } from 'rxjs';
-import { Resource } from 'src/app/_models/resources';
-import { map } from 'rxjs/operators';
+import { Resource, Resources } from 'src/app/_models/resources';
+import { map, finalize } from 'rxjs/operators';
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
 import { CntrlAttribute } from '../../mon.utils';
+import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
+import { LoggingService } from 'src/app/_services/logging/logging.service';
+import { LogLevels } from 'src/app/_enums/log-levels.enum';
 
 /**
  * Rules of AdditionalSettingsComponent
@@ -35,7 +38,7 @@ export class AdditionalSettingsComponent implements OnInit {
   @Output()
   public resourceIdEmit = new EventEmitter<boolean>();
 
-  resources$: Observable<Resource[]>;
+  resources: Resource[] = [];
   subManager = new Subscription();
 
   updateSettingForm: FormGroup;
@@ -68,8 +71,9 @@ export class AdditionalSettingsComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private pipeSeconds: DurationSecondsPipe,
-    private resourceService: ResourcesService) { }
-
+    private logService: LoggingService, private resourceService: ResourcesService, private spnService: SpinnerService) {
+      this.spnService.changeLoadingStatus(true);
+    }
   ngOnInit(): void {
 
     if (this.initialData) {
@@ -79,7 +83,7 @@ export class AdditionalSettingsComponent implements OnInit {
         interval: new FormControl(interval),
         excludedResourceIds: this.fb.array([]),
         labelSelectorMethod: new FormControl(this.initialData.labelSelectorMethod),
-        resourceId: new FormControl(this.initialData.resourceId)
+        resourceId: new FormControl(this.initialData.resourceId || "")
       });
 
       if (this.initialData.excludedResourceIds.length > 0) {
@@ -105,14 +109,14 @@ export class AdditionalSettingsComponent implements OnInit {
       this.resourceDropdowns.push(this.createItem());
     }
 
-    this.resources$ = this.resourceService.resourceItems.pipe(
-      map((items) => {
-        return items;
-      })
-    );
-
-    let resourceSub = this.resourceService.getResources(25, 0).subscribe();
-    this.subManager.add(resourceSub);
+    this.resourceService.getResources(25, 0).subscribe(
+      (data) => {
+        this.resources = this.resources.concat(data.content);
+        this.spnService.changeLoadingStatus(false);
+      },
+      (error) => {
+        this.logService.log(error, LogLevels.error);
+      });
   }
 
    /**
@@ -145,9 +149,5 @@ export class AdditionalSettingsComponent implements OnInit {
     return this.fb.group({
       resource: new FormControl('')
     });
-  }
-
-  ngOnDestroy() {
-    this.subManager.unsubscribe();
   }
 }

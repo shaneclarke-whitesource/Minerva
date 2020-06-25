@@ -153,6 +153,7 @@ export class MonitorDetailsPage implements OnInit {
           break;
         case UpdateSection.additional:
           this.additionalSettingEdit = false;
+          this.updateAdditionalLoading = false;
           break;
       }
     });
@@ -198,16 +199,25 @@ export class MonitorDetailsPage implements OnInit {
    * @param settingsForm FormGroup
    */
   updateMonitorSettings() {
+    this.updateAdditionalLoading = true;
     this.updateBody = [];
     let addForm = Object.assign({}, this.additionalSettingsForm.value);
     Object.keys(addForm).map((value) => {
-      if (value === 'interval' || value === 'excludedResourceIds') {
+      if (value === 'interval') {
         this.updateBody.push({ op: "replace", path: `/${value}`, value: addForm[value]});
+      }
+      else if (value === 'excludedResourceIds') {
+        this.updateBody.push({ op: "replace", path: `/${value}`, value: addForm[value]});
+        this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.resourceId}`, value: null});
+
+        if (this.monDetails.labelSelector === ("" || null)) {
+          this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.labelSelector}`, value: {}});
+        }
       }
       else if (value === 'resourceId') {
         this.updateBody.push({ op: "replace", path: `/${value}`, value: `${addForm[value]}`});
-        this.updateBody.push({ op: "replace", path: '/labelSelector', value: null});
-        this.updateBody.push({ op: "replace", path: '/excludedResourceIds', value: []});
+        this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.labelSelector}`, value: null});
+        this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.excludedResourceIds}`, value: []});
       }
       else {
         this.updateBody.push({ op: "replace", path: `/${value}`, value: `${addForm[value]}`});
@@ -235,7 +245,6 @@ export class MonitorDetailsPage implements OnInit {
         this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
         return;
       }
-
     }
   }
 

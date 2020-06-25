@@ -186,14 +186,6 @@ change = false;
    */
   showAdditionalSettings(): void {
     this.additionalSettings = this.additionalSettings === 'in' ? 'out': 'in';
-    this.resources$ = this.resourceService.resourceItems.pipe(
-      map((items) => {
-        return items;
-      })
-    );
-    //TODO: This function will eventually need some kind of paging component with endless
-    // scroll or a similar mechanism
-    this.resourceService.getResources(25, 0).subscribe();
   }
 
   ngOnDestroy() {

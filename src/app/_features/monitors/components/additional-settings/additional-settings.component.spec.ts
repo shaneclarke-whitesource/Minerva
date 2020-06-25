@@ -41,7 +41,6 @@ describe('AdditionalSettingsComponent', () => {
   });
 
   it('should set the defaults', () => {
-    expect(component.resources$).toBeDefined();
     expect(component.subManager).toEqual(new Subscription());
     expect(component.updateSettingForm).toBeDefined();
   });
