@@ -99,6 +99,7 @@ const addSettingsForm = jasmine.createSpyObj('AdditionalSettingsComponent', ['va
     schemaService.loadSchema();
     spySubManager = spyOn(component.subManager, 'add');
     spyMonitorService = spyOn(monitorService, 'createMonitor');
+    component.additionalSettingsForm = addSettingsForm;
     fixture.detectChanges();
   });
 
@@ -176,7 +177,6 @@ const addSettingsForm = jasmine.createSpyObj('AdditionalSettingsComponent', ['va
   });
 
   it('should addMonitor() using service', () => {
-    component.additionalSettingsForm = addSettingsForm;
     component.selectedMonitor = 'Cpu';
     component.dynaConfig = [
       {
