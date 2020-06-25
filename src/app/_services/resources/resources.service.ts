@@ -23,7 +23,6 @@ export class ResourcesService {
   private _resource: Resource;
 
   private mockedResources = new resourcesMock();
-
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
   get resources(): Resources {
@@ -166,5 +165,4 @@ export class ResourcesService {
       )
     }
   }
-
 }

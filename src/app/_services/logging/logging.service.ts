@@ -40,7 +40,7 @@ export class LoggingService {
     return this.alrtResponse.asObservable();
   }
 
-   private setAlertMsg(data:string){
+   public setAlertMsg(data:string){
     this.alrtResponse.next(data);
   }
 

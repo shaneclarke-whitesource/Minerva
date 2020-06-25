@@ -162,7 +162,7 @@ const addSettingsForm = jasmine.createSpyObj('AdditionalSettingsComponent', ['va
   });
 
   it('should add typesOfMonitors', () => {
-    expect(component.typesOfMonitors).toEqual(Object.keys(new monitorsMock().schema.definitions));
+    expect(component.monitors[0].type).toEqual('Local');
   });
 
   it('should add listOfKeys & listOfValues', () => {

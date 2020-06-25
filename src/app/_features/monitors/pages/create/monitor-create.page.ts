@@ -29,7 +29,7 @@ import { AdditionalSettingsComponent } from '../../components/additional-setting
   animations: [ Animations.slideUpDownTrigger ]
 })
 export class MonitorCreatePage implements OnInit, OnDestroy {
-  private labelSubmit: Subject<void> = new Subject<void>();
+  public labelSubmit: Subject<void> = new Subject<void>();
   private labelFormValid: Subject<boolean> = new Subject<boolean>();
   private dynamicFormSubmit: Subject<void> = new Subject<void>();
   private dynamicFormValid: Subject<boolean> = new Subject<boolean>();
@@ -39,10 +39,10 @@ export class MonitorCreatePage implements OnInit, OnDestroy {
   updatedLabelFields: {[key: string] : any} = null;
   subManager = new Subscription();
   dynaConfig: FieldConfig[] = [];
-
   listOfKeys = [];
   listOfValues = [];
-  typesOfMonitors: string[] = [];
+  monitors: [{type?:string,monitor?:string[]}];
+  typesOfMonitors: string []=[];
   selectedMonitor = null;
   markFormGroupTouched = MarkFormGroupTouched;
   additionalSettings: string = 'out';
@@ -63,7 +63,7 @@ change = false;
     }
 
     ngOnInit() {
-      this.typesOfMonitors = Object.keys(this.schemaService.schema.definitions);
+      this.groupingMonitor();
       let labelServiceSub = this.labelService.getResourceLabels().subscribe(data => {
         this.listOfKeys = Object.keys(this.labelService.labels);
         this.listOfValues = Object.values(this.labelService.labels).flat();
@@ -96,6 +96,16 @@ change = false;
       this.subManager.add(labelFormSubscrip);
       this.subManager.add(subFormValidSubscrip);
   }
+
+  groupingMonitor() {
+        let lclMonitor:string[] = this.schemaService.schema.definitions
+      .LocalMonitorDetails.properties.plugin.oneOf.map(a => a.$ref.replace("#/definitions/", ''));
+        this.monitors = [{ type: 'Local', monitor: lclMonitor.sort() }];
+    let rmtMonitor:string[] = this.schemaService.schema.definitions
+      .RemoteMonitorDetails.properties.plugin.oneOf.map(a => a.$ref.replace("#/definitions/", ''));
+    this.monitors.push({ type: 'Remote', monitor: rmtMonitor.sort() });
+  }
+
 
 /**
  * @description Create a Monitor
@@ -176,9 +186,16 @@ change = false;
    * @param value dropdown selection event.target.value
    */
   loadMonitorForm(value: any) {
+    
     this.selectedMonitor = value;
-    let definitions = this.schemaService.schema.definitions[this.selectedMonitor];
-    this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
+    if(this.selectedMonitor){
+      let definitions = this.schemaService.schema.definitions[this.selectedMonitor];
+      this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
+    }else{
+      this.dynaConfig=null;
+    }
+
+    
   }
 
   /**
