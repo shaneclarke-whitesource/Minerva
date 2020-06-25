@@ -43,7 +43,7 @@ this.addMonLoading=true; this.labelSubmit.next()">
 
 <div class="hxRow hxSpan-9" style="margin-top:-15px" [@slideUpDown]="additionalSettings">
   <div class="hxCol hxSpan-6 hxOffset-6">
-    <monitor-additional-settings>
+    <monitor-additional-settings *ngIf="this.additionalSettings === 'in'">
     </monitor-additional-settings>
 </div>
 </div>

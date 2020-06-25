@@ -2,12 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { Monitor } from 'src/app/_models/monitors';
 import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
-import { Observable, Subscription } from 'rxjs';
-import { Resource, Resources } from 'src/app/_models/resources';
-import { map, finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { Resource } from 'src/app/_models/resources';
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
 import { CntrlAttribute } from '../../mon.utils';
-import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
 
@@ -71,8 +69,8 @@ export class AdditionalSettingsComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private pipeSeconds: DurationSecondsPipe,
-    private logService: LoggingService, private resourceService: ResourcesService, private spnService: SpinnerService) {
-      this.spnService.changeLoadingStatus(true);
+    private logService: LoggingService, private resourceService: ResourcesService) {
+
     }
   ngOnInit(): void {
 
@@ -112,7 +110,6 @@ export class AdditionalSettingsComponent implements OnInit {
     this.resourceService.getResources(25, 0).subscribe(
       (data) => {
         this.resources = this.resources.concat(data.content);
-        this.spnService.changeLoadingStatus(false);
       },
       (error) => {
         this.logService.log(error, LogLevels.error);

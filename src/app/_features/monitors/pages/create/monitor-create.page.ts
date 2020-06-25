@@ -56,7 +56,7 @@ change = false;
   @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
 
   @ViewChild(AddFieldsComponent) labelSelectorForm: AddFieldsComponent;
-  @ViewChild(AdditionalSettingsComponent, { static: true }) additionalSettingsForm: AdditionalSettingsComponent;
+  @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
   constructor(private monitorService: MonitorService, private fb: FormBuilder,
     private labelService: LabelService, private router: Router, private readonly schemaService: SchemaService,
     private resourceService: ResourcesService, private logService: LoggingService) {
@@ -186,7 +186,7 @@ change = false;
    * @param value dropdown selection event.target.value
    */
   loadMonitorForm(value: any) {
-    
+
     this.selectedMonitor = value;
     if(this.selectedMonitor){
       let definitions = this.schemaService.schema.definitions[this.selectedMonitor];
@@ -195,7 +195,7 @@ change = false;
       this.dynaConfig=null;
     }
 
-    
+
   }
 
   /**
