@@ -220,16 +220,6 @@ describe('MonitorDetailComponent', () => {
     component.updateMonitorName(component.updateMonNameForm);
     expect(spyCompMethod).toHaveBeenCalled();
   });
-
-  it('should update Monitor settings', () => {
-    // let spyCompMethod = spyOn(component, 'monitorUpdate');
-    // //component.additionalSettingsForm.initialData = new monitorsMock().single;
-    // console.log("**Add Settings Initial: ", component.additionalSettingsForm.value)
-    // component.updateMonitorSettings();
-
-    // expect(spyCompMethod).toHaveBeenCalled();
-  });
-
   it('should modifySettings()', () => {
     component.modifySettings();
     expect(component.additionalSettings).toEqual('in');

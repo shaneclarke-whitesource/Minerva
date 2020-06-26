@@ -7,14 +7,12 @@ import { Monitor } from 'src/app/_models/monitors';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { MonotorUtil, CntrlAttribute } from '../../mon.utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
-import { tap, map } from 'rxjs/operators';
-import { duration} from "moment";
+import { tap } from 'rxjs/operators';
 import { FieldConfig } from '../../interfaces/field.interface';
 import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { AdditionalSettingsComponent } from '../../components/additional-settings/additional-settings.component';
 import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
-import { Resources, Resource } from 'src/app/_models/resources';
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
 
 
@@ -230,6 +228,10 @@ export class MonitorDetailsPage implements OnInit {
   modifySettings() {
     this.additionalSettings = 'in';
     this.additionalSettingEdit = true;
+  }
+
+  additionlSettingClick(){
+    this.additionalSettings = this.additionalSettings === 'in' ? 'out': 'in';
   }
 
   /**
