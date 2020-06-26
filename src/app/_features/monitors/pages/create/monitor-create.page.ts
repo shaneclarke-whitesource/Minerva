@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -27,7 +27,7 @@ import { AdditionalSettingsComponent } from '../../components/additional-setting
   styleUrls: ['./monitor-create.page.scss'],
   animations: [ Animations.slideUpDownTrigger ]
 })
-export class MonitorCreatePage implements OnInit, OnDestroy {
+export class MonitorCreatePage implements OnInit, OnDestroy,AfterViewInit {
   public labelSubmit: Subject<void> = new Subject<void>();
   private labelFormValid: Subject<boolean> = new Subject<boolean>();
   private dynamicFormSubmit: Subject<void> = new Subject<void>();
@@ -56,10 +56,19 @@ change = false;
 
   @ViewChild(AddFieldsComponent) labelSelectorForm: AddFieldsComponent;
   @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
-  constructor(private monitorService: MonitorService, private fb: FormBuilder,
-    private labelService: LabelService, private router: Router, private readonly schemaService: SchemaService,
-    private resourceService: ResourcesService, private logService: LoggingService) {
+  constructor(private monitorService: MonitorService, 
+    private fb: FormBuilder,
+    private labelService: LabelService, 
+    private router: Router, 
+    private readonly schemaService: SchemaService,
+    private resourceService: ResourcesService, 
+    private logService: LoggingService,
+    private cd: ChangeDetectorRef) {
+      
     }
+    ngAfterViewInit() {
+      this.cd.detectChanges();
+  }
 
     ngOnInit() {
       this.groupingMonitor();
