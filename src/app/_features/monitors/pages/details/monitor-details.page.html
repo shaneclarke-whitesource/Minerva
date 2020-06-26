@@ -90,7 +90,7 @@
         {{monitor.details.type}}
       </div>
       <div class="hxCol hxSpan-6">
-        <a class="addSettings" [routerLink]="" (click)="additionalSettings = additionalSettings === 'in' ? 'out': 'in'">
+        <a class="addSettings" [routerLink]="" (click)="additionlSettingClick()">
           Additional Settings</a>
           <hx-icon id="pencilAddSettings" *ngIf="additionalSettings === 'in'" (click)="additionalSettingEdit = !additionalSettingEdit"
           type="pencil">
