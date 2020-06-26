@@ -16,7 +16,8 @@ import { routes } from '../../monitors.routes';
 import { SchemaService, AJV_INSTANCE } from 'src/app/_services/monitors/schema.service';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module';
-import { FormGroup, FormControl, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
 
 describe('MonitorDetailComponent', () => {
   let injector: TestBed;
@@ -96,6 +97,7 @@ describe('MonitorDetailComponent', () => {
         },
         MonitorService,
         SchemaService,
+        DurationSecondsPipe,
         { provide: AJV_CLASS, useValue: ajv },
         { provide: AJV_CONFIG, useValue: { useDefaults: true } },
         {
@@ -135,7 +137,10 @@ describe('MonitorDetailComponent', () => {
     expect(component.additionalSettings).toEqual('out');
     expect(component.isUpdtPnlActive).toEqual(false);
     expect(component.updateMonNameLoading).toEqual(false);
+    expect(component.updateAdditionalLoading).toEqual(false);
+    expect(component.additionalSettingEdit).toEqual(false);
     expect(component.formatProp).toEqual([]);
+    expect(component.updateBody).toEqual([]);
     expect(component.monDetails).toBeDefined();
   });
 
@@ -214,6 +219,21 @@ describe('MonitorDetailComponent', () => {
     let spyCompMethod = spyOn(component, 'monitorUpdate');
     component.updateMonitorName(component.updateMonNameForm);
     expect(spyCompMethod).toHaveBeenCalled();
+  });
+
+  it('should update Monitor settings', () => {
+    // let spyCompMethod = spyOn(component, 'monitorUpdate');
+    // //component.additionalSettingsForm.initialData = new monitorsMock().single;
+    // console.log("**Add Settings Initial: ", component.additionalSettingsForm.value)
+    // component.updateMonitorSettings();
+
+    // expect(spyCompMethod).toHaveBeenCalled();
+  });
+
+  it('should modifySettings()', () => {
+    component.modifySettings();
+    expect(component.additionalSettings).toEqual('in');
+    expect(component.additionalSettingEdit).toEqual(true);
   });
 
 

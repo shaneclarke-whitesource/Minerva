@@ -15,6 +15,8 @@ import { SelectComponent } from './components/select/select.component';
 import { DynamicFieldDirective } from './components/dynamic-field/dynamic-field.directive';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
+import { AdditionalSettingsComponent } from './components/additional-settings/additional-settings.component';
+import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
 import { ResourceListComponent } from './components/resource_list/resource-list.component';
 
 export const AJV_CLASS = new InjectionToken<Ajv>('The AJV Class Instance');
@@ -38,6 +40,7 @@ export function createAjvInstance(AjvClass: any, config: Options) {
     SelectComponent,
     DynamicFieldDirective,
     DynamicFormComponent,
+    AdditionalSettingsComponent,
     ResourceListComponent
   ],
   imports: [
@@ -47,7 +50,8 @@ export function createAjvInstance(AjvClass: any, config: Options) {
   providers: [
     MonitorService,
     LabelService,
-    ResourcesService
+    ResourcesService,
+    DurationSecondsPipe
   ],
   entryComponents: [
     InputComponent,

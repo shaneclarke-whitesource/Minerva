@@ -24,6 +24,7 @@ export enum CntrlAttribute {
     input="input",
     interval="interval",
     excludedResourceIds="excludedResourceIds",
+    labelSelector = "labelSelector",
     resourceId="resourceId"
 }
 

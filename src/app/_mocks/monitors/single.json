@@ -1,11 +1,11 @@
 {
     "id": "23ONM715",
-    "name": "CPU System",
+    "name": "Chill NetResponse",
     "labelSelectorMethod": "AND",
     "interval": "PT1M6S",
-    "resourceId": "87ekiiNY3TW",
+    "resourceId": "development:2",
     "policy": false,
-    "excludedResourceIds": ["738mmskkJn3", "298POn347B", "243IkoeC"],
+    "excludedResourceIds": ["development:5", "development:6", "development:7"],
     "labelSelector": {
         "additionalProp1": "EC2Instance",
         "additionalProp2": "Dev",
@@ -15,7 +15,7 @@
     "details": {
         "type": "local",
         "plugin": {
-            "type": "network",
+            "type": "net_response",
             "additional": "add0",
             "expect": "done",
             "host": "rackspace.com",
