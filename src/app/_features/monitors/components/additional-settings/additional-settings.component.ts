@@ -8,6 +8,7 @@ import { ResourcesService } from 'src/app/_services/resources/resources.service'
 import { CntrlAttribute } from '../../mon.utils';
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
+import { environment } from 'src/environments/environment';
 
 /**
  * Rules of AdditionalSettingsComponent
@@ -87,11 +88,11 @@ export class AdditionalSettingsComponent implements OnInit {
   }
 
   /**
-   * @description get Resource 
+   * @description get Resource
    * @param 25 list only
    */
   getResoure() {
-    this.resourceService.getResources(25, 0).subscribe(
+    this.resourceService.getResources().subscribe(
       (data) => {
         this.resources = this.resources.concat(data.content);
       },
