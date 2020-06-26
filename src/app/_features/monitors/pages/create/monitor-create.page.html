@@ -43,63 +43,8 @@ this.addMonLoading=true; this.labelSubmit.next()">
 
 <div class="hxRow hxSpan-9" style="margin-top:-15px" [@slideUpDown]="additionalSettings">
   <div class="hxCol hxSpan-6 hxOffset-6">
-    <div class="hxRow hxSpan-12">
-    <div class="hxCol hxSpan-3 numberCtrl">
-      <h4>Period</h4>
-      <hx-text-control>
-        <input id="txtInterval" formControlName="interval" type="number" />
-    </hx-text-control>
-    </div>
-    <div class="hxCol hxSpan-9" style="padding-left: 25px">
-      <h4>Excluded Resources</h4>
-      <div formArrayName="excludedResourceIds" class="hxRow hxSpan-12"
-      style="margin-top: 0.5rem; margin-left: 2px; display:block; height: 55px;"
-      *ngFor="let item of createMonitorForm.get('excludedResourceIds')['controls']; let i = index">
-      <ng-container [formGroupName]="i">
-        <hx-select-control class="excluded-resources">
-          <select formControlName="resource" [attr.disabled]="createMonitorForm.value.resourceId ? '' : null">
-            <option value="">Select a Resource</option>
-             <option *ngFor="let resource of resources$ | async"
-            [value]="resource.resourceId">{{resource.resourceId}}</option>
-          </select>
-          <hx-select></hx-select>
-        </hx-select-control>
-      </ng-container>
-      <div class="buttonRow">
-        <button class="hxBtn space-right inline-button" *ngIf="(i != 0 && totalExcluded() > 1) || (i === 0 && totalExcluded() > 1)"
-          (click)="deleteExcludedResource(i);$event.preventDefault()"  [attr.disabled]="createMonitorForm.value.resourceId ? '' : null">
-          <hx-icon type="minus"></hx-icon>
-        </button>
-        <button class="hxBtn inline-button" *ngIf="(i+1) === totalExcluded()" (click)="addExcludedResource();$event.preventDefault()"
-        [attr.disabled]="createMonitorForm.value.resourceId ? '' : null">
-          <hx-icon type="plus"></hx-icon>
-        </button>
-      </div>
-      </div>
-    </div>
-    <div class="hxCol hxSpan-6">
-      <h4>Resource ID</h4>
-      <hx-select-control>
-        <select formControlName="resourceId">
-          <option value="">Select a Resource</option>
-          <option *ngFor="let resource of resources$ | async"
-          [value]="resource.resourceId">{{resource.resourceId}}</option>
-        </select>
-        <hx-select></hx-select>
-      </hx-select-control>
-    </div>
-    <div class="hxCol hxSpan-6">
-    <h4>Label Selector Method</h4>
-    <hx-select-control>
-      <select formControlName="labelSelectorMethod">
-        <option value="">Select an option</option>
-        <option value="AND">AND</option>
-        <option value="OR">OR</option>
-      </select>
-      <hx-select></hx-select>
-    </hx-select-control>
-  </div>
-</div>
+    <monitor-additional-settings>
+    </monitor-additional-settings>
 </div>
 </div>
 
@@ -108,7 +53,7 @@ this.addMonLoading=true; this.labelSubmit.next()">
     <p>Label Selector</p>
   </div>
   <div class="hxCol hxSpan-12">
-    <app-add-fields [validateForm]="labelSubmit.asObservable()" [disable]="createMonitorForm.value.resourceId" [listOfKeys]="listOfKeys"
+    <app-add-fields [validateForm]="labelSubmit.asObservable()" [disable]="additionalSettingsForm?.value.resourceId" [listOfKeys]="listOfKeys"
       [listOfValues]="listOfValues" (formValuesChanged)="labelsUpdated($event)" (formValid)="labelFormValid.next($event)">
       </app-add-fields>
   </div>

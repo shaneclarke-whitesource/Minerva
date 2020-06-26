@@ -1,5 +1,5 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ResourcesService } from './resources.service';
 import { environment } from '../../../environments/environment';
 import { resourcesMock } from '../../_mocks/resources/resources.service.mock';
@@ -72,15 +72,6 @@ describe('ResourcesService', () => {
         expect(error.status).toEqual(404);
         done();
       });
-    });
-
-    it('should return resources array as observable', () => {
-      let resources$ = service.resourceItems.pipe(
-        map((data) => {
-          expect(data).toEqual(new resourcesMock().collection.content)
-        })
-      );
-      service.getResources(environment.pagination.resources.pageSize, 0).subscribe();
     });
 
     it('should update a single resource metadata or labels', () => {

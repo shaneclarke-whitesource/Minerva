@@ -22,10 +22,6 @@ export class ResourcesService {
   private _resources: Resources;
   private _resource: Resource;
 
-  private _resourcesSubject = new BehaviorSubject<Resource[]>([])
-
-  readonly resourceItems = this._resourcesSubject.asObservable();
-
   private mockedResources = new resourcesMock();
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
@@ -57,7 +53,6 @@ export class ResourcesService {
       let slicedData = [... mocks.content.slice(page * size, (page + 1) * size)];
       this.resources = mocks;
       this.resources.content = slicedData;
-      this._resourcesSubject.next(slicedData);
       return of<Resources>(this.resources);
     }
     else {
@@ -65,7 +60,6 @@ export class ResourcesService {
     .pipe(
       tap(data =>
         { this._resources = data;
-          this._resourcesSubject.next(data.content);
           this.logService.log(this.resources, LogLevels.info);
         }));
     }
@@ -144,7 +138,7 @@ export class ResourcesService {
     */
   validateResourceId(id:string): any {
     if (environment.mock) {
-      throw throwError(new HttpErrorResponse({
+      return throwError(new HttpErrorResponse({
         error: 'Not Found',
         status: 404
       }));

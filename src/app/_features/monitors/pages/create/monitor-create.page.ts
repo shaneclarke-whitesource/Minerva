@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service.js';
@@ -15,10 +15,10 @@ import { Animations } from 'src/app/_shared/animations';
 import { Resource } from 'src/app/_models/resources';
 import { duration } from "moment";
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
-import { map } from 'rxjs/operators';
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
 import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fields.component';
+import { AdditionalSettingsComponent } from '../../components/additional-settings/additional-settings.component';
 
 
 @Component({
@@ -27,7 +27,7 @@ import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fi
   styleUrls: ['./monitor-create.page.scss'],
   animations: [ Animations.slideUpDownTrigger ]
 })
-export class MonitorCreatePage implements OnInit, OnDestroy {
+export class MonitorCreatePage implements OnInit, OnDestroy,AfterViewInit {
   public labelSubmit: Subject<void> = new Subject<void>();
   private labelFormValid: Subject<boolean> = new Subject<boolean>();
   private dynamicFormSubmit: Subject<void> = new Subject<void>();
@@ -51,26 +51,24 @@ change = false;
   // #ngForm reference needed for view
   get mf() { return this.createMonitorForm.controls; }
 
-  get excludedResources() {
-    return this.createMonitorForm.get('excludedResourceIds') as FormArray;
-  }
-
-  /**
-   * Returns the total of pairs
-   * @returns number
-   */
-  totalExcluded(): number {
-    return this.excludedResources.length;
-  }
-
   // viewchild for dynamic sub form for monitors
   @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
 
   @ViewChild(AddFieldsComponent) labelSelectorForm: AddFieldsComponent;
-  constructor(private monitorService: MonitorService, private fb: FormBuilder,
-    private labelService: LabelService, private router: Router, private readonly schemaService: SchemaService,
-    private resourceService: ResourcesService, private logService: LoggingService) {
+  @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
+  constructor(private monitorService: MonitorService, 
+    private fb: FormBuilder,
+    private labelService: LabelService, 
+    private router: Router, 
+    private readonly schemaService: SchemaService,
+    private resourceService: ResourcesService, 
+    private logService: LoggingService,
+    private cd: ChangeDetectorRef) {
+      
     }
+    ngAfterViewInit() {
+      this.cd.detectChanges();
+  }
 
     ngOnInit() {
       this.groupingMonitor();
@@ -81,12 +79,7 @@ change = false;
 
       this.createMonitorForm = this.fb.group({
         name: [''],
-        type: ['', Validators.required],
-        interval: [''],
-        excludedResourceIds: this.fb.array([this.fb.group({
-          resource: new FormControl('')})]),
-        labelSelectorMethod: [''],
-        resourceId: ['']
+        type: ['', Validators.required]
       });
 
       let labelFormSubscrip = this.labelFormValid.subscribe((valid) => {
@@ -135,7 +128,12 @@ change = false;
     }
 
     // add selector label fields
-    this.createMonitorForm.value['labelSelector'] = this.updatedLabelFields || {};
+    if (!this.additionalSettingsForm.value.hasOwnProperty(CntrlAttribute.resourceId)) {
+      this.createMonitorForm.value['labelSelector'] = this.updatedLabelFields || {};
+    }
+    else {
+      delete this.createMonitorForm.value['labelSelector'];
+    }
 
     this.createMonitorForm.value['details'] = {
       type: MonitorConfigs[this.selectedMonitor].type,
@@ -147,39 +145,12 @@ change = false;
 
     // delete drop down selection value, it's not needed
     delete this.createMonitorForm.value[CntrlAttribute.type];
-
-    Object.keys(this.createMonitorForm.value).forEach(key => {
-      // delete any form fields that are empty strings
-      this.createMonitorForm.value[key] === "" && delete this.createMonitorForm.value[key];
-
-      // if the form has a resourceId in this case we don't need either excludedResourceIds & labelSelector
-      if (key === CntrlAttribute.resourceId && this.createMonitorForm.value.hasOwnProperty(CntrlAttribute.resourceId)) {
-        delete this.createMonitorForm.value[CntrlAttribute.excludedResourceIds]
-        delete this.createMonitorForm.value['labelSelector'];
-      }
-
-      // remove key string array of excludedResourceIds and replace with an array of strings
-      if (key === CntrlAttribute.excludedResourceIds && this.createMonitorForm.value[CntrlAttribute.resourceId] === "") {
-          let excluded = [];
-          this.createMonitorForm.value[key].forEach((item, index) => {
-            if (item.resource != "") {
-              excluded.push(item.resource);
-            }
-          });
-          // if there are no strings in the array we'll delete the property otherwise add
-          if (excluded.length === 0) {
-            delete this.createMonitorForm.value[key];
-          }
-          else {
-            this.createMonitorForm.value[key] = excluded;
-          }
-      }
-    });
+    let monitorForm = Object.assign(this.createMonitorForm.value, this.additionalSettingsForm.value);
 
     this.parseInISO();
-    const result = this.schemaService.validateData(this.createMonitorForm.value);
+    const result = this.schemaService.validateData(monitorForm);
     if (result.isValid) {
-      this.monitorService.createMonitor(this.createMonitorForm.value).subscribe(data => {
+      this.monitorService.createMonitor(monitorForm).subscribe(data => {
         this.addMonLoading = false;
         this.router.navigate(['/monitors']);
       }, (error) => {
@@ -192,6 +163,7 @@ change = false;
       this.addMonLoading = false;
     }
   }
+
   /**
    * @description parse interval numeric time values and convert to ISO Duration
    */
@@ -222,7 +194,7 @@ change = false;
    * @param value dropdown selection event.target.value
    */
   loadMonitorForm(value: any) {
-    
+
     this.selectedMonitor = value;
     if(this.selectedMonitor){
       let definitions = this.schemaService.schema.definitions[this.selectedMonitor];
@@ -231,7 +203,7 @@ change = false;
       this.dynaConfig=null;
     }
 
-    
+
   }
 
   /**
@@ -239,31 +211,6 @@ change = false;
    */
   showAdditionalSettings(): void {
     this.additionalSettings = this.additionalSettings === 'in' ? 'out': 'in';
-    this.resources$ = this.resourceService.resourceItems.pipe(
-      map((items) => {
-        return items;
-      })
-    );
-    //TODO: This function will eventually need some kind of paging component with endless
-    // scroll or a similar mechanism
-    this.resourceService.getResources(25, 0).subscribe();
-  }
-
-  /**
-   * Adds new dropdown control to array of excludedResources formcontrols
-   */
-  addExcludedResource() {
-    this.excludedResources.push(this.fb.group({
-      resource: new FormControl('')
-    }));
-  }
-
-  /**
-   * Deletes excludedResource control dropdown
-   * @param index number
-   */
-  deleteExcludedResource(index:number) {
-    this.excludedResources.removeAt(index);
   }
 
   ngOnDestroy() {
