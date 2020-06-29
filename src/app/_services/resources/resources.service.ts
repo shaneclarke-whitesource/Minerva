@@ -47,7 +47,7 @@ export class ResourcesService {
    * @param page
    * @returns Observable<Resources>
    */
-  getResources(size: number, page: number): Observable<Resources> {
+  getResources(size?: number, page?: number): Observable<Resources> {
     if (environment.mock) {
       let mocks = Object.assign({}, this.mockedResources.collection);
       let slicedData = [... mocks.content.slice(page * size, (page + 1) * size)];

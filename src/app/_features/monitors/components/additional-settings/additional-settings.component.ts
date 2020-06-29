@@ -8,6 +8,7 @@ import { ResourcesService } from 'src/app/_services/resources/resources.service'
 import { CntrlAttribute } from '../../mon.utils';
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
+import { environment } from 'src/environments/environment';
 
 /**
  * Rules of AdditionalSettingsComponent
@@ -75,43 +76,23 @@ export class AdditionalSettingsComponent implements OnInit {
   constructor(private fb: FormBuilder, private pipeSeconds: DurationSecondsPipe,
     private logService: LoggingService, private resourceService: ResourcesService) {
 
-    }
+  }
   ngOnInit(): void {
-
     if (this.initialData) {
-      let interval = this.pipeSeconds.transform(this.initialData.interval);
-
-      this.updateSettingForm = this.fb.group({
-        interval: new FormControl(interval),
-        excludedResourceIds: this.fb.array([]),
-        labelSelectorMethod: new FormControl(this.initialData.labelSelectorMethod),
-        resourceId: new FormControl(this.initialData.resourceId || "")
-      });
-
-      if (this.initialData.excludedResourceIds.length > 0) {
-        Object.keys(this.initialData.excludedResourceIds).map(key => {
-          let value = this.initialData.excludedResourceIds[key];
-          this.resourceDropdowns.push(this.fb.group({
-            resource: new FormControl(value)
-          }));
-        });
-      }
-      else {
-        this.resourceDropdowns.push(this.createItem());
-      }
+      this.formWithInitialData();
     }
     else {
-      this.updateSettingForm = this.fb.group({
-        interval: new FormControl(''),
-        excludedResourceIds: this.fb.array([]),
-        labelSelectorMethod: new FormControl(''),
-        resourceId: new FormControl('')
-      });
-
-      this.resourceDropdowns.push(this.createItem());
+      this.formWithEmptyValues();
     }
+    this.getResoure();
+  }
 
-    this.resourceService.getResources(25, 0).subscribe(
+  /**
+   * @description get Resource
+   * @param 25 list only
+   */
+  getResoure() {
+    this.resourceService.getResources().subscribe(
       (data) => {
         this.resources = this.resources.concat(data.content);
       },
@@ -120,9 +101,46 @@ export class AdditionalSettingsComponent implements OnInit {
       });
   }
 
-   /**
-   * @description Add a new Row
+  /**
+   * @description creat empty form
    */
+  formWithEmptyValues() {
+    this.updateSettingForm = this.fb.group({
+      interval: new FormControl(''),
+      excludedResourceIds: this.fb.array([]),
+      labelSelectorMethod: new FormControl(''),
+      resourceId: new FormControl('')
+    });
+
+    this.resourceDropdowns.push(this.createItem());
+  }
+  /**
+   * @description fill form with initial data
+   */
+  formWithInitialData() {
+    let interval = this.pipeSeconds.transform(this.initialData.interval);
+    this.updateSettingForm = this.fb.group({
+      interval: new FormControl(interval),
+      excludedResourceIds: this.fb.array([]),
+      labelSelectorMethod: new FormControl(this.initialData.labelSelectorMethod),
+      resourceId: new FormControl(this.initialData.resourceId || "")
+    });
+
+    if (this.initialData.excludedResourceIds.length > 0) {
+      Object.keys(this.initialData.excludedResourceIds).map(key => {
+        let value = this.initialData.excludedResourceIds[key];
+        this.resourceDropdowns.push(this.fb.group({
+          resource: new FormControl(value)
+        }));
+      });
+    }
+    else {
+      this.resourceDropdowns.push(this.createItem());
+    }
+  }
+  /**
+  * @description Add a new Row
+  */
   addExcludedResource(): void {
     this.resourceDropdowns.push(this.createItem());
   }
@@ -131,7 +149,7 @@ export class AdditionalSettingsComponent implements OnInit {
    * @description Removes the row
    * @param index number
    */
-  deleteExcludedResource(index:number): void {
+  deleteExcludedResource(index: number): void {
     this.resourceDropdowns.removeAt(index);
   }
 
