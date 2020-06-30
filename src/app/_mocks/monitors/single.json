@@ -27,6 +27,9 @@
 
         }
     },
+    "summary": {
+        "protocol": "udp"
+    },
     "createdTimestamp": "2019-12-31T19:04:51Z",
     "updatedTimestamp": "2020-01-03T18:50:16Z"
 }

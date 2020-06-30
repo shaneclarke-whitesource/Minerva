@@ -45,7 +45,7 @@
         },
         {
             "id": "10YN3Q45",
-            "name": "CPU Check",
+            "name": null,
             "labelSelectorMethod": "AND",
             "interval": "30",
             "labelSelector": {
@@ -59,6 +59,11 @@
                     "type": "network",
                     "additional": "add0"
                 }
+            },
+            "summary": {
+                "protocol": "udp",
+                "port": "3669",
+                "host": "rackspace.com.edu"
             },
             "createdTimestamp": "2019-12-31T19:04:51Z",
             "updatedTimestamp": "2020-01-03T18:50:16Z"
@@ -106,7 +111,7 @@
         },
         {
             "id": "76WE85UV",
-            "name": "Ping - DFW",
+            "name": null,
             "labelSelectorMethod": "AND",
             "interval": "30",
             "labelSelector": {
@@ -120,6 +125,9 @@
                     "type": "network",
                     "additional": "add0"
                 }
+            },
+            "summary": {
+                "target": "access.com"
             },
             "createdTimestamp": "2019-12-31T19:04:51Z",
             "updatedTimestamp": "2020-01-03T18:50:16Z"
