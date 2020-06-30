@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { resourcesMock } from '../../../../_mocks/resources/resources.service.mock';
 import { of } from 'rxjs';
+import { PaginationComponent } from 'src/app/_shared/components/pagination/pagination.component';
 
 describe('ResourceListComponent', () => {
   let component: ResourceListComponent;
@@ -12,7 +13,7 @@ describe('ResourceListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ResourceListComponent],
+      declarations: [ResourceListComponent, PaginationComponent],
       imports: [
         HttpClientModule,
         RouterTestingModule
@@ -31,7 +32,7 @@ describe('ResourceListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
- 
+
   it('get bound resources', (done) =>{
     let spy = spyOn(component, 'getResources').and.returnValue(of(new resourcesMock().boundResource));
     component.ngOnInit();

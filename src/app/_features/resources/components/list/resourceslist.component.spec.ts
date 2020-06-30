@@ -13,6 +13,7 @@ import { ValidateResource } from '../../../../_shared/validators/resourceName.va
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
 import { Router } from '@angular/router';
 import { throwError, of, Observable } from 'rxjs';
+import { PaginationComponent } from 'src/app/_shared/components/pagination/pagination.component';
 
 var mockResource: Resource = {
   "resourceId": "development:1",
@@ -52,7 +53,7 @@ describe('ResourcesListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ ResourcesListComponent, ResourcesPage, ResourceDetailsPage ],
+      declarations: [ ResourcesListComponent, ResourcesPage, ResourceDetailsPage, PaginationComponent ],
       imports: [
         RouterTestingModule.withRoutes(
           [{path: 'resources/development:0', component: ResourceDetailsPage}]

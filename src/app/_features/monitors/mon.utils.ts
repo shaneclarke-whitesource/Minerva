@@ -188,7 +188,7 @@ export class MonitorUtil {
         return vals.length > 0 ? vals : null;
     }
 
-    static getLastFive(monitor: Monitor) {
+    static formatSummaryField(monitor: Monitor) {
         return `${monitor.details.plugin.type}-${monitor.summary[Object.keys(monitor.summary)[0]]}-${monitor.id.substr(monitor.id.length - 5)}`;
     }
 }

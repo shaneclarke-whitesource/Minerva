@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { monitorsMock } from "../../../../_mocks/monitors/monitors.service.mock";
 import { of } from 'rxjs';
+import { PaginationComponent } from 'src/app/_shared/components/pagination/pagination.component';
 
 describe('MonitorListComponent', () => {
   let component: MonitorListComponent;
@@ -12,7 +13,7 @@ describe('MonitorListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MonitorListComponent],
+      declarations: [ MonitorListComponent, PaginationComponent],
       imports: [
         HttpClientModule,
         RouterTestingModule,
