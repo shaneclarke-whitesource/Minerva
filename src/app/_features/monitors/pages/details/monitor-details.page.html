@@ -164,9 +164,9 @@
           (formValid)="dynamicFormValid.next($event)">
         </monitor-dynamic-form>
         <div class="topMargin">
-          <button type="submit" class="hxBtn hxPrimary">
+          <button type="submit" class="hxBtn hxPrimary" (click)="monitorUpdateLoad = true;dynamicFormSubmit.next()">
             <hx-busy class="popover-busy" [disabled]="!monitorUpdateLoad" *ngIf="monitorUpdateLoad"></hx-busy>
-            Submit
+            Submit  
           </button>
           <button class="hxBtn" [disabled]="monitorUpdateLoad" (click)="isUpdtPnlActive=false"
             aria-controls="metaPopover">Cancel</button>
