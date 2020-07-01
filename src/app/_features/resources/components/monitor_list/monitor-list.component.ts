@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 import { environment } from 'src/environments/environment';
 import { Pagination } from 'src/app/_models/common';
+import { MonitorUtil } from '../../../monitors/mon.utils';
+
 @Component({
   selector: 'app-monitor-list',
   templateUrl: './monitor-list.component.html',
@@ -22,6 +24,7 @@ export class MonitorListComponent implements OnInit {
   @Input() resourceId:string;
   subscriber = new Subscription();
 
+  monitorUtil = MonitorUtil;
   constructor(private mntor:MonitorService) { }
 
   ngOnInit(): void {
@@ -29,7 +32,7 @@ export class MonitorListComponent implements OnInit {
   }
 
   getMonitors(){
-    this.subscriber=this.mntor.getBoundMonitor({resourceId : this.resourceId, size: this.pagination.totalElements, page: this.pagination.number}).subscribe(data =>{      
+    this.subscriber=this.mntor.getBoundMonitor({resourceId : this.resourceId, size: this.pagination.totalElements, page: this.pagination.number}).subscribe(data =>{
       this.monitors= data.content;
       this.pagination.totalPages = data.totalElements;
       this.isLoading = false;
@@ -64,7 +67,7 @@ export class MonitorListComponent implements OnInit {
     this.isLoading = true;
     this.getMonitors();
   }
-  
+
   ngOnDestroy() {
     this.subscriber.unsubscribe();
   }

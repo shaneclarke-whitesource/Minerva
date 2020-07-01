@@ -7,10 +7,11 @@
 
     <div class="hxRow monitor-header">
       <div class="hxCol hxSpan-12">
-        <app-breadcrumb [routeDetails]="monitor.name || monitor.details.plugin.type"></app-breadcrumb>
+        <app-breadcrumb [routeDetails]="monitor.name || monitorUtil.formatSummaryField(monitor)"></app-breadcrumb>
       </div>
       <div class="hxCol hxSpan-9 monitor-title">
-        <h2 class="inline-icon">{{monitor.name}}</h2><hx-disclosure aria-controls="editMonPopover" #updateMonPen id="updateMonNamePen" class="editclick">
+        <h2 class="inline-icon">{{monitor.name || monitorUtil.formatSummaryField(monitor)}}</h2>
+        <hx-disclosure aria-controls="editMonPopover" #updateMonPen id="updateMonNamePen" class="editclick">
           <hx-icon type="pencil"></hx-icon></hx-disclosure>
         <hx-popover id="editMonPopover" position="bottom-right" class="popExpand">
           <header>
@@ -45,7 +46,8 @@
         <hx-menu id="basicMenuId">
           <section>
             <header>Identity</header>
-            <hx-menuitem (click)="updateMonNamePencil.nativeElement.click()">Rename Monitor</hx-menuitem>
+            <hx-menuitem>
+              <hx-disclosure aria-controls="editMonPopover">Rename Monitor</hx-disclosure></hx-menuitem>
           </section>
           <section>
             <header>Manage Monitor</header>
@@ -164,7 +166,7 @@
           (formValid)="dynamicFormValid.next($event)">
         </monitor-dynamic-form>
         <div class="topMargin">
-          <button type="submit" class="hxBtn hxPrimary">
+          <button type="submit" class="hxBtn hxPrimary" (click)="monitorUpdateLoad = true;dynamicFormSubmit.next()">
             <hx-busy class="popover-busy" [disabled]="!monitorUpdateLoad" *ngIf="monitorUpdateLoad"></hx-busy>
             Submit
           </button>
@@ -216,9 +218,9 @@
       <h3>Resources</h3>
     </div>
   </div>
-  
-  <div class="hxRow hxSpan-9 last-item"> 
-    <app-resource-list [monitorId]="monitor.id"></app-resource-list> 
+
+  <div class="hxRow hxSpan-9 last-item">
+    <app-resource-list [monitorId]="monitor.id"></app-resource-list>
   </div>
 
   <div class="hxRow hxSpan-9">

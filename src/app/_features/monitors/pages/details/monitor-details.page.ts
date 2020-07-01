@@ -5,7 +5,7 @@ import { Observable, Subject, Subscription, of } from 'rxjs';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service';
 import { Monitor } from 'src/app/_models/monitors';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
-import { MonotorUtil, CntrlAttribute } from '../../mon.utils';
+import { MonitorUtil, CntrlAttribute } from '../../mon.utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { tap } from 'rxjs/operators';
 import { FieldConfig } from '../../interfaces/field.interface';
@@ -61,6 +61,7 @@ export class MonitorDetailsPage implements OnInit {
   formatProp=[];
 
   updateBody = [];
+  monitorUtil = MonitorUtil;
 
   @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
   constructor(private route: ActivatedRoute, private router: Router,private readonly schemaService: SchemaService,
@@ -89,7 +90,8 @@ export class MonitorDetailsPage implements OnInit {
         tap((data) => {
           this.monDetails = data;
           this.spnService.changeLoadingStatus(false);
-          this.updateMonNameForm.controls['name'].setValue(this.monDetails.name || {});
+          this.updateMonNameForm.controls['name'].setValue(this.monDetails.name ||
+            this.monitorUtil.formatSummaryField(this.monDetails));
         })
       );
     });
@@ -244,7 +246,7 @@ export class MonitorDetailsPage implements OnInit {
       const element = this.schemaService.schema.definitions[keys[index]];
       if (element.title === this.monDetails.details.plugin.type) {
         let definitions = this.setDefaultValue(element)
-        this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
+        this.dynaConfig = MonitorUtil.CreateMonitorConfig(definitions);
         return;
       }
     }

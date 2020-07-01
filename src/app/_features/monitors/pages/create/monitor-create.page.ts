@@ -8,7 +8,7 @@ import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { FieldConfig } from '../../interfaces/field.interface';
 import { transformKeyPairs } from 'src/app/_shared/utils';
-import { MonotorUtil,CntrlAttribute } from '../../mon.utils';
+import { MonitorUtil,CntrlAttribute } from '../../mon.utils';
 import { MarkFormGroupTouched } from "src/app/_shared/utils";
 import { config as MonitorConfigs } from '../../config/index';
 import { Animations } from 'src/app/_shared/animations';
@@ -56,15 +56,15 @@ change = false;
 
   @ViewChild(AddFieldsComponent) labelSelectorForm: AddFieldsComponent;
   @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
-  constructor(private monitorService: MonitorService, 
+  constructor(private monitorService: MonitorService,
     private fb: FormBuilder,
-    private labelService: LabelService, 
-    private router: Router, 
+    private labelService: LabelService,
+    private router: Router,
     private readonly schemaService: SchemaService,
-    private resourceService: ResourcesService, 
+    private resourceService: ResourcesService,
     private logService: LoggingService,
     private cd: ChangeDetectorRef) {
-      
+
     }
     ngAfterViewInit() {
       this.cd.detectChanges();
@@ -138,7 +138,7 @@ change = false;
     this.createMonitorForm.value['details'] = {
       type: MonitorConfigs[this.selectedMonitor].type,
       plugin: {
-        type: MonotorUtil.ParseMonitorTypeEnum(this.schemaService.schema.definitions[this.selectedMonitor]),
+        type: MonitorUtil.ParseMonitorTypeEnum(this.schemaService.schema.definitions[this.selectedMonitor]),
         ...(this.subForm.value)
       }
     };
@@ -198,7 +198,7 @@ change = false;
     this.selectedMonitor = value;
     if(this.selectedMonitor){
       let definitions = this.schemaService.schema.definitions[this.selectedMonitor];
-      this.dynaConfig = MonotorUtil.CreateMonitorConfig(definitions);
+      this.dynaConfig = MonitorUtil.CreateMonitorConfig(definitions);
     }else{
       this.dynaConfig=null;
     }

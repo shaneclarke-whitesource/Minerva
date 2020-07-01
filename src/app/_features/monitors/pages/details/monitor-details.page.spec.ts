@@ -18,6 +18,7 @@ import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form
 import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module';
 import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
+import { MonitorUtil } from '../../mon.utils';
 
 describe('MonitorDetailComponent', () => {
   let injector: TestBed;
@@ -141,9 +142,8 @@ describe('MonitorDetailComponent', () => {
     expect(component.additionalSettingEdit).toEqual(false);
     expect(component.formatProp).toEqual([]);
     expect(component.updateBody).toEqual([]);
-    expect(component.monDetails).toBeDefined();
+    expect(component.monitorUtil).toEqual(MonitorUtil);
   });
-
 
   it('should set mondetails to monitor', ()=> {
     fixture.whenStable().then(() => {

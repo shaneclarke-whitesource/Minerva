@@ -16,7 +16,9 @@ export interface Monitor {
             type: string,
             [key: string] : any
         }
-    }
+    },
+    summary?: any;
+
     createdTimestamp: string;
     updatedTimestamp: string;
 }

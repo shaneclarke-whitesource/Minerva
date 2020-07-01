@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { MonitorService } from '../../../../_services/monitors/monitor.service';
-import { Monitor, Monitors} from '../../../../_models/monitors';
+import { Monitor } from '../../../../_models/monitors';
+import { MonitorUtil } from '../../mon.utils';
 import { SpinnerService } from '../../../../_services/spinner/spinner.service';
 
 @Component({
@@ -18,6 +19,8 @@ export class MonitorslistComponent implements OnInit {
   fetchMonitors: any;
   Object: Object = Object;
   selectedMonitors: any = [];
+
+  monitorUtil = MonitorUtil;
   constructor(private monitorService: MonitorService, private spnService: SpinnerService) { this.spnService.changeLoadingStatus(true); }
 
   ngOnInit() {
@@ -89,5 +92,4 @@ export class MonitorslistComponent implements OnInit {
       );
     }
   }
-
 }
