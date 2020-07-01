@@ -189,7 +189,11 @@ export class MonitorUtil {
     }
 
     static formatSummaryField(monitor: Monitor) {
-        return `${monitor.details.plugin.type}-${monitor.summary[Object.keys(monitor.summary)[0]]}-${monitor.id.substr(monitor.id.length - 5)}`;
+        if(monitor.summary[Object.keys(monitor.summary)[0]]){
+            return `${monitor.details.plugin.type}-${monitor.summary[Object.keys(monitor.summary)[0]]}-${monitor.id.substr(monitor.id.length - 5)}`;
+        }else{
+            return `${monitor.details.plugin.type}-${monitor.id.substr(monitor.id.length - 5)}`;
+        }
     }
 }
 
