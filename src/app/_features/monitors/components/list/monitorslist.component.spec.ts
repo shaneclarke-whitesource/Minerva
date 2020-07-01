@@ -85,7 +85,7 @@ describe('MonitorslistComponent', () => {
 
     it('should add MonUtil to project', () => {
       expect(component.monitorUtil).toEqual(MonitorUtil);
-    })
+    });
   });
 
   it('should add all monitors', () => {

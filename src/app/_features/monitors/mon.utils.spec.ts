@@ -158,7 +158,8 @@ describe('Monitor Utilities', () => {
             createdTimestamp: "2020-06-17T12:48:45Z",
             updatedTimestamp: "2020-06-17T12:48:45Z"
         }, newMonitor);
-        const generated = MonitorUtil.formatSummaryField(monitor)
-        expect(generated).toEqual("ping-tcp-f2c14");
+        expect(MonitorUtil.formatSummaryField(monitor)).toEqual("ping-tcp-f2c14");
+        monitor.summary = {};
+        expect(MonitorUtil.formatSummaryField(monitor)).toEqual("ping-f2c14");
     })
 });

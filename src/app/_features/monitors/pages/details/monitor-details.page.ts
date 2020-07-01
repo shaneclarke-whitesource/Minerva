@@ -61,6 +61,7 @@ export class MonitorDetailsPage implements OnInit {
   formatProp=[];
 
   updateBody = [];
+  monitorUtil = MonitorUtil;
 
   @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
   constructor(private route: ActivatedRoute, private router: Router,private readonly schemaService: SchemaService,
@@ -89,7 +90,8 @@ export class MonitorDetailsPage implements OnInit {
         tap((data) => {
           this.monDetails = data;
           this.spnService.changeLoadingStatus(false);
-          this.updateMonNameForm.controls['name'].setValue(this.monDetails.name || {});
+          this.updateMonNameForm.controls['name'].setValue(this.monDetails.name ||
+            this.monitorUtil.formatSummaryField(this.monDetails));
         })
       );
     });
