@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { MonitorService } from '../../../../_services/monitors/monitor.service';
-import { Monitor, Monitors} from '../../../../_models/monitors'
+import { Monitor } from '../../../../_models/monitors';
+import { MonitorUtil } from '../../mon.utils';
+import { SpinnerService } from '../../../../_services/spinner/spinner.service';
 
 @Component({
   selector: 'app-monitorslist',
@@ -17,12 +19,15 @@ export class MonitorslistComponent implements OnInit {
   fetchMonitors: any;
   Object: Object = Object;
   selectedMonitors: any = [];
-  constructor(private monitorService: MonitorService) { }
+
+  monitorUtil = MonitorUtil;
+  constructor(private monitorService: MonitorService, private spnService: SpinnerService) { this.spnService.changeLoadingStatus(true); }
 
   ngOnInit() {
     this.fetchMonitors = () => {
       return this.monitorService.getMonitors(this.defaultAmount, this.page)
         .subscribe(data => {
+          this.spnService.changeLoadingStatus(false);
           this.monitors = this.monitorService.monitors.content;
           this.total = this.monitorService.monitors.totalElements;
           this.searchPlaceholderText = `Search ${this.total} monitors`;
@@ -87,5 +92,4 @@ export class MonitorslistComponent implements OnInit {
       );
     }
   }
-
 }

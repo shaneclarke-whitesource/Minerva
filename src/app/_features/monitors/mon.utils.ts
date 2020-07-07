@@ -1,5 +1,6 @@
 import { FieldConfig, Validator } from './interfaces/field.interface';
 import { Validators } from '@angular/forms';
+import { Monitor } from 'src/app/_models/monitors';
 
 export enum CntrlAttribute {
     string = "string",
@@ -24,11 +25,12 @@ export enum CntrlAttribute {
     input="input",
     interval="interval",
     excludedResourceIds="excludedResourceIds",
+    labelSelector = "labelSelector",
     resourceId="resourceId"
 }
 
 
-export class MonotorUtil {
+export class MonitorUtil {
     /**
      *
      * @param monitor a monitor based on schema type
@@ -40,7 +42,7 @@ export class MonotorUtil {
             if (field === CntrlAttribute.type) {
                 continue;
             }
-            const config: FieldConfig = MonotorUtil.createField(monitor, field);
+            const config: FieldConfig = MonitorUtil.createField(monitor, field);
             fields.push(config);
         }
         return fields;
@@ -71,12 +73,12 @@ export class MonotorUtil {
             return _label;
         }
 
-        let fieldType = MonotorUtil.type(field);
+        let fieldType = MonitorUtil.type(field);
         let fieldLabel = label();
-        let fieldInputType = MonotorUtil.inputType(field);
-        let fieldValidation = MonotorUtil.validators(monitor, field, fieldName);
-        let fieldDefaultValue = MonotorUtil.defaultValue(field);
-        let fieldOption = MonotorUtil.options(field);
+        let fieldInputType = MonitorUtil.inputType(field);
+        let fieldValidation = MonitorUtil.validators(monitor, field, fieldName);
+        let fieldDefaultValue = MonitorUtil.defaultValue(field);
+        let fieldOption = MonitorUtil.options(field);
 
         return {
             type: fieldType,
@@ -186,5 +188,12 @@ export class MonotorUtil {
         return vals.length > 0 ? vals : null;
     }
 
+    static formatSummaryField(monitor: Monitor) {
+        if(monitor.summary[Object.keys(monitor.summary)[0]]){
+            return `${monitor.details.plugin.type}-${monitor.summary[Object.keys(monitor.summary)[0]]}-${monitor.id.substr(monitor.id.length - 5)}`;
+        }else{
+            return `${monitor.details.plugin.type}-${monitor.id.substr(monitor.id.length - 5)}`;
+        }
+    }
 }
 

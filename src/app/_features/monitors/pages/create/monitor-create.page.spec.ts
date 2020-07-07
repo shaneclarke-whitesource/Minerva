@@ -13,13 +13,13 @@ import { SchemaService, AJV_INSTANCE } from 'src/app/_services/monitors/schema.s
 import {routes } from '../../monitors.routes';
 import { AJV_CLASS, AJV_CONFIG, createAjvInstance } from '../../monitors.module';
 import ajv from 'ajv';
-import { CntrlAttribute } from '../../mon.utils';
 import { MonitorsPage } from '../monitors/monitors.page';
 import { MarkFormGroupTouched } from 'src/app/_shared/utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { Observable } from 'rxjs';
 import { Resource } from 'src/app/_models/resources';
-import { FormArray, FormControl } from '@angular/forms';
+import { AdditionalSettingsComponent } from '../../components/additional-settings/additional-settings.component';
+import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
 
 const keyPair = {
   keysandvalues: [
@@ -40,21 +40,23 @@ const keyPair = {
     value: 'fourthpair'
   }
 ]};
-
 describe('MonitorCreatePage', () => {
 let injector: TestBed;
 let component: MonitorCreatePage;
 let fixture: ComponentFixture<MonitorCreatePage>;
 let schemaService: SchemaService;
 let monitorService: MonitorService;
-let subFormComponent: DynamicFormComponent
 let spySubManager;
 let spyMonitorService;
+const addSettingsForm = jasmine.createSpyObj('AdditionalSettingsComponent', ['value']);
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [
-        MonitorCreatePage, MonitorsPage, DynamicFormComponent
+        MonitorCreatePage,
+        MonitorsPage,
+        DynamicFormComponent,
+        AdditionalSettingsComponent
       ],
       imports: [
         BrowserAnimationsModule,
@@ -75,6 +77,7 @@ let spyMonitorService;
         MonitorService,
         LabelService,
         SchemaService,
+        DurationSecondsPipe,
         { provide: AJV_CLASS, useValue: ajv },
         { provide: AJV_CONFIG, useValue: { useDefaults: true } },
         {
@@ -96,6 +99,7 @@ let spyMonitorService;
     schemaService.loadSchema();
     spySubManager = spyOn(component.subManager, 'add');
     spyMonitorService = spyOn(monitorService, 'createMonitor');
+    component.additionalSettingsForm = addSettingsForm;
     fixture.detectChanges();
   });
 
@@ -108,19 +112,6 @@ let spyMonitorService;
   function updateForm(name, type) {
     component.createMonitorForm.controls['name'].setValue(name);
     component.createMonitorForm.controls['type'].setValue(type);
-  }
-
-  function updateExcludedResourcesArray() {
-    let fbGroup1 = this.fb.group({
-      resource: new FormControl('12345'),
-    });
-
-    let fbGroup2 = this.fb.group({
-      resource: new FormControl('456'),
-    });
-
-    component.excludedResources.push(fbGroup1)
-    component.excludedResources.push(fbGroup2);
   }
 
   it('should create', () => {
@@ -147,7 +138,7 @@ let spyMonitorService;
   });
 
   it('should get monitor form (mf) and return createMonitorForm controls', () => {
-    expect(Object.keys(component.mf).length).toEqual(6);
+    expect(Object.keys(component.mf).length).toEqual(2);
   });
 
   it('should be invalid createMonitorForm', () => {
@@ -172,7 +163,7 @@ let spyMonitorService;
   });
 
   it('should add typesOfMonitors', () => {
-    expect(component.typesOfMonitors).toEqual(Object.keys(new monitorsMock().schema.definitions));
+    expect(component.monitors[0].type).toEqual('Local');
   });
 
   it('should add listOfKeys & listOfValues', () => {
@@ -223,18 +214,6 @@ let spyMonitorService;
     expect(component.additionalSettings).toEqual('in');
   });
 
-  it('should add excludedResources form control', ()=> {
-    component.addExcludedResource();
-    expect(component.excludedResources.length).toEqual(2);
-  });
-  it('should delete excludedResources form control', ()=> {
-    component.addExcludedResource();
-    component.deleteExcludedResource(0);
-    expect(component.excludedResources.length).toEqual(1);
-  });
-
-
-
   it('should unsubscribe on ngOnDestroy', () => {
     spyOn(component.subManager, 'unsubscribe');
     component.ngOnDestroy();
@@ -259,5 +238,4 @@ let spyMonitorService;
     expect(component.createMonitorForm.value['details'].plugin.pingInterval).toEqual('PT1M');
     expect(component.createMonitorForm.value['details'].plugin.timeout).toEqual('PT2M');
   });
-
 });

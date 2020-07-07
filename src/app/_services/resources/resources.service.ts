@@ -22,12 +22,7 @@ export class ResourcesService {
   private _resources: Resources;
   private _resource: Resource;
 
-  private _resourcesSubject = new BehaviorSubject<Resource[]>([])
-
-  readonly resourceItems = this._resourcesSubject.asObservable();
-
   private mockedResources = new resourcesMock();
-
   constructor(private http:HttpClient, private logService: LoggingService) { }
 
   get resources(): Resources {
@@ -52,13 +47,12 @@ export class ResourcesService {
    * @param page
    * @returns Observable<Resources>
    */
-  getResources(size: number, page: number): Observable<Resources> {
+  getResources(size?: number, page?: number): Observable<Resources> {
     if (environment.mock) {
       let mocks = Object.assign({}, this.mockedResources.collection);
       let slicedData = [... mocks.content.slice(page * size, (page + 1) * size)];
       this.resources = mocks;
       this.resources.content = slicedData;
-      this._resourcesSubject.next(slicedData);
       return of<Resources>(this.resources);
     }
     else {
@@ -66,7 +60,6 @@ export class ResourcesService {
     .pipe(
       tap(data =>
         { this._resources = data;
-          this._resourcesSubject.next(data.content);
           this.logService.log(this.resources, LogLevels.info);
         }));
     }
@@ -172,5 +165,4 @@ export class ResourcesService {
       )
     }
   }
-
 }

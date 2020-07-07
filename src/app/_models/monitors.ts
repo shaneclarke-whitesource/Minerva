@@ -8,13 +8,17 @@ export interface Monitor {
     labelSelectorMethod: string;
     interval: string;
     labelSelector: Label;
+    resourceId?: string;
+    excludedResourceIds?: string[];
     details: {
         type: string,
         plugin: {
             type: string,
             [key: string] : any
         }
-    }
+    },
+    summary?: any;
+
     createdTimestamp: string;
     updatedTimestamp: string;
 }

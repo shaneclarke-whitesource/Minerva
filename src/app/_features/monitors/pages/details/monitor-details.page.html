@@ -7,10 +7,35 @@
 
     <div class="hxRow monitor-header">
       <div class="hxCol hxSpan-12">
-        <app-breadcrumb [routeDetails]="monitor.name || monitor.details.plugin.type"></app-breadcrumb>
+        <app-breadcrumb [routeDetails]="monitor.name || monitorUtil.formatSummaryField(monitor)"></app-breadcrumb>
       </div>
       <div class="hxCol hxSpan-9 monitor-title">
-        <h2>{{monitor.name}}</h2>
+        <h2 class="inline-icon">{{monitor.name || monitorUtil.formatSummaryField(monitor)}}</h2>
+        <hx-disclosure aria-controls="editMonPopover" #updateMonPen id="updateMonNamePen" class="editclick">
+          <hx-icon type="pencil"></hx-icon></hx-disclosure>
+        <hx-popover id="editMonPopover" position="bottom-right" class="popExpand">
+          <header>
+            <h5>Rename Monitor</h5>
+          </header>
+          <hx-div>
+          <form id="updateMonNameForm" [formGroup]="updateMonNameForm" (ngSubmit)="updateMonitorName(updateMonNameForm)">
+            <div class="hxRow">
+            <div class="hxCol hxSpan-6">
+              <hx-text-control>
+                <input id="txtResource" formControlName="name" type="text"/>
+              </hx-text-control>
+            </div>
+            <div class="hxCol hxSpan-6">
+              <button type="submit" class="hxBtn hxPrimary su" [disabled]="updateMonNameLoading">
+                <hx-busy class="popover-busy" *ngIf="updateMonNameLoading"></hx-busy>
+                Submit
+              </button>
+              <button class="hxBtn" type="button" (click)="updateMonNamePencil.nativeElement.click()" aria-controls="editMonPopover">Cancel</button>
+            </div>
+            </div>
+          </form>
+          </hx-div>
+        </hx-popover>
       </div>
       <div class="hxCol hxSpan-3 cog-menu-div align-right">
         <hx-disclosure class="hxBtn" aria-controls="basicMenuId">
@@ -21,12 +46,13 @@
         <hx-menu id="basicMenuId">
           <section>
             <header>Identity</header>
-            <hx-menuitem>Rename Monitor</hx-menuitem>
+            <hx-menuitem>
+              <hx-disclosure aria-controls="editMonPopover">Rename Monitor</hx-disclosure></hx-menuitem>
           </section>
           <section>
             <header>Manage Monitor</header>
-            <hx-menuitem>Modify Status</hx-menuitem>
-            <hx-menuitem>Modify Parameters</hx-menuitem>
+            <hx-menuitem>Modify Labels Selector</hx-menuitem>
+            <hx-menuitem (click)="modifySettings()">Modify Settings</hx-menuitem>
             <hx-menuitem>Modify Options</hx-menuitem>
             <hx-menuitem>
               <hx-disclosure #delMonLink aria-controls="delMonModal">Delete Monitor</hx-disclosure>
@@ -35,13 +61,13 @@
         </hx-menu>
       </div>
     </div>
-  
+
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-9">
         <h3>Monitor Details</h3>
       </div>
     </div>
-  
+
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-6">
         <h4>Monitor Type</h4>
@@ -59,48 +85,64 @@
         </div>
       </div>
     </div>
-  
+
     <div class="hxRow hxSpan-9">
       <div class="hxCol hxSpan-6">
         <h4>Monitor Scope</h4>
         {{monitor.details.type}}
       </div>
       <div class="hxCol hxSpan-6">
-        <a [routerLink]="" (click)="additionalSettings = additionalSettings === 'in' ? 'out': 'in'">
+        <a class="addSettings" [routerLink]="" (click)="additionlSettingClick()">
           Additional Settings</a>
+          <hx-icon id="pencilAddSettings" *ngIf="additionalSettings === 'in'" (click)="additionalSettingEdit = !additionalSettingEdit"
+          type="pencil">
+          </hx-icon>
       </div>
     </div>
 
     <div class="hxRow hxSpan-9" style="margin-top:-15px" [@slideUpDown]="additionalSettings">
-      <div class="hxCol hxSpan-6 hxOffset-6">
+      <div class="hxCol hxSpan-6 hxOffset-6" *ngIf="!additionalSettingEdit">
         <div class="hxRow hxSpan-12">
-          <div class="hxCol hxSpan-6">
-            <h4>Period (seconds)</h4>
-            {{monitor.interval | durationSeconds}}
-          </div>
-          <div class="hxCol hxSpan-6" *ngIf="monitor.excludedResourceIds.length > 0">
-            <h4>Excluded Resources</h4>
-            <ng-container *ngFor="let item of monitor.excludedResourceIds, let i = index ">
-              {{item}} <br />
-            </ng-container>
-          </div>
-          <div class="hxCol hxSpan-6" *ngIf="monitor.resourceId">
-            <h4>Resource ID</h4>
-            {{monitor.resourceId}}
-          </div>
-          <div class="hxCol hxSpan-6">
-            <h4>Label Selector Method</h4>
-            {{monitor.labelSelectorMethod}}
-          </div>
-          <div class="hxCol hxSpan-6">
-            <h4>Policy</h4>
-            {{monitor.policy}}
-          </div>
+            <div class="hxCol hxSpan-6">
+              <h4>Period (seconds)</h4>
+              {{monitor.interval | durationSeconds}}
+            </div>
+            <div class="hxCol hxSpan-6" *ngIf="monitor.excludedResourceIds.length > 0">
+              <h4>Excluded Resources</h4>
+              <ng-container *ngFor="let item of monitor.excludedResourceIds, let i = index ">
+                {{item}} <br />
+              </ng-container>
+            </div>
+            <div class="hxCol hxSpan-6" *ngIf="monitor.resourceId">
+              <h4>Resource ID</h4>
+              {{monitor.resourceId}}
+            </div>
+            <div class="hxCol hxSpan-6">
+              <h4>Label Selector Method</h4>
+              {{monitor.labelSelectorMethod}}
+            </div>
+            <div class="hxCol hxSpan-6">
+              <h4>Policy</h4>
+              {{monitor.policy}}
+            </div>
+        </div>
+      </div>
+      <div class="hxCol hxSpan-6 hxOffset-6" *ngIf="additionalSettingEdit">
+        <monitor-additional-settings [initialData]="monDetails">
+        </monitor-additional-settings>
+        <div class="hxCol hxSpan-6" style="padding-top: 20px">
+          <button type="submit" class="hxBtn hxPrimary" (click)="updateMonitorSettings()" [disabled]="updateAdditionalLoading">
+            <hx-busy class="popover-busy" *ngIf="updateAdditionalLoading"></hx-busy>
+            Submit
+          </button>
+          <button class="hxBtn" type="button" (click)="additionalSettingEdit = false">
+            Cancel
+          </button>
         </div>
       </div>
     </div>
-  
-    <div class="hxRow hxSpan-9">
+
+    <div class="hxRow hxSpan-9" style="padding-top: 20px">
       <div class="hxCol hxSpan-6">
         <h4>{{monDetails.details.plugin.type}} monitor Details <hx-icon id="pencilIcn" (click)="pencilClick()" type="pencil">
           </hx-icon>
@@ -115,7 +157,7 @@
             <div class="hxCol hxSpan-3">
               {{monDetails.details.plugin[pluginField]}}
             </div>
-  
+
           </ng-container>
         </div>
       </div>
@@ -170,20 +212,29 @@
       </footer>
     </hx-modal>
   </div>
+
+  <div class="hxRow hxSpan-9">
+    <div class="hxCol">
+      <h3>Resources</h3>
+    </div>
+  </div>
+
+  <div class="hxRow hxSpan-9 last-item">
+    <app-resource-list [monitorId]="monitor.id"></app-resource-list>
+  </div>
+
   <div class="hxRow hxSpan-9">
     <div class="hxCol">
       <h3>Events</h3>
     </div>
   </div>
-  
+
   <div class="hxRow hxSpan-9">
     <div class="hxCol">
       <p>These are events related to this measurement on the basis of label</p>
     </div>
   </div>
-  
+
   <div class="hxRow hxSpan-9 last-item">
     <pre><code>[Events Grid here]</code></pre>
   </div>
-</div>
-

@@ -8,6 +8,8 @@ import { MonitorsPage } from '../../pages/monitors/monitors.page';
 import { monitorsMock } from '../../../../_mocks/monitors/monitors.service.mock'
 import { environment } from '../../../../../environments/environment';
 import { Monitor } from 'src/app/_models/monitors';
+import { MonitorUtil } from '../../mon.utils';
+import { PaginationComponent } from 'src/app/_shared/components/pagination/pagination.component';
 
 var mockMonitor: Monitor = {
   "id": "76WE85UV",
@@ -37,7 +39,7 @@ describe('MonitorslistComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ MonitorslistComponent, MonitorsPage ],
+      declarations: [ MonitorslistComponent, MonitorsPage, PaginationComponent ],
       imports: [
         RouterTestingModule,
         HttpClientModule
@@ -79,6 +81,10 @@ describe('MonitorslistComponent', () => {
 
     it('should create correct placeholder text', () => {
       expect(component.searchPlaceholderText).toEqual('Search 30 monitors');
+    });
+
+    it('should add MonUtil to project', () => {
+      expect(component.monitorUtil).toEqual(MonitorUtil);
     });
   });
 

@@ -100,10 +100,9 @@ export class MonitorService {
   }
 
   /**
-   * @description Create a new monitor
+   * Create a new monitor
    * @param monitor formatted monitor to be created
    * @returns Observable<Monitor>
-   *
    */
   createMonitor(monitor:CreateMonitor): Observable<Monitor> {
         if (environment.mock) {
@@ -122,8 +121,24 @@ export class MonitorService {
   }
 
 
-  updateMonitor(id:number): Observable<any> {
-    return of();
+  /**
+   * Update a monitor using patch method
+   * @param id string
+   * @param details any[]
+   * @returns Observable<Monitor>
+   */
+  updateMonitor(id: string, details: any[]): Observable<Monitor> {
+    if (environment.mock) {
+      this._monitor = this.mockedMonitors.single;
+      return of<Monitor>(this.mockedMonitors.single);
+    } else {
+      return this.http.patch<Monitor>(`${environment.api.salus}/monitors/${id}`, details, httpOptions).pipe(
+        tap((data: Monitor) => {
+          this._monitor = data;
+          this.logService.log(`Monitor: ${data}`, LogLevels.info)
+        })
+      );
+    }
   }
 
   /**
@@ -146,13 +161,16 @@ export class MonitorService {
 /**
  * @description Get monitors list associated with a resource.
  * @param resourceId string
+ * @param monitorId string
  */
-  getBoundMonitor(resourceId:string):Observable<BoundMonitorPaging>{
+  getBoundMonitor(ids:any):Observable<BoundMonitorPaging>{
+    // TODO: Add paging mechanism to this service
     if (environment.mock) {
       this._boundMonitor=this.mockedMonitors.boundMonitor;
       return of<BoundMonitorPaging>(this._boundMonitor);
       }else {
-        return this.http.get<BoundMonitorPaging>(`${environment.api.salus}/monitors/bound-monitors?resourceId=${resourceId}`, httpOptions)
+        let queryParam = Object.keys(ids).map((key) => key + "=" + ids[key]).join('&');
+        return this.http.get<BoundMonitorPaging>(`${environment.api.salus}/monitors/bound-monitors?${queryParam}`, httpOptions)
         .pipe(
           tap(data => {
             this._boundMonitor = data;
@@ -160,22 +178,5 @@ export class MonitorService {
           })
         );
       }
-
   }
-  
-  updateMonitorTypeDetails(id:string,details:any): Observable<Monitor> {
-    if(environment.mock){
-     this._monitor = this.mockedMonitors.single;
-     return of<Monitor>(this.mockedMonitors.single);
-    }else{
-      return this.http.patch(`${environment.api.salus}/monitors/${id}`,details, httpOptions).pipe(
-        tap((data:Monitor) =>{
-          this._monitor = data;
-          this.logService.log(`Monitor: ${data}`, LogLevels.info)
-        })
-      );
-     }
-    }
-   
-
 }

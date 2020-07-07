@@ -1,7 +1,7 @@
 import { browser, element, by } from "protractor";
 import { AppPage } from "../pageObjects/app.po";
 import { async } from "@angular/core/testing";
-import { LoadResources } from "../feature/Resources/ListOfResources";
+
 
 
 describe("Pagination Test", () => {

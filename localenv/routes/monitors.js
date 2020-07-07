@@ -6,8 +6,8 @@ var Identity = require('../services/identity/token');
 const config = new Settings();
 
 router.get(`/bound-monitors`, (req, res) =>{
-    let {resourceId}=req.query;
-    axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/bound-monitors?resourceId=${resourceId}`,
+    let queryParam = Object.keys(req.query).map((key) => key + "=" + req.query[key]).join('&');
+    axios.get(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/bound-monitors?${queryParam}`,
     {
         headers: { 'x-auth-token': Identity.info().token.id }
     }
@@ -51,7 +51,7 @@ router.get('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     let id = req.params.id;
-    axios.delete(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/monitors/${id}`, 
+    axios.delete(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/monitors/${id}`,
     {
         headers: { 'x-auth-token': Identity.info().token.id }
     }).then((data) => {
@@ -67,7 +67,7 @@ router.post('/', (req, res) => {
     axios.post(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/monitors`,
         monitor, { headers: { 'x-auth-token': Identity.info().token.id } })
         .then((data) => {
-            res.send(data.data).sendStatus(data.status);
+            res.status(data.status).json(data.data);
         })
         .catch((err) => {
             res.sendStatus(parseInt(err.response.status)).json(err);
@@ -79,10 +79,10 @@ router.patch('/:id', (req, res) => {
     let id = req.params.id
     axios.patch(`${config.monitoring.api_host}${config.monitoring.api_url}/${Identity.info().token.tenant.id}/monitors/${id}`,
         monitor, { headers: { 'x-auth-token': Identity.info().token.id,
-        'Content-Type': 'application/json-patch+json'    
+        'Content-Type': 'application/json-patch+json'
     } })
         .then((data) => {
-            res.send(data.data).sendStatus(data.status);
+            res.status(data.status).json(data.data);
         })
         .catch((err) => {
             res.sendStatus(parseInt(err.response.status)).json(err);

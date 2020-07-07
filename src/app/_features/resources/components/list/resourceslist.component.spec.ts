@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, getTestBed, } from '@angular/core/tes
 import {ReactiveFormsModule, FormsModule, FormBuilder, Validators} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ResourcesListComponent } from './resourceslist.component';
 import { ResourcesPage } from '../../pages/resources/resources.page';
 import { ResourceDetailsPage } from '../../pages/details/resource-details.page';
@@ -12,6 +12,8 @@ import { Resource } from 'src/app/_models/resources';
 import { ValidateResource } from '../../../../_shared/validators/resourceName.validator';
 import { ResourcesService } from 'src/app/_services/resources/resources.service';
 import { Router } from '@angular/router';
+import { throwError, of, Observable } from 'rxjs';
+import { PaginationComponent } from 'src/app/_shared/components/pagination/pagination.component';
 
 var mockResource: Resource = {
   "resourceId": "development:1",
@@ -32,6 +34,12 @@ var mockResource: Resource = {
   "updatedTimestamp": new Date()
 };
 
+let mockValidateResource = {
+  valid: () => {
+    return throwError({status: 404});
+  }
+}
+
 describe('ResourcesListComponent', () => {
   let injector: TestBed;
   let component: ResourcesListComponent;
@@ -45,7 +53,7 @@ describe('ResourcesListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ ResourcesListComponent, ResourcesPage, ResourceDetailsPage ],
+      declarations: [ ResourcesListComponent, ResourcesPage, ResourceDetailsPage, PaginationComponent ],
       imports: [
         RouterTestingModule.withRoutes(
           [{path: 'resources/development:0', component: ResourceDetailsPage}]
@@ -56,9 +64,9 @@ describe('ResourcesListComponent', () => {
       ],
       providers: [
         ResourcesService,
-        ValidateResource,
         // reference the new instance of formBuilder from above
-        { provide: FormBuilder, useValue: formBuilder }
+        { provide: FormBuilder, useValue: formBuilder },
+        //{ provide: ValidateResource, useValue: mockValidateResource}
       ]
     })
     .compileComponents();
@@ -174,6 +182,7 @@ describe('ResourcesListComponent', () => {
     expect(component.addResourceForm.invalid).toBe(true);
   });
 
+
   it('should add Resource and navigate to details page', () => {
     const spy = spyOn(router, 'navigate');
     fixture.ngZone.run(() => {
@@ -183,20 +192,23 @@ describe('ResourcesListComponent', () => {
     });
   });
 
-  it('should add Resource and trigger services', () => {
-    const spy = spyOn(resourceService, 'createResource');
+  it('should add Resource and trigger services', (done) => {
+    const spy = spyOn(resourceService, 'createResource').and.returnValue({subscribe: () => { } });
     fixture.ngZone.run(() => {
       updateForm('newcool-server', false);
       component.addResource(component.addResourceForm);
       expect(spy).toHaveBeenCalled();
+      done();
     });
   });
 
-  it('should destroy subscriptions', () => {
-    spyOn(component['ngUnsubscribe'], 'next');
-    spyOn(component['ngUnsubscribe'], 'complete');
+  it('should destroy subscriptions', (done) => {
+    spyOn(validateResource, 'valid').and.returnValue(of({}));
+    const spy1 = spyOn(component['ngUnsubscribe'], 'next').and.returnValue({ subscribe: () => { } });
+    const spy2 = spyOn(component['ngUnsubscribe'], 'complete').and.returnValue({ subscribe: () => { } })
     component.ngOnDestroy();
-    expect(component['ngUnsubscribe'].next).toHaveBeenCalledTimes(1);
-    expect(component['ngUnsubscribe'].complete).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalled();
+    expect(spy2).toHaveBeenCalled();
+    done();
   });
 });

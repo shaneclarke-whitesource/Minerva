@@ -19,7 +19,7 @@ const routes: Routes = [
     }
   },
   {
-    path:'adminlazy', loadChildren:() => import('projects/admin/src/app/app.module').then(m =>m.AppModule)
+    path:'admin', loadChildren:() => import('projects/admin/src/app/app.module').then(m =>m.AppModule)
   },  
   { path: '', redirectTo: '/resources', pathMatch: 'full'},
   { path: '**', redirectTo: '/resources'}

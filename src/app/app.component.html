@@ -1,5 +1,7 @@
-<hx-alert *ngIf="message"
+<hx-alert *ngIf="message" (dismiss)="alertDismiss()"
 type="error">
-  {{message}}
+  {{message}} 
 </hx-alert>
+<div class="spinner-overlay" *ngIf="isLoading"></div>
+<hx-busy class="gbl-spinner-show" *ngIf="isLoading"></hx-busy>
 <router-outlet></router-outlet>
