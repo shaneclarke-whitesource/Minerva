@@ -19,7 +19,7 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   validateForm: Observable<void>;
 
   // this functionality will disallow editing on any field containing
-  // the string passed along
+  // the string "agent_" environment.resources.disallowLabelEdit
   @Input()
   labelContraints: boolean;
 
@@ -34,6 +34,7 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   // disable input fields
   @Input()
   disable: boolean;
+
 
   // Output emitters will update the components as to changes in the form
   // and whether they are valid
@@ -102,7 +103,7 @@ export class AddFieldsComponent implements OnInit, OnChanges {
       let sets = changes['initialData'].currentValue;
       Object.keys(sets).map(key => {
         let value = sets[key];
-        let disabled = key.startsWith(environment.resources.disallowLabelEdit);
+        let disabled = key.startsWith(environment.resources.disallowLabelEdit) && this.labelContraints;
         this.addArray.push(this.fb.group({
           key: new FormControl({value: key, disabled},
             (this.labelContraints && [disallowValidator])),
