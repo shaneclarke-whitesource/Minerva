@@ -23,6 +23,18 @@ export class MonitorslistComponent implements OnInit {
   monitorUtil = MonitorUtil;
   constructor(private monitorService: MonitorService, private spnService: SpinnerService) { this.spnService.changeLoadingStatus(true); }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.monitorService.getMonitors(this.defaultAmount, this.page)
+        .subscribe(data => {
+          this.spnService.changeLoadingStatus(false);
+          this.monitors = this.monitorService.monitors.content;
+          this.total = this.monitorService.monitors.totalElements;
+          this.searchPlaceholderText = `Search ${this.total} monitors`;
+      });
+    }); 
+  }
+
   ngOnInit() {
     this.fetchMonitors = () => {
       return this.monitorService.getMonitors(this.defaultAmount, this.page)
