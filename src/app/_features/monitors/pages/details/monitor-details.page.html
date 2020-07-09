@@ -88,6 +88,7 @@
         </div>
       </div>
     </div>
+
     <hx-popover id="editLabelPopover" position="bottom-right">
       <header>
         Labels
@@ -95,18 +96,19 @@
       <hx-div>
         <app-add-fields [initialData]="monitor.labelSelector" [validateForm]="labelsSubmit.asObservable()" [listOfKeys]="listOfKeys"
         [listOfValues]="listOfValues" [labelContraints]="false" (formValuesChanged)="labelsUpdated($event)"
-        (formValid)="labelFormSubmit.next($event)">
+        (formValid)="labelFormSubmit.next($event)" [resetLabelSubject]="resetLabelSubject.asObservable()">
         </app-add-fields>
       </hx-div>
       <footer>
         <button class="hxBtn hxPrimary" [disabled]="labelsLoading" (click)="labelsLoading = true; labelsSubmit.next()">
           <hx-busy class="popover-busy" *ngIf="labelsLoading"></hx-busy>
           Submit</button>
-        <button class="hxBtn" [disabled]="labelsLoading" (click)="labelPopPencil.nativeElement.click()" aria-controls="metaPopover">Cancel</button>
+        <button class="hxBtn" [disabled]="labelsLoading" (click)="labelPopPencil.nativeElement.click();"
+        aria-controls="metaPopover">Cancel</button>
       </footer>
     </hx-popover>
 
-    <div class="hxRow hxSpan-9">
+    <div class="hxRow hxSpan-9" style="padding-top: 20px;">
       <div class="hxCol hxSpan-6">
         <h4>Monitor Scope</h4>
         {{monitor.details.type}}

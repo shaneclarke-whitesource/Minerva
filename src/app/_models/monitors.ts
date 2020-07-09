@@ -1,5 +1,5 @@
 
-interface Label {
+export interface Label {
     [key: string] : any
 }
 export interface Monitor {
