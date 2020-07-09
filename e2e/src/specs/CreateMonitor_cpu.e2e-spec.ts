@@ -12,7 +12,7 @@ describe("Create Monitor Label Selector fields Testing", () => {
     nav = new navigations();
     
   });
-  it("Should check that when mouse focus is on the key text input a list of keys displays/ is present", async () => {
+  fit("Should check that when mouse focus is on the key text input a list of keys displays/ is present", async () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
@@ -20,14 +20,14 @@ describe("Create Monitor Label Selector fields Testing", () => {
     browser.sleep(1000);
     expect(element.all(by.xpath("//datalist[@id='list-keys']//option")).isPresent()).toBe(true);
   })
-  it("Should check that when mouse focus is on the value text input a list of values displays/ is present", async () => {
+  fit("Should check that when mouse focus is on the value text input a list of values displays/ is present", async () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
     element(by.xpath("//input[@id='txtValue']")).click();
     expect(element.all(by.xpath("//datalist[@id='list-values']//option")).isPresent()).toBe(true);
   })
-  it("Should checks that there is only one plus click button to the right of the set of the fields", async () => {
+  fit("Should checks that there is only one plus click button to the right of the set of the fields", async () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
