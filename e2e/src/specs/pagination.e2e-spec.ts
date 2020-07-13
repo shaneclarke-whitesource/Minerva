@@ -4,7 +4,7 @@ import { async } from "@angular/core/testing";
 
 
 
-describe("Pagination Test", () => {
+describe("Pagination Test in resources", () => {
         let page: AppPage;
         
 

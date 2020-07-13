@@ -1,7 +1,7 @@
 import { AppPage } from "../pageObjects/app.po";
 import { element, by, browser } from "protractor";
 
-describe("hx-Alert testing", () => {
+describe("hx-Alert testing in reources", () => {
   let page: AppPage;
 
   beforeEach(() => {

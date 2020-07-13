@@ -1,7 +1,7 @@
 import { AppPage } from "../pageObjects/app.po";
 import { element, by, browser, Browser } from "protractor";
 
-describe("Add-fields Component Test", () => {
+describe("Add-fields Component Test in resources", () => {
   let page: AppPage;
 
   beforeEach(() => {
