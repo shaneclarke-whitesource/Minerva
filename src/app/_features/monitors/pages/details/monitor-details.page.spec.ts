@@ -67,6 +67,26 @@ describe('MonitorDetailComponent', () => {
     }
   }};
 
+  const keyPair = {
+    keysandvalues: [
+    {
+      key: 'newkey',
+      value: 'newpair'
+    },
+    {
+      key: 'likelykey',
+      value: 'likelypair'
+    },
+    {
+      key: 'somekey',
+      value: 'somepair'
+    },
+    {
+      key: 'fourthkey',
+      value: 'fourthpair'
+    }
+  ]};
+
   // create new instance of FormBuilder
   const formBuilder: FormBuilder = new FormBuilder();
   beforeEach(async(() => {
@@ -140,8 +160,11 @@ describe('MonitorDetailComponent', () => {
     expect(component.updateMonNameLoading).toEqual(false);
     expect(component.updateAdditionalLoading).toEqual(false);
     expect(component.additionalSettingEdit).toEqual(false);
+    expect(component.labelsLoading).toEqual(false);
     expect(component.formatProp).toEqual([]);
     expect(component.updateBody).toEqual([]);
+    expect(component.listOfKeys).toBeDefined();
+    expect(component.listOfValues).toBeDefined();
     expect(component.monitorUtil).toEqual(MonitorUtil);
   });
 
@@ -156,6 +179,12 @@ describe('MonitorDetailComponent', () => {
       expect(monitor).toEqual(new monitorsMock().single);
       done();
     });
+  });
+
+  it('should add all subscriptions', ()=> {
+    let spy = spyOn(component.gc, 'add');
+    component.ngOnInit();
+    expect(spy).toHaveBeenCalledTimes(3);
   });
 
   it('should delete a monitor', (done) => {
@@ -176,6 +205,7 @@ describe('MonitorDetailComponent', () => {
       done();
     });
   });
+
   it('should set default values to dynamic component',(done)=>{
 
     let def=component.setDefaultValue(definitions);
@@ -220,12 +250,35 @@ describe('MonitorDetailComponent', () => {
     component.updateMonitorName(component.updateMonNameForm);
     expect(spyCompMethod).toHaveBeenCalled();
   });
+
+  it('should toggle additonal settings panel', () => {
+    component.additionalSettings = 'out';
+    component.additionlSettingClick();
+    expect(component.additionalSettings).toEqual('in');
+  });
+
+  it('should update labels from add-fields component', () => {
+    const formattedKeyPair = {
+      newkey: 'newpair',
+      likelykey: 'likelypair',
+      somekey: 'somepair',
+      fourthkey: 'fourthpair'
+    };
+    component.labelsUpdated(keyPair);
+    expect(component.updatedLabelFields).toEqual(formattedKeyPair);
+  });
+
   it('should modifySettings()', () => {
     component.modifySettings();
     expect(component.additionalSettings).toEqual('in');
     expect(component.additionalSettingEdit).toEqual(true);
   });
 
+  it('should update label selector', () => {
+    let spy = spyOn(component, 'monitorUpdate');
+    component['labelsSubmit'].next();
+    expect(spy).toHaveBeenCalled();
+  });
 
   it('should excute Monitor update service', () => {
     let spyService = spyOn(monitorService, 'updateMonitor')

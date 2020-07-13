@@ -14,7 +14,6 @@ import { config as MonitorConfigs } from '../../config/index';
 import { Animations } from 'src/app/_shared/animations';
 import { Resource } from 'src/app/_models/resources';
 import { duration } from "moment";
-import { ResourcesService } from 'src/app/_services/resources/resources.service';
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
 import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fields.component';
@@ -61,7 +60,6 @@ change = false;
     private labelService: LabelService,
     private router: Router,
     private readonly schemaService: SchemaService,
-    private resourceService: ResourcesService,
     private logService: LoggingService,
     private cd: ChangeDetectorRef) {
 
