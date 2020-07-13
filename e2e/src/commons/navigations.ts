@@ -10,7 +10,7 @@ export class navigations
     root: element(by.css("#stage #nav")),  
   };
   
-  async navigateToResources()
+   navigateToResources()
 
    {
       // clicking on resources

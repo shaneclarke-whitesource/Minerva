@@ -15,7 +15,7 @@ describe("Min Max Port field create monitor", () => {
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
     element(by.xpath("//select[@id='selType']")).click();
     browser.sleep(1000);
-    element(by.xpath("//select[@id='selType']/option[text()='NetResponse']")).click();
+    element(by.xpath("//select[@id='selType']//option[text()='NetResponse']")).click();
   });
 
   it("Testing when entered negative value check for validation message", ()=> {

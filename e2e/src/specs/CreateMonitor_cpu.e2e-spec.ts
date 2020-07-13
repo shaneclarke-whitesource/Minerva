@@ -31,7 +31,7 @@ describe("Create Monitor Label Selector fields Testing", () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
-    var pluscount= element(by.xpath("//button[@class='hxBtn inline-button ng-star-inserted']"));
+    var pluscount= element(by.xpath("//div[@class='hxRow hxSpan-10 nowrap ng-untouched ng-pristine ng-valid ng-star-inserted']//button[@class='hxBtn inline-button ng-star-inserted']"));
     let value1 = await pluscount.getAttribute("childElementCount");
     expect(value1).toEqual("1");
   })
@@ -40,18 +40,20 @@ describe("Create Monitor Label Selector fields Testing", () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
-    var pluscount= element(by.xpath("//button[@class='hxBtn inline-button ng-star-inserted']")).click();
-    expect(element(by.xpath("//div[@class='hxCol hxSpan-12 ng-tns-c59-0']//div[2]//div[1]//hx-text-control[1]//input[1]")).isEnabled()).toBe(true);
-    expect(element(by.xpath("//div[@class='hxCol hxSpan-12 ng-tns-c59-0']//div[2]//div[2]//hx-text-control[1]//input[1]")).isEnabled()).toBe(true);
+    var pluscount= element(by.xpath("//div[@class='hxRow hxSpan-10 nowrap ng-untouched ng-pristine ng-valid ng-star-inserted']//button[@class='hxBtn inline-button ng-star-inserted']")).click();
+    expect(element(by.xpath("//div[@class='hxCol hxSpan-12 ng-tns-c61-0']//div[2]//div[1]//hx-text-control[1]//input[1]")).isEnabled()).toBe(true);
+    expect(element(by.xpath("//div[@class='hxCol hxSpan-12 ng-tns-c61-0']//div[2]//div[2]//hx-text-control[1]//input[1]")).isEnabled()).toBe(true);
   })
 
   it("Should checks that clicking the remove icon removes a set of fields from the form.", async () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
-    var pluscount= element(by.xpath("//button[@class='hxBtn inline-button ng-star-inserted']")).click();
-    element(by.xpath("//div[@class='hxCol hxSpan-12 ng-tns-c59-0']//div[2]//button[1]")).click();
-    var pluscount1= element(by.xpath("//button[@class='hxBtn inline-button ng-star-inserted']"));
+    var pluscount= element(by.xpath("//div[@class='hxRow hxSpan-10 nowrap ng-untouched ng-pristine ng-valid ng-star-inserted']//button[@class='hxBtn inline-button ng-star-inserted']")).click();
+    element(by.xpath("//div[@class='hxCol hxSpan-12 ng-tns-c61-0']//div[2]//button[1]")).click();
+                    
+    var pluscount1= element(by.xpath("//div[@class='hxRow hxSpan-10 nowrap ng-untouched ng-pristine ng-valid ng-star-inserted']//button[@class='hxBtn inline-button ng-star-inserted']"));
+    browser.sleep(1000);              
     let value1 = await pluscount1.getAttribute("childElementCount");
     expect(value1).toEqual("1");
 

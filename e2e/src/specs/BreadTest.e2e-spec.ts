@@ -2,7 +2,7 @@ import { AppPage } from "../pageObjects/app.po";
 import { navigations } from "../commons/navigations";
 import { browser, element, by } from "protractor";
 
-describe("Breadcrumb Testing", () => {
+describe("Breadcrumb testing in resources", () => {
   let page: AppPage;
   
 
