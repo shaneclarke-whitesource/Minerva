@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Animations } from 'src/app/_shared/animations';
 import { Observable, Subject, Subscription, of } from 'rxjs';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service';
-import { Monitor } from 'src/app/_models/monitors';
+import { Monitor, Label } from 'src/app/_models/monitors';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { MonitorUtil, CntrlAttribute } from '../../mon.utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
@@ -13,13 +13,16 @@ import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { AdditionalSettingsComponent } from '../../components/additional-settings/additional-settings.component';
 import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
-import { ResourcesService } from 'src/app/_services/resources/resources.service';
+import { transformKeyPairs } from 'src/app/_shared/utils';
+import { LabelService } from 'src/app/_services/labels/label.service';
+import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fields.component';
 
 
 declare const window: any;
 export enum UpdateSection {
   additional = "additional",
   name = "name",
+  label = "label",
   plugin = "plugin"
 }
 
@@ -35,18 +38,24 @@ export class MonitorDetailsPage implements OnInit {
   id: string;
   dynamicFormSubmit: Subject<void> = new Subject<void>();
   dynamicFormValid: Subject<boolean> = new Subject<boolean>();
+  private labelsSubmit: Subject<void> = new Subject<void>();
+  private labelFormSubmit: Subject<boolean> = new Subject<boolean>();
+  private resetLabelSubject: Subject<{[key:string]: any}> = new Subject<{[key:string]: any}>();
   @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
+  @ViewChild(AddFieldsComponent) labelsForm: AddFieldsComponent;
+  @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
   monitorUpdateLoad: boolean;
   @ViewChild('monitorPopup') monitorPopPencil: ElementRef;
   @ViewChild('updateMonPen') updateMonNamePencil:ElementRef;
   @ViewChild('pencilAddSettings') updateSettingPencil: ElementRef;
+
+  @ViewChild('delMonLink') delMonitor: ElementRef;
+  @ViewChild('delMonitorFail') delMonitorFailure: ElementRef;
+  @ViewChild('updateLabelPen') labelPopPencil:ElementRef;
   monitor$: Observable<Monitor>;
   Object = window.Object;
   additionalSettings: string = 'out';
   gc = new Subscription();
-
-  @ViewChild('delMonLink') delMonitor: ElementRef;
-  @ViewChild('delMonitorFail') delMonitorFailure: ElementRef;
   deleteLoading: boolean = false;
   isUpdtPnlActive = false;
   updateMonNameLoading: boolean = false;
@@ -62,11 +71,15 @@ export class MonitorDetailsPage implements OnInit {
 
   updateBody = [];
   monitorUtil = MonitorUtil;
+  updatedLabelFields: any;
+  labelsLoading:boolean = false;
+  listOfKeys = [];
 
-  @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
+  listOfValues = [];
+  monLabels: Label;
   constructor(private route: ActivatedRoute, private router: Router,private readonly schemaService: SchemaService,
     private fb: FormBuilder, private monitorService: MonitorService, private spnService: SpinnerService,
-    private pipeSeconds: DurationSecondsPipe, private resourceService: ResourcesService) {
+    private pipeSeconds: DurationSecondsPipe, private labelService: LabelService) {
       this.spnService.changeLoadingStatus(true);
   }
 
@@ -89,14 +102,30 @@ export class MonitorDetailsPage implements OnInit {
       this.monitor$ = this.monitorService.getMonitor(this.id).pipe(
         tap((data) => {
           this.monDetails = data;
+          this.monLabels = data.labelSelector;
           this.spnService.changeLoadingStatus(false);
           this.updateMonNameForm.controls['name'].setValue(this.monDetails.name ||
             this.monitorUtil.formatSummaryField(this.monDetails));
         })
       );
     });
-    this.gc.add(
-      this.dynamicFormValid.subscribe((valid) => {
+
+    this.gc.add(this.labelService.getResourceLabels().subscribe(data => {
+      this.listOfKeys = Object.keys(this.labelService.labels);
+      this.listOfValues = Object.values(this.labelService.labels).flat();
+    }));
+
+    this.gc.add(this.labelFormSubmit.subscribe((valid) => {
+      if (!valid) {
+        this.labelsLoading = false;
+      }
+      else {
+        let patchBody = [{op: "replace", path: `/labelSelector`, value: this.updatedLabelFields }];
+        this.monitorUpdate(patchBody, UpdateSection.label);
+      }
+    }));
+
+    this.gc.add(this.dynamicFormValid.subscribe((valid) => {
         if (valid) {
           this.monitorUpdate(this.pluginProps(this.subForm.form), UpdateSection.plugin);
         }else{
@@ -154,6 +183,10 @@ export class MonitorDetailsPage implements OnInit {
         case UpdateSection.additional:
           this.additionalSettingEdit = false;
           this.updateAdditionalLoading = false;
+          break;
+        case UpdateSection.label:
+          this.labelsLoading = false;
+          this.labelPopPencil.nativeElement.click();
           break;
       }
     });
@@ -227,11 +260,17 @@ export class MonitorDetailsPage implements OnInit {
     this.monitorUpdate(this.updateBody, UpdateSection.additional);
   }
 
+  /**
+   * Open additional settings panel
+   */
   modifySettings() {
     this.additionalSettings = 'in';
     this.additionalSettingEdit = true;
   }
 
+  /**
+   * Toggle additional settings panel
+   */
   additionlSettingClick(){
     this.additionalSettings = this.additionalSettings === 'in' ? 'out': 'in';
   }
@@ -268,6 +307,14 @@ export class MonitorDetailsPage implements OnInit {
     }
     )
     return definitions;
+  }
+
+  /**
+   * @description Whenever updates are made to the form we retrieve values here
+   * @param labelValues {[key: string] : any}
+   */
+  labelsUpdated(labelValues: {[key: string] : any}): void {
+    this.updatedLabelFields = transformKeyPairs(labelValues.keysandvalues);
   }
 
   ngOnDestroy() {
