@@ -1,17 +1,20 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DynamicFormComponent } from './dynamic-form.component';
 import { DynamicFieldDirective } from '../dynamic-field/dynamic-field.directive';
 import { InputComponent } from '../input/input.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { SelectComponent } from '../select/select.component';
-import  * as markedGroup from "src/app/_shared/utils";
+import { ZoneService } from 'src/app/_services/zones/zones.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('DynamicFormComponent', () => {
+  let injector: TestBed;
   let component: DynamicFormComponent;
+  let zoneService: ZoneService;
   let fixture: ComponentFixture<DynamicFormComponent>;
   let formValidSub: Subject<void> = new Subject<void>();
 
@@ -20,14 +23,21 @@ describe('DynamicFormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ReactiveFormsModule],
+      imports: [
+        ReactiveFormsModule,
+        HttpClientModule
+      ],
       declarations: [
         DynamicFormComponent,
         DynamicFieldDirective,
         InputComponent,
         CheckboxComponent,
         SelectComponent
-  ]}) // overrideModule for adding entryComponents to Testbed
+  ],
+  providers: [
+    ZoneService
+  ]
+}) // overrideModule for adding entryComponents to Testbed
   .overrideModule(BrowserDynamicTestingModule, {
     set: {
       entryComponents: [
@@ -40,11 +50,16 @@ describe('DynamicFormComponent', () => {
   }));
 
   beforeEach(() => {
+    injector = getTestBed();
+    zoneService = injector.get(ZoneService);
     fixture = TestBed.createComponent(DynamicFormComponent);
     component = fixture.componentInstance;
     component.form = formBuilder.group({});
     component.validateForm = formValidSub.asObservable();
-    component.config = [
+    component.config = {
+      monitorType: "Remote",
+      zones: ["zone_1", "zone_2", "zone_3"],
+      fields: [
       {
         type: "input",
         label: "Username",
@@ -76,7 +91,7 @@ describe('DynamicFormComponent', () => {
         value: "UK",
         options: ["India", "UAE", "UK", "US"]
       }
-    ];
+    ]};
     component.initiateForm();
     fixture.detectChanges();
   });
@@ -96,12 +111,17 @@ describe('DynamicFormComponent', () => {
   });
 
   it('should add controls to formgroup', () => {
-    expect(Object.keys(component.form.controls).length).toEqual(3);
+    expect(Object.keys(component.form.controls).length).toEqual(4);
   });
 
-  it('should expect validators to be added to controls', () => {
+  it('should bind validators to be added to controls', () => {
     let control = component.form.controls['name'];
     expect(control.validator).toBeDefined();
+  });
+
+  it('should return monitoring zones from form', () => {
+    component.config.zones.forEach(z => component.remoteZones.push(new FormControl(true)));
+    expect(component.config.zones.length).toEqual(3);
   });
 
   it('should execute ngOnChanges and initiateForm()', () => {

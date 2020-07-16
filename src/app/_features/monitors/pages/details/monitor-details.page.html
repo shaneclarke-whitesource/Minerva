@@ -170,7 +170,24 @@
           </hx-icon>
         </h4>
       </div>
-      <div *ngIf="!isUpdtPnlActive" class="hxCol hxSpan-6">
+      <div *ngIf="monDetails.details.monitoringZones?.length > 0 && !isUpdtPnlActive" class="hxCol hxSpan-6">
+        <div class="hxRow">
+          <div class="hxCol" *ngFor="let zone of monDetails.details.monitoringZones; index as i">
+            <hx-checkbox-control>
+              <input type="checkbox"
+                id="chkDetail-{{i}}"
+                checked
+                disabled
+              />
+              <label for="chkDetail-{{i}}">
+                <hx-checkbox></hx-checkbox>
+                {{zone}}
+              </label>
+            </hx-checkbox-control>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!isUpdtPnlActive" class="hxCol hxSpan-6" [ngClass]="{'hxOffset-6': monDetails.details.monitoringZones?.length > 0}">
         <div class="hxRow" *ngFor="let pluginField of Object.keys(monDetails.details.plugin)">
           <ng-container *ngIf="pluginField != 'type'">
             <div class="hxCol hxSpan-6">

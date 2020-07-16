@@ -1,6 +1,20 @@
 <form class="dynamic-form" [formGroup]="form">
+<div class="hxRow" *ngIf="remoteZones.length > 0">
+  <div class="hxCol hxSpan-3" formArrayName="zones" *ngFor="let zone of remoteZones.controls; index as i">
+  <hx-checkbox-control>
+    <input [formControl]="zone"
+      type="checkbox"
+      id="chkZone-{{i}}"
+    />
+    <label for="chkZone-{{i}}">
+      <hx-checkbox></hx-checkbox>
+      {{zones[i].name}}
+    </label>
+  </hx-checkbox-control>
+</div>
+</div>
   <div class="hxRow">
-    <ng-container *ngFor="let field of config;" monitorDynamicField [config]="field" [group]="form">
+    <ng-container *ngFor="let field of config.fields;" monitorDynamicField [config]="field" [group]="form">
   </ng-container>
   </div>
 </form>
