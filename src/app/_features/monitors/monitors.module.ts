@@ -18,6 +18,7 @@ import { ResourcesService } from 'src/app/_services/resources/resources.service'
 import { AdditionalSettingsComponent } from './components/additional-settings/additional-settings.component';
 import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
 import { ResourceListComponent } from './components/resource_list/resource-list.component';
+import { ZoneService } from 'src/app/_services/zones/zones.service';
 
 export const AJV_CLASS = new InjectionToken<Ajv>('The AJV Class Instance');
 export const AJV_CONFIG = new InjectionToken<Ajv>('The AJV Class config');
@@ -51,6 +52,7 @@ export function createAjvInstance(AjvClass: any, config: Options) {
     MonitorService,
     LabelService,
     ResourcesService,
+    ZoneService,
     DurationSecondsPipe
   ],
   entryComponents: [

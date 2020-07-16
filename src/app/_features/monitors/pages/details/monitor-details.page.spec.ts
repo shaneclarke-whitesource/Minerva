@@ -201,7 +201,8 @@ describe('MonitorDetailComponent', () => {
     ["cpu","net_response",].forEach(element => {
       component.monDetails.details.plugin.type=element;
       component.creatDynamicConfig();
-      expect(component.dynaConfig.length).toBeGreaterThan(1);
+      expect(component.dynaConfig.monitorType).toEqual('Local');
+      expect(component.dynaConfig.fields.length).toBeGreaterThan(1);
       done();
     });
   });

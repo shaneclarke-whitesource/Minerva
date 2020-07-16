@@ -8,7 +8,7 @@ import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { MonitorUtil, CntrlAttribute } from '../../mon.utils';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { tap } from 'rxjs/operators';
-import { FieldConfig } from '../../interfaces/field.interface';
+import { FieldConfig, FieldSet } from '../../interfaces/field.interface';
 import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { AdditionalSettingsComponent } from '../../components/additional-settings/additional-settings.component';
@@ -61,7 +61,7 @@ export class MonitorDetailsPage implements OnInit {
   updateMonNameLoading: boolean = false;
   updateAdditionalLoading:boolean = false;
 
-  dynaConfig: FieldConfig[];
+  dynaConfig: FieldSet;
   monDetails: Monitor;
 
   additionalSettingEdit = false;
@@ -127,8 +127,14 @@ export class MonitorDetailsPage implements OnInit {
 
     this.gc.add(this.dynamicFormValid.subscribe((valid) => {
         if (valid) {
-          this.monitorUpdate(this.pluginProps(this.subForm.form), UpdateSection.plugin);
-        }else{
+          let updateBody = this.pluginProps(this.subForm);
+          if (updateBody.length > 0) {
+            this.monitorUpdate(updateBody, UpdateSection.plugin);
+          } else {
+            this.monitorUpdateLoad = false;
+            this.isUpdtPnlActive = false;
+          }
+        } else{
           this.monitorUpdateLoad=false;
           throw "Form is not valid!";
         }
@@ -197,18 +203,26 @@ export class MonitorDetailsPage implements OnInit {
    * IF it plugin value is belong to datetime "format" then convet into seconds and match with form value
    * else match defualt value form value
    */
-  pluginProps(form) {
+  pluginProps(form): any[] {
     let patchBody = [];
-    Object.keys(form.value).forEach(item => {
+    let formValue = form.value;
+    let formZones = form.monitoringZones;
+    Object.keys(formValue).forEach(item => {
       if (this.formatProp.filter(a => a === item).length > 0) {
         let second = this.pipeSeconds.transform(this.monDetails.details.plugin[item]);
-        if (second !== form.value[item]) {
-          patchBody.push({ op: "replace", path: `/details/plugin/${item}`, "value": form.value[item] });
+        if (second !== formValue[item]) {
+          patchBody.push({ op: "replace", path: `/details/plugin/${item}`, value: formValue[item] });
         }
-      } else if (this.monDetails.details.plugin[item] !== form.value[item]) {
-        patchBody.push({ op: "replace", path: `/details/plugin/${item}`, "value": form.value[item] });
+      } else if (this.monDetails.details.plugin[item] !== formValue[item]) {
+        patchBody.push({ op: "replace", path: `/details/plugin/${item}`, value: formValue[item] });
       }
     });
+
+    if (this.monDetails.details.type === "remote" &&
+    JSON.stringify(formZones) != JSON.stringify(this.monDetails.details.monitoringZones)) {
+      patchBody.push({ op: "replace", path: "/details/monitoringZones", value: formZones});
+    }
+
     return patchBody;
   }
 
@@ -280,12 +294,16 @@ export class MonitorDetailsPage implements OnInit {
    * @param monitor
    */
   creatDynamicConfig() {
-    let keys=Object.keys(this.schemaService.schema.definitions);
+    let keys = Object.keys(this.schemaService.schema.definitions);
     for (let index = 0; index < keys.length; index++) {
       const element = this.schemaService.schema.definitions[keys[index]];
       if (element.title === this.monDetails.details.plugin.type) {
-        let definitions = this.setDefaultValue(element)
-        this.dynaConfig = MonitorUtil.CreateMonitorConfig(definitions);
+        let definitions = this.setDefaultValue(element);
+        this.dynaConfig = {
+          monitorType: this.monDetails.details.type === 'remote' ? 'Remote' : 'Local',
+          zones: this.monDetails.details.monitoringZones,
+          fields: MonitorUtil.CreateMonitorConfig(definitions)
+        }
         return;
       }
     }
@@ -295,7 +313,8 @@ export class MonitorDetailsPage implements OnInit {
    * Set Default value for dynamic form
    * @param definitions
    */
-  setDefaultValue(definitions) {    Object.keys(definitions.properties).forEach(prop => {
+  setDefaultValue(definitions) {
+    Object.keys(definitions.properties).forEach(prop => {
       if (definitions.properties[prop].hasOwnProperty(CntrlAttribute.format)) {
         if (this.monDetails.details.plugin[prop]) {
           this.formatProp.push(prop);

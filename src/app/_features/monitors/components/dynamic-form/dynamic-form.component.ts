@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
-import { FieldConfig, Validator } from "../../interfaces/field.interface";
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from "@angular/forms";
+import { FieldSet } from "../../interfaces/field.interface";
 import { Observable, Subscription } from "rxjs";
 import { MarkFormGroupTouched } from "src/app/_shared/utils";
+import { ZoneService } from "src/app/_services/zones/zones.service";
+import { SpinnerService } from "src/app/_services/spinner/spinner.service";
+import { Zone } from "src/app/_models/zone";
 
 /**
  * DynamicForm Component
@@ -50,7 +53,7 @@ import { MarkFormGroupTouched } from "src/app/_shared/utils";
 export class DynamicFormComponent implements OnChanges {
 
   // input for configs that will build each of the fields
-  @Input() config: FieldConfig[] = [];
+  @Input() config: FieldSet;
   // input to notify this component the form is ready to be submitted,
   @Input() validateForm: Observable<void>;
   // output its validity to the parent component
@@ -58,8 +61,17 @@ export class DynamicFormComponent implements OnChanges {
   form: FormGroup;
   subManager = new Subscription();
 
+  remoteMonitor: boolean = false;
+
+  zones: Zone[];
+
+  get remoteZones(): FormArray {
+    return this.form.get('zones') as FormArray;
+  }
+
   get value() {
-    let val = this.form.value;
+    let val = Object.assign({}, this.form.value);
+    delete val.zones;
     // we won't return fields with null values
     Object.keys(val).forEach((key) => {
       if (val[key] === null || val[key] === '') { delete val[key] }
@@ -67,13 +79,27 @@ export class DynamicFormComponent implements OnChanges {
     return val;
   }
 
-  constructor(private fb: FormBuilder) { }
+  get monitoringZones(): string[] {
+    let val = this.form.value;
+    // sort zone selections and remove this field if no zones are selected
+    let zones = val.zones.map((z, i) => {
+        return z ? this.zones[i].name : null;
+      }).filter(z => z !== null);
+
+    return zones || [];
+  }
+
+  constructor(private fb: FormBuilder, private zoneService: ZoneService,
+    private spinService: SpinnerService) {
+      this.spinService.changeLoadingStatus(true);
+    }
 
   /**
    * @description needed to reinitiate this component & reassign the form
    */
   initiateForm(): void {
     this.form = this.createControl();
+    this.spinService.changeLoadingStatus(false);
     let formValidSub = this.validateForm.subscribe(() => {
       let valid = this.form.valid;
       MarkFormGroupTouched(this.form);
@@ -87,14 +113,34 @@ export class DynamicFormComponent implements OnChanges {
    * @returns FormGroup
    */
   createControl(): FormGroup {
-    const group = this.fb.group({});
-    this.config.forEach(field => {
+    const group = this.fb.group({
+      zones: new FormArray([])
+    });
+    let zoneArray = <FormArray>group.get('zones');
+    let remoteMonitor = this.config.monitorType === 'Remote';
+    if (remoteMonitor && !this.zoneService.zones) {
+      this.zoneService.getZones().subscribe((zones) => {
+        this.zones = zones.content;
+        zones.content.map((z) => {
+          zoneArray.push(new FormControl(this.config.zones?.includes(z.name)));
+        });
+      });
+    }
+    else if (remoteMonitor) {
+      this.zones = this.zoneService.zones.content;
+      this.zones.map((z) => {
+        zoneArray.push(new FormControl(this.config.zones?.includes(z.name)));
+      });
+    }
+
+    this.config.fields.forEach(field => {
       const control = this.fb.control(
         field.value,
         this.bindValidations(field.validations || [])
       );
       group.addControl(field.name, control);
     });
+
     return group;
   }
 
@@ -122,5 +168,6 @@ export class DynamicFormComponent implements OnChanges {
 
   ngOnDestroy() {
     this.subManager.unsubscribe();
+    this.remoteMonitor = false;
   }
 }

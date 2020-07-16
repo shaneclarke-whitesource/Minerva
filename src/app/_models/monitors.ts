@@ -12,6 +12,7 @@ export interface Monitor {
     excludedResourceIds?: string[];
     details: {
         type: string,
+        monitoringZones?: string[],
         plugin: {
             type: string,
             [key: string] : any
