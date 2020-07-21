@@ -1,7 +1,6 @@
-import { navigations } from "../commons/navigations";
+
 import { browser, element, by } from "protractor";
-import { AppPage } from "../pageObjects/app.po";
-import { async } from "@angular/core/testing";
+import { AppPage } from "e2e/src/pages/app.po";
 
 
 

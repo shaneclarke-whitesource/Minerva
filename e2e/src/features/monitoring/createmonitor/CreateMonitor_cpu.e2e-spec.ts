@@ -1,5 +1,5 @@
-import { AppPage } from "../pageObjects/app.po";
-import { navigations } from "../commons/navigations";
+import { AppPage } from "../../../pages/app.po";
+import { navigations } from "../../../commons/navigations";
 import { browser, element, by } from "protractor";
 
 describe("Create Monitor Label Selector fields Testing", () => {
@@ -20,6 +20,7 @@ describe("Create Monitor Label Selector fields Testing", () => {
     browser.sleep(1000);
     expect(element.all(by.xpath("//datalist[@id='list-keys']//option")).isPresent()).toBe(true);
   })
+  
   it("Should check that when mouse focus is on the value text input a list of values displays/ is present", async () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
