@@ -1,4 +1,4 @@
-import { AppPage } from "e2e/src/pages/app.po";
+import { AppPage } from "../../pages/app.po";
 
 
 describe("workspace-project App", () => {

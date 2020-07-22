@@ -1,6 +1,5 @@
 import { browser, element, by } from "protractor";
-import { async } from "@angular/core/testing";
-import { AppPage } from "e2e/src/pages/app.po";
+import { AppPage } from "../../pages/app.po";
 
 
 

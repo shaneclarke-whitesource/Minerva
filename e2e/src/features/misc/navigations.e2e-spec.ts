@@ -1,8 +1,6 @@
 
-import { browser } from "protractor";
-import { async } from "@angular/core/testing";
-import { AppPage } from "e2e/src/pages/app.po";
-import { navigations } from "e2e/src/commons/navigations";
+import { AppPage } from "../../pages/app.po";
+import { navigations } from "../../commons/navigations";
 
 
 describe("App Navigations", () => {

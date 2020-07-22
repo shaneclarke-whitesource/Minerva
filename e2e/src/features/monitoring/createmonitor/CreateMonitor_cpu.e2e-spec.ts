@@ -16,7 +16,7 @@ describe("Create Monitor Label Selector fields Testing", () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
-    element(by.xpath("//input[@id='txtKey']")).click();
+    element(by.id("txtKey-0")).click();
     browser.sleep(1000);
     expect(element.all(by.xpath("//datalist[@id='list-keys']//option")).isPresent()).toBe(true);
   })
@@ -25,7 +25,7 @@ describe("Create Monitor Label Selector fields Testing", () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
-    element(by.xpath("//input[@id='txtValue']")).click();
+    element(by.id("txtValue-0")).click();
     expect(element.all(by.xpath("//datalist[@id='list-values']//option")).isPresent()).toBe(true);
   })
   it("Should checks that there is only one plus click button to the right of the set of the fields", async () => {
