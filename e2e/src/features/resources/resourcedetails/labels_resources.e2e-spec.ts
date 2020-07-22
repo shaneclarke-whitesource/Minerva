@@ -1,4 +1,4 @@
-import { AppPage } from "../pageObjects/app.po";
+import { AppPage } from "../../../pages/app.po";
 import { element, by, browser, Browser } from "protractor";
 
 describe("Add-fields Component Test in resources", () => {

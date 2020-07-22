@@ -1,12 +1,11 @@
-import { navigations } from "../commons/navigations";
-import { browser } from "protractor";
-import { AppPage } from "../pageObjects/app.po";
-import { async } from "@angular/core/testing";
+
+import { AppPage } from "../../pages/app.po";
+import { navigations } from "../../commons/navigations";
 
 
 describe("App Navigations", () => {
   let nav: navigations;
-  let page: AppPage;
+  let page:AppPage;
   
 
   beforeEach(() => {

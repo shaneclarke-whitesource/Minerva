@@ -1,4 +1,4 @@
-import { AppPage } from "../pageObjects/app.po";
+import { AppPage } from "../../pages/app.po";
 import { element, by, browser } from "protractor";
 
 describe("hx-Alert testing", () => {
@@ -8,8 +8,7 @@ describe("hx-Alert testing", () => {
     page = new AppPage();
     browser.ignoreSynchronization = true;
   });
-
-//TODO:FIX THIS TEST  
+  
    xit("Should check if testing hx-alert element is present", async () => {
       page.navigateTo();
       browser.sleep(2000); 
@@ -20,6 +19,6 @@ describe("hx-Alert testing", () => {
       element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
       browser.sleep(2000);
       expect(element(by.tagName("hx-alert")).isPresent()).toBe(true);
- 
-  });
-})
+   });
+
+});
