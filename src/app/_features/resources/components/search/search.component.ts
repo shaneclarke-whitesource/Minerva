@@ -1,0 +1,53 @@
+import { Component, OnInit, Input, ViewChild, ElementRef, EventEmitter, OnDestroy, AfterViewInit, Output  } from '@angular/core';
+import { ResourcesService } from 'src/app/_services/resources/resources.service';
+import {
+  debounceTime,
+  map,
+  distinctUntilChanged,
+  filter,
+  tap
+} from "rxjs/operators";
+import { fromEvent, Subscription } from 'rxjs';
+import { Resources } from 'src/app/_models/resources';
+
+@Component({
+  selector: 'app-resources-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss']
+})
+export class SearchComponent implements AfterViewInit, OnDestroy {
+
+  @ViewChild('searchResources', { static: true }) searchResources: ElementRef;
+  @Input() placeholder: string;
+  @Output() searchResults = new EventEmitter<Resources>();
+
+  @Output() searching = new EventEmitter<boolean>();
+
+
+  private subscription: Subscription;
+
+  constructor(private resourceService: ResourcesService) { }
+
+  ngAfterViewInit(): void {
+    const search$ = fromEvent(this.searchResources.nativeElement, 'keyup')
+    .pipe(
+      map((e:any) => e.target.value), // retrieve the value of the input
+      filter((text:string) => text && text.length > 1), // filter if empty or more than 1
+      debounceTime(100), // search after 500 ms
+      distinctUntilChanged(),
+      tap(() => this.searching.emit(true))
+    )
+
+    // create subscription for text input
+    this.subscription = search$.subscribe((text) => {
+      this.resourceService.searchResources(text).subscribe((res) => {
+        this.searching.emit(true)
+        this.searchResults.emit(res)
+      })
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+}

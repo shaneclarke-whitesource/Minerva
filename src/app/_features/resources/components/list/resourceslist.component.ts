@@ -142,6 +142,12 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
         })
     }
   }
+
+
+  resourceResults(data:any): void {
+    console.log("**Resource data: ", data);
+  }
+
   ngOnDestroy() {
     //unsubcribe once component is done
     this.ngUnsubscribe.next();

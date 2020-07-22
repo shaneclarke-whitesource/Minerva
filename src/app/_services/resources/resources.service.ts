@@ -148,6 +148,25 @@ export class ResourcesService {
     }
   }
 
+  searchResources(search:string): Observable<Resources> {
+    if (environment.mock) {
+      let mocks = Object.assign({}, this.mockedResources.collection);
+      this.resources = mocks;
+      let slicedData = [... mocks.content.slice(0 * 10, 1 * 10)];
+      this.resources.content = slicedData;
+      return of<Resources>(this.resources);
+    }
+    else {
+      let mocks = Object.assign({}, this.mockedResources.collection);
+      let slicedData = [... mocks.content.slice(Math.floor(Math.random() * Math.floor(45)),
+        Math.floor(Math.random() * Math.floor(3)))];
+      this.resources = mocks;
+
+      //return this.http.get<Resources>(`${environment.api.salus}/resources/search`)
+      return of<Resources>(this.resources);
+    }
+  }
+
   /**
    * @description
    * @param id string

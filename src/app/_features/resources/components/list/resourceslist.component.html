@@ -1,21 +1,5 @@
 <div class="hxRow">
-  <div class="hxCol">
-    <hx-search-control>
-        <input
-          id="txtSearch"
-          type="search"
-          [placeholder]="searchPlaceholderText"
-        />
-        <button
-          type="button"
-          class="hxClear"
-          aria-label="Clear search"
-          hidden>
-          <hx-icon type="times"></hx-icon>
-        </button>
-        <hx-search></hx-search>
-      </hx-search-control>
-  </div>
+  <app-resources-search class="hxCol" [placeholder]="searchPlaceholderText" (searchResults)="resourceResults($event)"></app-resources-search>
   <div class="hxCol resource-header hxOffset-1">
 <button class="hxBtn" [disabled]="selectedResources.length === 0">
   Delete
@@ -100,7 +84,7 @@
   <tbody>
     <tr *ngFor="let resource of resources">
       <td class="hxControl">
-          <hx-checkbox-control> 
+          <hx-checkbox-control>
               <input
                 type="checkbox"
                 id="resource-{{resource.resourceId}}"
