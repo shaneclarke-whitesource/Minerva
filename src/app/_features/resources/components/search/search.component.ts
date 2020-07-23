@@ -18,7 +18,7 @@ import { Resources } from 'src/app/_models/resources';
 export class SearchComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('searchResources', { static: true }) searchResources: ElementRef;
-  @Input() placeholder: string;
+  @Input() placeholder: string = "";
   @Output() searchResults = new EventEmitter<Resources>();
 
   @Output() resetResults = new EventEmitter<{}>();
@@ -35,7 +35,7 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
     .pipe(
       map((e:any) => e.target.value), // retrieve the value of the input
       filter((text:string) => text && text.length > 1), // filter if empty or more than 1
-      debounceTime(100), // search after 100 ms
+      debounceTime(1000), // search after 1000 ms or 1 second
       distinctUntilChanged(),
       tap(() => this.searching.emit(true))
     )

@@ -8,9 +8,10 @@ import { Subject } from 'rxjs'
 import { Resource, CreateResource, Resources } from 'src/app/_models/resources';
 import { Router } from '@angular/router';
 import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
-
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
+import { mergeUniqueObjectsOfArray } from 'src/app/_shared/utils';
+
 @Component({
   selector: 'app-resourceslist',
   templateUrl: './resourceslist.component.html',
@@ -169,8 +170,9 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
    * @param resources Resources
    */
   resourceResults(resources: Resources): void {
-    this.resources = resources.content;
-    this.total = resources.totalElements;
+    this.resources = mergeUniqueObjectsOfArray(resources.content,
+      this.selectedResources, "resourceId");
+    this.total =  this.resources.length;
   }
 
   ngOnDestroy() {

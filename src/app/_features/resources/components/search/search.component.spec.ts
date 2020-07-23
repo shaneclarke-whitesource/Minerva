@@ -36,6 +36,7 @@ describe('SearchComponent', () => {
 
   it('should setup defaults', () => {
     expect(component.searchResources).toBeDefined();
+    expect(component.placeholder).toBe("");
     expect(component.searchResults).toEqual(new EventEmitter<Resources>());
     expect(component.resetResults).toEqual(new EventEmitter<{}>());
     expect(component.searching).toEqual(new EventEmitter<boolean>());
@@ -60,12 +61,12 @@ describe('SearchComponent', () => {
     let spy = spyOn(component.resetResults, 'emit');
     component.reset();
     expect(spy).toHaveBeenCalled();
-  })
+  });
 
   it('should unsubscribe upon component destroy', () => {
     let spy = spyOn(component['subscription'], 'unsubscribe');
     component.ngOnDestroy();
     expect(spy).toHaveBeenCalled();
-  })
+  });
 
 });
