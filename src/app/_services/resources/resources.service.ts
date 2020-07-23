@@ -157,13 +157,16 @@ export class ResourcesService {
       return of<Resources>(this.resources);
     }
     else {
-      let mocks = Object.assign({}, this.mockedResources.collection);
-      let slicedData = [... mocks.content.slice(Math.floor(Math.random() * Math.floor(45)),
-        Math.floor(Math.random() * Math.floor(3)))];
-      this.resources = mocks;
-
-      //return this.http.get<Resources>(`${environment.api.salus}/resources/search`)
-      return of<Resources>(this.resources);
+      return this.http.get<Resources>(`${environment.api.salus}/resources-search/`, {
+        params: {
+          q: search
+        }
+      }).pipe(
+        tap(data => {
+          let stuff = data;
+          this.logService.log(`Search Resources`, LogLevels.info);
+        })
+      )
     }
   }
 

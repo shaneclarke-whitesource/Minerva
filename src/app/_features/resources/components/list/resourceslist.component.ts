@@ -5,7 +5,7 @@ import { ValidateResource } from '../../../../_shared/validators/resourceName.va
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs'
-import { Resource, CreateResource } from 'src/app/_models/resources';
+import { Resource, CreateResource, Resources } from 'src/app/_models/resources';
 import { Router } from '@angular/router';
 import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 
@@ -37,7 +37,7 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
       return this.resourceService.getResources(this.defaultAmount, this.page)
         .pipe(
           takeUntil(this.ngUnsubscribe)
-        ).subscribe(data => {
+        ).subscribe(() => {
           this.resources = this.resourceService.resources.content;
           this.total = this.resourceService.resources.totalElements;
           this.searchPlaceholderText = `Search ${this.total} Resources`;
@@ -143,9 +143,34 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Tells us when a search is in progress
+   * @param searching boolean
+   */
+  resourcesSearch(searching:boolean): void {
+    if (searching) {
+      this.spnService.changeLoadingStatus(true);
+    }
+    else {
+      this.spnService.changeLoadingStatus(false);
+    }
+  }
 
-  resourceResults(data:any): void {
-    console.log("**Resource data: ", data);
+  /**
+   * Reset search back to its original results
+   */
+  resetSearch(): void {
+    this.resources = this.resourceService.resources.content;
+    this.total = this.resourceService.resources.totalElements;
+  }
+
+  /**
+   * Function to accept event emitted from search
+   * @param resources Resources
+   */
+  resourceResults(resources: Resources): void {
+    this.resources = resources.content;
+    this.total = resources.totalElements;
   }
 
   ngOnDestroy() {

@@ -21,6 +21,8 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
   @Input() placeholder: string;
   @Output() searchResults = new EventEmitter<Resources>();
 
+  @Output() resetResults = new EventEmitter<{}>();
+
   @Output() searching = new EventEmitter<boolean>();
 
 
@@ -33,7 +35,7 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
     .pipe(
       map((e:any) => e.target.value), // retrieve the value of the input
       filter((text:string) => text && text.length > 1), // filter if empty or more than 1
-      debounceTime(100), // search after 500 ms
+      debounceTime(100), // search after 100 ms
       distinctUntilChanged(),
       tap(() => this.searching.emit(true))
     )
@@ -41,10 +43,17 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
     // create subscription for text input
     this.subscription = search$.subscribe((text) => {
       this.resourceService.searchResources(text).subscribe((res) => {
-        this.searching.emit(true)
+        this.searching.emit(false)
         this.searchResults.emit(res)
       })
     });
+  }
+
+  /**
+   * Reset dismissal of search
+   */
+  reset():void {
+    this.resetResults.emit();
   }
 
   ngOnDestroy() {

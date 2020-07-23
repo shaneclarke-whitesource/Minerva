@@ -65,7 +65,7 @@ describe('ResourcesService', () => {
         expect(data).toEqual(new resourcesMock().single);
       })
     });
-    
+
     it('should validate a resource ID', (done) => {
       service.validateResourceId('newcool-server').subscribe(() => {
       }, error => {
@@ -78,6 +78,13 @@ describe('ResourcesService', () => {
       let updated = {labels: {'newkey': 'newVal', 'somekey':'someVal'}};
       service.updateResource("linuxResource", updated).subscribe((data:Resource) => {
         expect(data).toEqual(new resourcesMock().single);
+      });
+    });
+
+    it('should search for resources', () => {
+      let q = 'coo'
+      service.searchResources(q).subscribe((data) => {
+        expect(data.content.length).toBeGreaterThan(2);
       });
     });
 

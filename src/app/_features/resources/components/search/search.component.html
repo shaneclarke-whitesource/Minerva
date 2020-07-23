@@ -1,7 +1,7 @@
 <div>
   <hx-search-control>
     <input id="txtSearch" #searchResources type="search" [placeholder]="placeholder" />
-    <button type="button" class="hxClear" aria-label="Clear search" hidden>
+    <button id="btnDismiss" type="button" class="hxClear" aria-label="Clear search" (click)="reset()" hidden>
       <hx-icon type="times"></hx-icon>
     </button>
     <hx-search></hx-search>

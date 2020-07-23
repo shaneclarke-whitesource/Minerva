@@ -1,5 +1,6 @@
 <div class="hxRow">
-  <app-resources-search class="hxCol" [placeholder]="searchPlaceholderText" (searchResults)="resourceResults($event)"></app-resources-search>
+  <app-resources-search class="hxCol" [placeholder]="searchPlaceholderText" (searchResults)="resourceResults($event)"
+  (searching)="resourcesSearch($event)" (resetResults)="resetSearch()" ></app-resources-search>
   <div class="hxCol resource-header hxOffset-1">
 <button class="hxBtn" [disabled]="selectedResources.length === 0">
   Delete

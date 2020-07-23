@@ -37,10 +37,11 @@ describe('SearchComponent', () => {
   it('should setup defaults', () => {
     expect(component.searchResources).toBeDefined();
     expect(component.searchResults).toEqual(new EventEmitter<Resources>());
+    expect(component.resetResults).toEqual(new EventEmitter<{}>());
     expect(component.searching).toEqual(new EventEmitter<boolean>());
   });
 
-  fit('should make search for text input results', () => {
+  it('should make search for text input results', () => {
     component.searchResults.subscribe((resources: Resources) => {
       expect(resources.content.length).toBeGreaterThan(2);
     });
@@ -54,6 +55,12 @@ describe('SearchComponent', () => {
     el.nativeElement.dispatchEvent(new Event('keydown'));
     el.nativeElement.dispatchEvent(new Event('keyup'));
   });
+
+  it('should emit dismiss of search', () => {
+    let spy = spyOn(component.resetResults, 'emit');
+    component.reset();
+    expect(spy).toHaveBeenCalled();
+  })
 
   it('should unsubscribe upon component destroy', () => {
     let spy = spyOn(component['subscription'], 'unsubscribe');
