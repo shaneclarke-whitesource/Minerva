@@ -1,22 +1,5 @@
 <div class="hxRow">
-  <div class="hxCol">
-      <hx-search-control>
-          <input
-            id="txtSearch"
-            type="search"
-            [placeholder]="searchPlaceholderText"
-          />
-          <button
-            type="button"
-            class="hxClear"
-            aria-label="Clear search"
-            hidden>
-            <hx-icon type="times"></hx-icon>
-          </button>
-          <hx-search></hx-search>
-        </hx-search-control>
-  </div>
-
+  <app-monitor-search class="hxCol" [placeholder]="monitorSearchPlaceholderText" (monitorSearchResults)="monitorResults($event)"></app-monitor-search>
 <div class="hxCol monitors-header">
 <button class="hxBtn hxPrimary" routerLink="/monitors/create">
   Create Monitor

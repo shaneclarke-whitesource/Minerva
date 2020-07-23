@@ -11,7 +11,7 @@ import { SpinnerService } from '../../../../_services/spinner/spinner.service';
   styleUrls: ['./monitorslist.component.scss']
 })
 export class MonitorslistComponent implements OnInit {
-  searchPlaceholderText: string;
+  monitorSearchPlaceholderText: string;
   monitors: any[];
   total: number;
   page: number = 0;
@@ -30,7 +30,7 @@ export class MonitorslistComponent implements OnInit {
           this.spnService.changeLoadingStatus(false);
           this.monitors = this.monitorService.monitors.content;
           this.total = this.monitorService.monitors.totalElements;
-          this.searchPlaceholderText = `Search ${this.total} monitors`;
+          this.monitorSearchPlaceholderText = `Search ${this.total} monitors`;
       });
     }
     this.fetchMonitors();
@@ -92,4 +92,9 @@ export class MonitorslistComponent implements OnInit {
       );
     }
   }
+
+  monitorResults(data:any): void  {
+    console.log("monitors searched data ", data);
+  }
+
 }
