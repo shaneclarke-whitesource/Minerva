@@ -33,7 +33,16 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     const search$ = fromEvent(this.searchResources.nativeElement, 'keyup')
     .pipe(
-      map((e:any) => e.target.value), // retrieve the value of the input
+      map((e:any) => {
+        if (e.target.value === "") {
+          this.reset();
+        }
+        return e.target.value }), // retrieve the value of the input
+     /*tap((input) => {
+          if (input == "" || input.length <= 1) {
+            this.reset();
+          }
+      }),*/
       filter((text:string) => text && text.length > 1), // filter if empty or more than 1
       debounceTime(1000), // search after 1000 ms or 1 second
       distinctUntilChanged(),
