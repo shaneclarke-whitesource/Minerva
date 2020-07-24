@@ -44,7 +44,7 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
           }
       }),*/
       filter((text:string) => text && text.length > 1), // filter if empty or more than 1
-      debounceTime(1000), // search after 1000 ms or 1 second
+      debounceTime(100), // search after 100 ms
       distinctUntilChanged(),
       tap(() => this.searching.emit(true))
     )
