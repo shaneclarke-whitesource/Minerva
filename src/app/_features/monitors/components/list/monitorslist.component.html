@@ -1,5 +1,5 @@
 <div class="hxRow">
-  <app-monitor-search class="hxCol" [placeholder]="monitorSearchPlaceholderText" (monitorSearchResults)="monitorResults($event)"></app-monitor-search>
+  <app-monitor-search class="hxCol" [placeholder]="monitorSearchPlaceholderText" (monitorSearchResults)="monitorResults($event)" (searching)="monitorsSearch($event)" (resetResults)="resetSearch()"></app-monitor-search>
 <div class="hxCol monitors-header">
 <button class="hxBtn hxPrimary" routerLink="/monitors/create">
   Create Monitor

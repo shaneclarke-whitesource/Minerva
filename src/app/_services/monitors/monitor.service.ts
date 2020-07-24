@@ -179,4 +179,28 @@ export class MonitorService {
         );
       }
   }
+
+  searchMonitors(search:string): Observable<Monitors> {
+    if (environment.mock) {
+      let mocks = Object.assign({}, this.mockedMonitors.collection);
+      this.monitors = mocks;
+      let slicedData = [... mocks.content.slice(0 * 10, 1 * 10)];
+      this.monitors.content = slicedData;
+      return of<Monitors>(this.monitors);
+    }
+    else {
+      return this.http.get<Monitors>(`${environment.api.salus}/monitors-search/`, {
+        params: {
+          q: search
+        }
+      }).pipe(
+        tap(data => {
+          let stuff = data;
+          this.logService.log(`Search Monitors`, LogLevels.info);
+        })
+      )
+    }
+  }
+
+
 }

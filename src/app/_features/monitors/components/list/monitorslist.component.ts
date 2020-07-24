@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { MonitorService } from '../../../../_services/monitors/monitor.service';
-import { Monitor } from '../../../../_models/monitors';
+import { Monitor, Monitors } from '../../../../_models/monitors';
 import { MonitorUtil } from '../../mon.utils';
 import { SpinnerService } from '../../../../_services/spinner/spinner.service';
 
@@ -29,12 +29,58 @@ export class MonitorslistComponent implements OnInit {
         .subscribe(data => {
           this.spnService.changeLoadingStatus(false);
           this.monitors = this.monitorService.monitors.content;
+
+          console.log("this monitors ngoninit ", this.monitors);
+
           this.total = this.monitorService.monitors.totalElements;
           this.monitorSearchPlaceholderText = `Search ${this.total} monitors`;
       });
     }
     this.fetchMonitors();
   }
+
+
+  /**
+   * Check when search is in progress
+   * @param event 
+   */
+
+   monitorsSearch(searching:boolean): void {
+    if (searching) {
+      this.spnService.changeLoadingStatus(true);
+    }
+    else {
+      this.spnService.changeLoadingStatus(false);
+    }
+   }
+
+   /**
+    * Reset search
+    * @param event 
+    * 
+    */
+
+    resetSearch(): void {
+        this.monitors = this.monitorService.monitors.content;
+        this.total    = this.monitorService.monitors.totalElements; 
+    }
+
+    /**
+     * Function which accepts event emitted from search
+     * @param event 
+     * 
+     */
+
+    monitorResults(monitors: Monitors): void {
+
+      
+      this.monitors = monitors.content;
+
+      console.log("monitors result ", this.monitors);
+
+
+      this.total    = monitors.totalElements;
+    }
 
   /**
    * @description check column event for items in tables, selects monitor item
@@ -92,9 +138,4 @@ export class MonitorslistComponent implements OnInit {
       );
     }
   }
-
-  monitorResults(data:any): void  {
-    console.log("monitors searched data ", data);
-  }
-
 }
