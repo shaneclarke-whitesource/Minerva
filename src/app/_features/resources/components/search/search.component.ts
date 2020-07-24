@@ -38,11 +38,6 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
           this.reset();
         }
         return e.target.value }), // retrieve the value of the input
-     /*tap((input) => {
-          if (input == "" || input.length <= 1) {
-            this.reset();
-          }
-      }),*/
       filter((text:string) => text && text.length > 1), // filter if empty or more than 1
       debounceTime(100), // search after 100 ms
       distinctUntilChanged(),
