@@ -10,13 +10,13 @@ describe("Create Monitor Label Selector fields Testing", () => {
     page = new AppPage();
     page.navigateTo();
     nav = new navigations();
-    
+
   });
   it("Should check that when mouse focus is on the key text input a list of keys displays/ is present", async () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
-    element(by.xpath("//input[@id='txtKey']")).click();
+    element(by.xpath("//input[@id='txtKey-0']")).click();
     browser.sleep(1000);
     expect(element.all(by.xpath("//datalist[@id='list-keys']//option")).isPresent()).toBe(true);
   })
@@ -24,7 +24,7 @@ describe("Create Monitor Label Selector fields Testing", () => {
     nav.navigateToMonitor();
     browser.sleep(1000);
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
-    element(by.xpath("//input[@id='txtValue']")).click();
+    element(by.xpath("//input[@id='txtValue-0']")).click();
     expect(element.all(by.xpath("//datalist[@id='list-values']//option")).isPresent()).toBe(true);
   })
   it("Should checks that there is only one plus click button to the right of the set of the fields", async () => {
@@ -51,9 +51,9 @@ describe("Create Monitor Label Selector fields Testing", () => {
     element(by.xpath("//button[@class='hxBtn hxPrimary']")).click();
     var pluscount= element(by.xpath("//div[@class='hxRow hxSpan-10 nowrap ng-untouched ng-pristine ng-valid ng-star-inserted']//button[@class='hxBtn inline-button ng-star-inserted']")).click();
     element(by.xpath("//div[@class='hxCol hxSpan-12 ng-tns-c61-0']//div[2]//button[1]")).click();
-                    
+
     var pluscount1= element(by.xpath("//div[@class='hxRow hxSpan-10 nowrap ng-untouched ng-pristine ng-valid ng-star-inserted']//button[@class='hxBtn inline-button ng-star-inserted']"));
-    browser.sleep(1000);              
+    browser.sleep(1000);
     let value1 = await pluscount1.getAttribute("childElementCount");
     expect(value1).toEqual("1");
 

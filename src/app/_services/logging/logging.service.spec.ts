@@ -1,5 +1,6 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { LoggingService } from './logging.service';
+import { LogLevels } from 'src/app/_enums/log-levels.enum';
 
 describe('LoggingService', () => {
   let injector: TestBed;
@@ -21,13 +22,14 @@ describe('LoggingService', () => {
   });
 
   it('should get the log level', () => {
+    service.setLevel(LogLevels.error);
     var level = service.getLevel();
-    expect(level).toEqual('0');
+    expect(level).toEqual('3');
   });
 
   it('should log a message to the console', () => {
     var consoleSpy = spyOn(console, 'log');
-    service.log('test', 1);
+    service.log('test', 3);
     expect(consoleSpy).toHaveBeenCalled();
   });
 

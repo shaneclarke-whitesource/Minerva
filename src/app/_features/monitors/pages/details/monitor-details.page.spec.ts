@@ -169,9 +169,7 @@ describe('MonitorDetailComponent', () => {
   });
 
   it('should set mondetails to monitor', ()=> {
-    fixture.whenStable().then(() => {
       expect(component.monDetails).toEqual(new monitorsMock().single);
-    });
   });
 
   it('should set to a single monitor', (done) => {

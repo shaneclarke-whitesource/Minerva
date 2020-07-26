@@ -65,10 +65,8 @@ describe('MonitorslistComponent', () => {
   describe('setup defaults', () => {
     it('ngOnInit should resolve monitors', () => {
       fixture.detectChanges();
-      fixture.whenStable().then(() => {
         expect(component.monitors).toEqual(new monitorsMock().collection.content
         .slice(0 * environment.pagination.monitors.pageSize, 1 * environment.pagination.monitors.pageSize));
-      });
     });
 
     it('should assign total amount of monitors', () => {

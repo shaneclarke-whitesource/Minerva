@@ -69,10 +69,6 @@ describe('SelectionsComponent', () => {
     expect(component.filteredMeasurements).toEqual(filtered);
   });
 
-  it('should select a measurement', () => {
-
-  });
-
   it('should select a device', () => {
     let value = ({
       target: {
