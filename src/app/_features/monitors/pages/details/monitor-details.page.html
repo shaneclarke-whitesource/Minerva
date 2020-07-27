@@ -51,7 +51,9 @@
           </section>
           <section>
             <header>Manage Monitor</header>
-            <hx-menuitem>Modify Labels Selector</hx-menuitem>
+            <hx-menuitem>
+              <hx-disclosure aria-controls="updateMonNamePencil">Modify Labels Selector</hx-disclosure>
+            </hx-menuitem>
             <hx-menuitem (click)="modifySettings()">Modify Settings</hx-menuitem>
             <hx-menuitem>Modify Options</hx-menuitem>
             <hx-menuitem>
@@ -74,7 +76,8 @@
         {{monitor.details.plugin.type}}
       </div>
       <div class="hxCol hxSpan-6">
-        <h4>Labels</h4>
+        <h4>Labels<hx-disclosure aria-controls="editLabelPopover" #updateLabelPen id="updateLabelPen" class="editclick">
+          <hx-icon type="pencil"></hx-icon></hx-disclosure></h4>
         <div class="hxRow" *ngFor="let label of Object.keys(monitor.labelSelector || {})">
           <div class="hxCol hxSpan-6">
             {{label}}
@@ -86,7 +89,26 @@
       </div>
     </div>
 
-    <div class="hxRow hxSpan-9">
+    <hx-popover id="editLabelPopover" position="bottom-right">
+      <header>
+        Labels
+      </header>
+      <hx-div>
+        <app-add-fields [initialData]="monitor.labelSelector" [validateForm]="labelsSubmit.asObservable()" [listOfKeys]="listOfKeys"
+        [listOfValues]="listOfValues" [labelContraints]="false" (formValuesChanged)="labelsUpdated($event)"
+        (formValid)="labelFormSubmit.next($event)" [resetLabelSubject]="resetLabelSubject.asObservable()">
+        </app-add-fields>
+      </hx-div>
+      <footer>
+        <button class="hxBtn hxPrimary" [disabled]="labelsLoading" (click)="labelsLoading = true; labelsSubmit.next()">
+          <hx-busy class="popover-busy" *ngIf="labelsLoading"></hx-busy>
+          Submit</button>
+        <button class="hxBtn" [disabled]="labelsLoading" (click)="labelPopPencil.nativeElement.click();"
+        aria-controls="metaPopover">Cancel</button>
+      </footer>
+    </hx-popover>
+
+    <div class="hxRow hxSpan-9" style="padding-top: 20px;">
       <div class="hxCol hxSpan-6">
         <h4>Monitor Scope</h4>
         {{monitor.details.type}}
@@ -148,7 +170,24 @@
           </hx-icon>
         </h4>
       </div>
-      <div *ngIf="!isUpdtPnlActive" class="hxCol hxSpan-6">
+      <div *ngIf="monDetails.details.monitoringZones?.length > 0 && !isUpdtPnlActive" class="hxCol hxSpan-6">
+        <div class="hxRow">
+          <div class="hxCol" *ngFor="let zone of monDetails.details.monitoringZones; index as i">
+            <hx-checkbox-control>
+              <input type="checkbox"
+                id="chkDetail-{{i}}"
+                checked
+                disabled
+              />
+              <label for="chkDetail-{{i}}">
+                <hx-checkbox></hx-checkbox>
+                {{zone}}
+              </label>
+            </hx-checkbox-control>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!isUpdtPnlActive" class="hxCol hxSpan-6" [ngClass]="{'hxOffset-6': monDetails.details.monitoringZones?.length > 0}">
         <div class="hxRow" *ngFor="let pluginField of Object.keys(monDetails.details.plugin)">
           <ng-container *ngIf="pluginField != 'type'">
             <div class="hxCol hxSpan-6">

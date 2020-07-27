@@ -1,5 +1,5 @@
 
-interface Label {
+export interface Label {
     [key: string] : any
 }
 export interface Monitor {
@@ -12,6 +12,7 @@ export interface Monitor {
     excludedResourceIds?: string[];
     details: {
         type: string,
+        monitoringZones?: string[],
         plugin: {
             type: string,
             [key: string] : any

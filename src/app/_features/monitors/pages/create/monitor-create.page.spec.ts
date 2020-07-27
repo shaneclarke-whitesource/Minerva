@@ -178,18 +178,22 @@ const addSettingsForm = jasmine.createSpyObj('AdditionalSettingsComponent', ['va
 
   it('should addMonitor() using service', () => {
     component.selectedMonitor = 'Cpu';
-    component.dynaConfig = [
-      {
-        type: "checkbox",
-        label: "CPU Percentage",
-        name: "percpu",
-        value: true
-      }, {
-        type: "checkbox",
-        label: "Total CPU",
-        name: "totalcpu",
-        value: true
-    }];
+    component.dynaConfig = {
+      monitorType: 'Local',
+      zones: [],
+      fields: [
+        {
+          type: "checkbox",
+          label: "CPU Percentage",
+          name: "percpu",
+          value: true
+        }, {
+          type: "checkbox",
+          label: "Total CPU",
+          name: "totalcpu",
+          value: true
+        }]
+    };
     fixture.detectChanges();
     fixture.ngZone.run(async() => {
       updateForm('coolName', 'cpu');
@@ -206,7 +210,7 @@ const addSettingsForm = jasmine.createSpyObj('AdditionalSettingsComponent', ['va
   it('should loadMonitorForm()', () => {
     component.loadMonitorForm('Disk');
     expect(JSON.stringify(component.dynaConfig))
-    .toEqual(`[{"type":"input","label":"mount","name":"mount","inputType":"text","validations":[{"name":"required","message":"mount Required"},{"name":"pattern","message":"mount format incorrect"},{"name":"minimum","message":"mount must be at least 1 character(s)"}]}]`)
+    .toEqual(`{"monitorType":"Local","fields":[{"type":"input","label":"mount","name":"mount","inputType":"text","validations":[{"name":"required","message":"mount Required"},{"name":"pattern","message":"mount format incorrect"},{"name":"minimum","message":"mount must be at least 1 character(s)"}]}]}`)
   });
 
   it('should change additional settings value', ()=> {

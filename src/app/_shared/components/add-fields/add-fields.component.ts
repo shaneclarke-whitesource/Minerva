@@ -2,9 +2,10 @@ import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChange
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray, AbstractControl } from '@angular/forms';
 import { keyPairValidator } from '../../validators/keyvalue.validator';
 import { disallowValidator } from '../../validators/disallow.validator';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { MarkFormGroupTouched } from '../../utils';
+import { Label } from 'src/app/_models/monitors';
 
 @Component({
   selector: 'app-add-fields',
@@ -19,7 +20,7 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   validateForm: Observable<void>;
 
   // this functionality will disallow editing on any field containing
-  // the string passed along
+  // the string "agent_" environment.resources.disallowLabelEdit
   @Input()
   labelContraints: boolean;
 
@@ -35,13 +36,18 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   @Input()
   disable: boolean;
 
+  @Input()
+  resetLabelSubject: Subject<Label> = new Subject<Label>();
+
+
   // Output emitters will update the components as to changes in the form
   // and whether they are valid
   @Output()
-  public formValuesChanged = new EventEmitter<{ [key: string]: any }>();
+  public formValuesChanged = new EventEmitter<Label>();
 
   @Output()
   public formValid = new EventEmitter<boolean>();
+
 
   // manage subscriptions
   subManager = new Subscription();
@@ -83,9 +89,16 @@ export class AddFieldsComponent implements OnInit, OnChanges {
         this.formValid.emit(valid);
     });
 
+    let resetFormData = this.resetLabelSubject.subscribe(res => {
+      if (res) {
+        this.resetLabelForm(res);
+      }
+    })
+
     // add all subsciptions to one manager
     this.subManager.add(keyValueFormSub);
     this.subManager.add(formValidSub);
+    this.subManager.add(resetFormData);
   }
 
   /**
@@ -99,17 +112,20 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     // gets the initial data and watches for changes
     if (changes['initialData']) {
-      let sets = changes['initialData'].currentValue;
-      Object.keys(sets).map(key => {
-        let value = sets[key];
-        let disabled = key.startsWith(environment.resources.disallowLabelEdit);
-        this.addArray.push(this.fb.group({
-          key: new FormControl({value: key, disabled},
-            (this.labelContraints && [disallowValidator])),
-          value: new FormControl({value, disabled})
-        }, { validator: keyPairValidator }));
-      });
+      this.resetLabelForm(changes['initialData'].currentValue);
     }
+  }
+
+  resetLabelForm(data: any) {
+    Object.keys(data).map(key => {
+      let value = data[key];
+      let disabled = key.startsWith(environment.resources.disallowLabelEdit) && this.labelContraints;
+      this.addArray.push(this.fb.group({
+        key: new FormControl({value: key, disabled},
+          (this.labelContraints && [disallowValidator])),
+        value: new FormControl({value, disabled})
+      }, { validator: keyPairValidator }));
+    });
   }
 
   /**
@@ -169,5 +185,4 @@ export class AddFieldsComponent implements OnInit, OnChanges {
   ngOnDestroy() {
     this.subManager.unsubscribe();
   }
-
 }

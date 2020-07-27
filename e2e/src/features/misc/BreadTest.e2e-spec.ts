@@ -1,8 +1,8 @@
-import { AppPage } from "../pageObjects/app.po";
-import { navigations } from "../commons/navigations";
-import { browser, element, by } from "protractor";
 
-describe("Breadcrumb Testing", () => {
+import { browser, element, by } from "protractor";
+import { AppPage } from "../../pages/app.po";
+
+describe("Breadcrumb testing in resources", () => {
   let page: AppPage;
   
 
@@ -34,9 +34,9 @@ it("Should check breadcrumb link is navigating and then back to rescources" ,()=
 });
 
 it ("Should check if href is present is 1st page" ,async() =>{
-var path =  element.all(by.xpath("//table[@class='hxTable']//tbody//tr//td[2]"));
-var colNum = await path.getAttribute("href");
-expect(colNum.length).toEqual(25);    
+   var path =  element.all(by.xpath("//table[@class='hxTable']//tbody//tr//td[2]"));
+   var colNum = await path.getAttribute("href");
+   expect(colNum.length).toEqual(25);    
 });
 
 it("Should check if href is present is 2nd page" , async() =>{

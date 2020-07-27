@@ -14,3 +14,10 @@ export interface FieldConfig {
     value?: any;
     validations?: Validator[];
 }
+
+export interface FieldSet {
+    monitorType: "Remote" | "Local" | null;
+
+    zones: string[];
+    fields: FieldConfig[];
+}

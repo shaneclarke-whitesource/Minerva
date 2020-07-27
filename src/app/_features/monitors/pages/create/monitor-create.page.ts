@@ -6,7 +6,7 @@ import { MonitorService } from 'src/app/_services/monitors/monitor.service.js';
 import { LabelService } from 'src/app/_services/labels/label.service';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
-import { FieldConfig } from '../../interfaces/field.interface';
+import { FieldConfig, FieldSet } from '../../interfaces/field.interface';
 import { transformKeyPairs } from 'src/app/_shared/utils';
 import { MonitorUtil,CntrlAttribute } from '../../mon.utils';
 import { MarkFormGroupTouched } from "src/app/_shared/utils";
@@ -14,7 +14,6 @@ import { config as MonitorConfigs } from '../../config/index';
 import { Animations } from 'src/app/_shared/animations';
 import { Resource } from 'src/app/_models/resources';
 import { duration } from "moment";
-import { ResourcesService } from 'src/app/_services/resources/resources.service';
 import { LoggingService } from 'src/app/_services/logging/logging.service';
 import { LogLevels } from 'src/app/_enums/log-levels.enum';
 import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fields.component';
@@ -37,10 +36,14 @@ export class MonitorCreatePage implements OnInit, OnDestroy,AfterViewInit {
   addMonLoading: boolean = false;
   updatedLabelFields: {[key: string] : any} = null;
   subManager = new Subscription();
-  dynaConfig: FieldConfig[] = [];
+  dynaConfig: FieldSet = {
+    monitorType: null,
+    zones: [],
+    fields: []
+  };
   listOfKeys = [];
   listOfValues = [];
-  monitors: [{type?:string,monitor?:string[]}];
+  monitors: [{type: 'Remote'| 'Local', monitor:string[]}];
   typesOfMonitors: string []=[];
   selectedMonitor = null;
   markFormGroupTouched = MarkFormGroupTouched;
@@ -61,7 +64,6 @@ change = false;
     private labelService: LabelService,
     private router: Router,
     private readonly schemaService: SchemaService,
-    private resourceService: ResourcesService,
     private logService: LoggingService,
     private cd: ChangeDetectorRef) {
 
@@ -137,6 +139,7 @@ change = false;
 
     this.createMonitorForm.value['details'] = {
       type: MonitorConfigs[this.selectedMonitor].type,
+      ...(this.subForm.monitoringZones.length > 0 && {monitoringZones: this.subForm.monitoringZones}),
       plugin: {
         type: MonitorUtil.ParseMonitorTypeEnum(this.schemaService.schema.definitions[this.selectedMonitor]),
         ...(this.subForm.value)
@@ -146,7 +149,6 @@ change = false;
     // delete drop down selection value, it's not needed
     delete this.createMonitorForm.value[CntrlAttribute.type];
     let monitorForm = Object.assign(this.createMonitorForm.value, this.additionalSettingsForm.value);
-
     this.parseInISO();
     const result = this.schemaService.validateData(monitorForm);
     if (result.isValid) {
@@ -194,16 +196,18 @@ change = false;
    * @param value dropdown selection event.target.value
    */
   loadMonitorForm(value: any) {
-
     this.selectedMonitor = value;
-    if(this.selectedMonitor){
+    if (this.selectedMonitor) {
       let definitions = this.schemaService.schema.definitions[this.selectedMonitor];
-      this.dynaConfig = MonitorUtil.CreateMonitorConfig(definitions);
+      this.dynaConfig = Object.assign({}, <FieldSet>{
+        monitorType: this.monitors.find(item => {
+          return item.monitor.includes(value)
+        }).type,
+        fields: MonitorUtil.CreateMonitorConfig(definitions)
+      });
     }else{
       this.dynaConfig=null;
     }
-
-
   }
 
   /**
