@@ -29,9 +29,6 @@ export class MonitorslistComponent implements OnInit {
         .subscribe(data => {
           this.spnService.changeLoadingStatus(false);
           this.monitors = this.monitorService.monitors.content;
-
-          console.log("this monitors ngoninit ", this.monitors);
-
           this.total = this.monitorService.monitors.totalElements;
           this.monitorSearchPlaceholderText = `Search ${this.total} monitors`;
       });
@@ -72,13 +69,7 @@ export class MonitorslistComponent implements OnInit {
      */
 
     monitorResults(monitors: Monitors): void {
-
-      
       this.monitors = monitors.content;
-
-      console.log("monitors result ", this.monitors);
-
-
       this.total    = monitors.totalElements;
     }
 
