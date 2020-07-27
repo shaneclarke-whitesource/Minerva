@@ -48,17 +48,6 @@ describe('MonitorSearchComponent', () => {
     component.monitorSearchResults.subscribe((monitors: Monitors) => {
       expect(monitors.content.length).toBeGreaterThan(2);
     });
-
-    const el = fixture.debugElement.query(By.css('input#txtSearch'));
-    el.nativeElement.dispatchEvent(new Event('input'));
-    el.nativeElement.dispatchEvent(new Event('focus'));
-    el.nativeElement.dispatchEvent(new Event('focusin'));
-    el.nativeElement.value = 'dns';
-    el.nativeElement.dispatchEvent(new Event('input'));
-    el.nativeElement.dispatchEvent(new Event('keydown'));
-    el.nativeElement.dispatchEvent(new Event('keyup'));
-
-
   });
 
   it('should emit dismiss of search', () => {
