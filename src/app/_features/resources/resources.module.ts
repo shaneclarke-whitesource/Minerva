@@ -7,6 +7,7 @@ import { ResourcesPage } from './pages/resources/resources.page';
 import { ResourceDetailsPage } from './pages/details/resource-details.page';
 import { ValidateResource } from 'src/app/_shared/validators/resourceName.validator';
 import { MonitorListComponent } from './components/monitor_list/monitor-list.component';
+import { SearchComponent } from './components/search/search.component';
 
 const routes: Routes = [
   {
@@ -31,7 +32,8 @@ const routes: Routes = [
     ResourcesListComponent,
     ResourcesPage,
     ResourceDetailsPage,
-    MonitorListComponent
+    MonitorListComponent,
+    SearchComponent
   ],
   imports: [
     SharedModule,

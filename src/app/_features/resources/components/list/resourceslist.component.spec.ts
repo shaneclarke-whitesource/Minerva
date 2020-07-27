@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, getTestBed, } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, getTestBed, inject, } from '@angular/core/testing';
 import {ReactiveFormsModule, FormsModule, FormBuilder, Validators} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -14,6 +14,7 @@ import { ResourcesService } from 'src/app/_services/resources/resources.service'
 import { Router } from '@angular/router';
 import { throwError, of, Observable } from 'rxjs';
 import { PaginationComponent } from 'src/app/_shared/components/pagination/pagination.component';
+import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 
 var mockResource: Resource = {
   "resourceId": "development:1",
@@ -46,6 +47,7 @@ describe('ResourcesListComponent', () => {
   let fixture: ComponentFixture<ResourcesListComponent>;
   let validateResource: ValidateResource;
   let resourceService: ResourcesService;
+  let spinnerService: SpinnerService;
   let router: Router;
 
   // create new instance of FormBuilder
@@ -64,6 +66,7 @@ describe('ResourcesListComponent', () => {
       ],
       providers: [
         ResourcesService,
+        SpinnerService,
         // reference the new instance of formBuilder from above
         { provide: FormBuilder, useValue: formBuilder },
         //{ provide: ValidateResource, useValue: mockValidateResource}
@@ -78,6 +81,7 @@ describe('ResourcesListComponent', () => {
     component = fixture.componentInstance;
     resourceService = injector.get(ResourcesService);
     validateResource = injector.get(ValidateResource);
+    spinnerService = injector.get(SpinnerService);
     router = injector.get(Router);
     component.addResourceForm = formBuilder.group({
       name: ['', Validators.required],
@@ -202,7 +206,22 @@ describe('ResourcesListComponent', () => {
     });
   });
 
-  it('should destroy subscriptions', (done) => {
+it('should reset results when search dismissed', () => {
+  component.resources = null;
+  component.total = null;
+  component.resetSearch();
+  expect(component.resources).toEqual(new resourcesMock().collection.content
+  .slice(0 * environment.pagination.resources.pageSize, 1 * environment.pagination.resources.pageSize));
+  expect(component.total).toEqual(54);
+});
+
+it('should display loading spinner', () => {
+  let spy = spyOn(spinnerService, 'changeLoadingStatus');
+  component.resourcesSearch(true);
+  expect(spy).toHaveBeenCalled();
+});
+
+it('should destroy subscriptions', (done) => {
     spyOn(validateResource, 'valid').and.returnValue(of({}));
     const spy1 = spyOn(component['ngUnsubscribe'], 'next').and.returnValue({ subscribe: () => { } });
     const spy2 = spyOn(component['ngUnsubscribe'], 'complete').and.returnValue({ subscribe: () => { } })
