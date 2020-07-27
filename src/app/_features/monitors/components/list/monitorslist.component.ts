@@ -30,7 +30,7 @@ export class MonitorslistComponent implements OnInit {
           this.spnService.changeLoadingStatus(false);
           this.monitors = this.monitorService.monitors.content;
           this.total = this.monitorService.monitors.totalElements;
-          this.searchPlaceholderText = `Search ${this.total} monitors`;
+          this.monitorSearchPlaceholderText = `Search ${this.total} monitors`;
       });
     });
   }

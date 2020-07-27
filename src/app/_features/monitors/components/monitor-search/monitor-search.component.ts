@@ -18,7 +18,7 @@ import { Monitors } from 'src/app/_models/monitors';
 export class MonitorSearchComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('searchMonitors', {static : true}) searchMonitors: ElementRef; 
-  @Input() placeholder: string;
+  @Input() placeholder: string = "";
   @Output() monitorSearchResults = new EventEmitter<Monitors>();
   @Output() resetResults = new EventEmitter<{}>();
   @Output() searching = new EventEmitter<boolean>();
