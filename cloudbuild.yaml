@@ -18,7 +18,8 @@ steps:
         npm rebuild node-sass
         node ./localenv/helpers/createMocks.js
         npm run e2e-ci
-        npm run test
+        npm run test-admin-ci
+        npm run test-ci
 
 timeout: 3600s
 images: ['gcr.io/$PROJECT_ID/minerva-testing:latest']
