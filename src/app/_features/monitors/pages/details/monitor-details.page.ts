@@ -16,6 +16,7 @@ import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe
 import { transformKeyPairs } from 'src/app/_shared/utils';
 import { LabelService } from 'src/app/_services/labels/label.service';
 import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fields.component';
+import { duration } from 'moment';
 
 
 declare const window: any;
@@ -102,6 +103,7 @@ export class MonitorDetailsPage implements OnInit {
       this.monitor$ = this.monitorService.getMonitor(this.id).pipe(
         tap((data) => {
           this.monDetails = data;
+          this.parseInISO();
           this.monLabels = data.labelSelector;
           this.spnService.changeLoadingStatus(false);
           this.updateMonNameForm.controls['name'].setValue(this.monDetails.name ||
@@ -140,6 +142,31 @@ export class MonitorDetailsPage implements OnInit {
         }
       })
     );
+  }
+
+   /**
+   * @description parse interval numeric time values and convert to ISO Duration
+   */
+  parseInISO(): void {
+    let definitions ;
+    let monitorTypeTitle;
+    for (const key of Object.keys(this.schemaService.schema.definitions)) {
+      let schemaItem=this.schemaService.schema.definitions[key];
+      if (schemaItem.title === this.monDetails.details.plugin.type) {
+        definitions = schemaItem;
+        monitorTypeTitle=schemaItem.title;
+      }
+    }
+   
+    // let definitions = this.schemaService.schema.definitions[this.monDetails.details.plugin.type]
+    for (var pr in definitions.properties) {
+      if (definitions.properties[pr].hasOwnProperty(CntrlAttribute.format))
+        if (this.monDetails.details.plugin.hasOwnProperty(pr)) {
+          this.monDetails.details.plugin[pr] = this.pipeSeconds.transform(this.monDetails.details.plugin[pr])
+          // duration(parseInt(this.monDetails.details.plugin[pr]), 'seconds').toISOString();
+        }
+    }
+    console.log(this.monDetails.details.plugin);
   }
 
   /**
