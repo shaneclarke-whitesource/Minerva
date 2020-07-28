@@ -132,12 +132,4 @@ describe('MonitorslistComponent', () => {
     component.prevPage();
     expect(component.page).toEqual(1);
   });
-
-  it('should reset the search results when click on cross button', () => {
-    
-  })
-
-
-
-
 });
