@@ -27,12 +27,6 @@ describe('LoggingService', () => {
     expect(level).toEqual('3');
   });
 
-  it('should log a message to the console', () => {
-    var consoleSpy = spyOn(console, 'log');
-    service.log('test', 3);
-    expect(consoleSpy).toHaveBeenCalled();
-  });
-
   it('should log a Error message to the console and set Alert message', () => {
     service.logLevel = 3;
     var consoleSpy = spyOn(console, 'log');
