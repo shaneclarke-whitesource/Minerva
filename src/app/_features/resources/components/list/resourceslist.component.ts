@@ -28,12 +28,17 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
   totalPages: number;
   fetchResources: any;
   addResLoading: boolean = false;
+  isAdmin: boolean = false;
   selectedResources: any = [];
   addResourceForm: FormGroup;
   constructor(private resourceService: ResourcesService,
     private validateResource: ValidateResource, private fb: FormBuilder,
     private router: Router, private spnService: SpinnerService, private logService: LoggingService) { this.spnService.changeLoadingStatus(true); }
   ngOnInit() {
+    if(window.location.href.indexOf("admin") > -1) 
+      this.isAdmin = true;
+    else
+      this.isAdmin = false;
     this.fetchResources = () => {
       return this.resourceService.getResources(this.defaultAmount, this.page)
         .pipe(
