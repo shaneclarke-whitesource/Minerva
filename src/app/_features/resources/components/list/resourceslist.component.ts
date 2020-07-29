@@ -35,7 +35,10 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     private validateResource: ValidateResource, private fb: FormBuilder,
     private router: Router, private spnService: SpinnerService, private logService: LoggingService) { this.spnService.changeLoadingStatus(true); }
   ngOnInit() {
-    if(window.location.href.indexOf("admin") > -1) 
+
+    console.log("this router url ", this.router.url);
+
+    if(this.router.url === '/admin') 
       this.isAdmin = true;
     else
       this.isAdmin = false;
