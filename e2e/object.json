@@ -1,0 +1,25 @@
+{
+
+"monitoring":{
+    
+    "monitordetailspage":{
+
+       "labelinfo":{
+
+           "keys":{
+            "key1":"additionalProp1",
+            "key2":"additionalProp2",
+            "key3":"additionalProp3",
+            "key4":"additionalProp4"
+           },
+        
+           "values":{
+               "value1":"EC2Instance",
+               "value2":"Dev",
+               "value3":"Node API",
+               "value4":"amd64"
+    }
+}
+    }
+}
+}

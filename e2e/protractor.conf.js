@@ -6,10 +6,12 @@ const { SpecReporter } = require("jasmine-spec-reporter");
 exports.config = {
   allScriptsTimeout: 11000,
   specs: ["./src/**/*e2e-spec.ts"],
-  capabilities: {
+  // specs:[".src/features/monitoring/monitordetails/monitordetailslabelinfodisplay.e2e-spec.ts"],
+  // specs:["e2e/src/features/monitoring/monitorlist/monitorsPagination.e2e-spec.ts"],
+    capabilities: {
     browserName: "chrome",
     chromeOptions: {
-      args: ["--no-sandbox", "--headless", "--disable-gpu", "--disable-web-security"],
+      args: ["--no-sandbox", "--disable-gpu", "--disable-web-security"],
     },
   },
   directConnect: true,
