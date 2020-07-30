@@ -61,6 +61,8 @@ export class MonitorDetailsPage implements OnInit {
   isUpdtPnlActive = false;
   updateMonNameLoading: boolean = false;
   updateAdditionalLoading:boolean = false;
+  definitions:any;
+  monitorTypeTitle:any;
 
   dynaConfig: FieldSet;
   monDetails: Monitor;
@@ -103,7 +105,7 @@ export class MonitorDetailsPage implements OnInit {
       this.monitor$ = this.monitorService.getMonitor(this.id).pipe(
         tap((data) => {
           this.monDetails = data;
-          this.parseInISO();
+          this.setDefinition();
           this.monLabels = data.labelSelector;
           this.spnService.changeLoadingStatus(false);
           this.updateMonNameForm.controls['name'].setValue(this.monDetails.name ||
@@ -147,26 +149,29 @@ export class MonitorDetailsPage implements OnInit {
    /**
    * @description parse interval numeric time values and convert to ISO Duration
    */
-  parseInISO(): void {
-    let definitions ;
-    let monitorTypeTitle;
+  setDefinition(): void {
     for (const key of Object.keys(this.schemaService.schema.definitions)) {
       let schemaItem=this.schemaService.schema.definitions[key];
       if (schemaItem.title === this.monDetails.details.plugin.type) {
-        definitions = schemaItem;
-        monitorTypeTitle=schemaItem.title;
+        this.definitions = schemaItem;
+        this.monitorTypeTitle=schemaItem.title;
       }
     }
-   
-    // let definitions = this.schemaService.schema.definitions[this.monDetails.details.plugin.type]
-    for (var pr in definitions.properties) {
-      if (definitions.properties[pr].hasOwnProperty(CntrlAttribute.format))
-        if (this.monDetails.details.plugin.hasOwnProperty(pr)) {
-          this.monDetails.details.plugin[pr] = this.pipeSeconds.transform(this.monDetails.details.plugin[pr])
-          // duration(parseInt(this.monDetails.details.plugin[pr]), 'seconds').toISOString();
-        }
+  }
+
+/**
+ * Check timeduration field 
+ * @param pluginField 
+ */
+  isTimeduration(pluginField){
+    if(pluginField){
+      console.log(pluginField+ 'test');
+      if (this.definitions.properties[pluginField].hasOwnProperty(CntrlAttribute.format))
+      if (this.monDetails.details.plugin.hasOwnProperty(pluginField)) {
+       return true
+      }
     }
-    console.log(this.monDetails.details.plugin);
+    return false;
   }
 
   /**
@@ -335,7 +340,7 @@ export class MonitorDetailsPage implements OnInit {
       }
     }
   }
-
+  
   /**
    * Set Default value for dynamic form
    * @param definitions
