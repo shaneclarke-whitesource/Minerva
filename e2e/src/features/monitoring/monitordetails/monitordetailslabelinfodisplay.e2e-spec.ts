@@ -3,7 +3,6 @@ import { navigations } from "../../../commons/navigations";
 import { monitorsListPage } from "../../../pages/monitorlistpage";
 import { monitorsDetailsPage } from "../../../pages/monitordetailspage";
 import { browser } from "protractor";
-// import { default as obj } from "../../../../object.json";
 import { default as using } from "../../../../../node_modules/jasmine-data-provider";
 import { default as obj } from "../../../../../src/app/_mocks/monitors/single.json";
 
@@ -11,7 +10,7 @@ import { default as obj } from "../../../../../src/app/_mocks/monitors/single.js
 
 
 
-describe("Test label field display on Monitor's details page", function () {
+describe("Test label field display on Monitor's details page", ()=> {
    let page: AppPage;
    let nav: navigations;
    let page1: monitorsListPage;
@@ -35,7 +34,6 @@ describe("Test label field display on Monitor's details page", function () {
    });
 
    var labelKeys = Object.keys(obj.labelSelector);
-   console.log(labelKeys);
 
    using([{ key: labelKeys[0], value: obj.labelSelector[labelKeys[0]]}, { key: labelKeys[1], value: obj.labelSelector[labelKeys[1]] }, 
       { key: labelKeys[2], value: obj.labelSelector[labelKeys[2]] }, { key: labelKeys[3], value: obj.labelSelector[labelKeys[3]] }], (data) => {
