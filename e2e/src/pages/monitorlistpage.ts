@@ -28,4 +28,8 @@ export class monitorsListPage
     public SecondPageButton(){
         return(element(by.xpath("//button[@class='hxBtn' and contains(text(),'2')]")));
     }
+
+    public monitorName(){
+        return(element(by.xpath("//a[contains(text(),'Bandwidth Monitoring for eth0')]")));
+    }
 }
