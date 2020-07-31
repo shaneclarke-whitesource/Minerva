@@ -1,6 +1,6 @@
-import { navigations } from "../commons/navigations";
+import { navigations } from "../../../commons/navigations";
 import { browser, element, by } from "protractor";
-import { AppPage } from "../pageObjects/app.po";
+import { AppPage } from "../../../pages/app.po";
 import { async } from "@angular/core/testing";
 
 
@@ -33,6 +33,7 @@ describe("Monitor List", () => {
     browser.sleep(1000);
     expect(element(by.xpath("//button[contains(text(),'Create Suppression')]")).isEnabled()).toBe(true);
   });
+  
   it("Check if Copy Monitor button is enabled" , () => {
      nav.navigateToMonitor();
     browser.sleep(1000);

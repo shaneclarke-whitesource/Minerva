@@ -1,4 +1,5 @@
-import { AppPage } from "../pageObjects/app.po";
+import { AppPage } from "../../pages/app.po";
+
 
 describe("workspace-project App", () => {
   let page: AppPage;

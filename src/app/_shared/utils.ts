@@ -26,5 +26,15 @@ function MarkFormGroupTouched(group: FormGroup): void {
 })
 }
 
+const mergeUniqueObjectsOfArray = (original, newdata, selector = 'key') => {
+    newdata.forEach(dat => {
+		const foundIndex = original.findIndex(ori => ori[selector] == dat[selector]);
+		if (foundIndex >= 0) original.splice(foundIndex, 1, dat);
+        else original.push(dat);
+	});
 
-export { transformKeyPairs, MarkFormGroupTouched }
+	return original;
+}
+
+
+export { transformKeyPairs, MarkFormGroupTouched, mergeUniqueObjectsOfArray }

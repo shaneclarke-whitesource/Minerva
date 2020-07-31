@@ -1,5 +1,5 @@
-import { AppPage } from "../pageObjects/app.po";
-import { navigations } from "../commons/navigations";
+import { AppPage } from "../../../pages/app.po";
+import { navigations } from "../../../commons/navigations";
 import { browser, element, by } from "protractor";
 
 describe("Editing of a monitor name and delete a monitor details", () => {
