@@ -193,10 +193,17 @@
             <div class="hxCol hxSpan-6">
               {{pluginField}}
             </div>
-            <div class="hxCol hxSpan-3">
+            <div id="pluginValue" class="hxCol hxSpan-3" >
+              <ng-template
+              *ngIf="isTimeduration(pluginField);then isoBlock; else nonIsoBlock">
+            </ng-template>
+            <ng-template #isoBlock>
+              {{monDetails.details.plugin[pluginField] | durationSeconds }}
+            </ng-template>            
+            <ng-template #nonIsoBlock>
               {{monDetails.details.plugin[pluginField]}}
+            </ng-template>
             </div>
-
           </ng-container>
         </div>
       </div>
