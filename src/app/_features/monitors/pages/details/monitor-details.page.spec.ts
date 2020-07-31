@@ -267,6 +267,17 @@ describe('MonitorDetailComponent', () => {
     expect(component.updatedLabelFields).toEqual(formattedKeyPair);
   });
 
+  it('should have timeduration field',done =>{
+    var istimeduration=component.isTimeduration("timeout");
+    expect(istimeduration).toBe(true);
+    done();
+  });
+  it('should not have timeduration field',done =>{
+    var istimeduration=component.isTimeduration("expect");
+    expect(istimeduration).toBe(false);
+    done();
+  });
+
   it('should modifySettings()', () => {
     component.modifySettings();
     expect(component.additionalSettings).toEqual('in');
@@ -293,5 +304,4 @@ describe('MonitorDetailComponent', () => {
     expect(component.gc.unsubscribe).toHaveBeenCalled();
     done();
   });
-
 });

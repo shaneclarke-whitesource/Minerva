@@ -78,7 +78,7 @@ describe('MonitorslistComponent', () => {
     });
 
     it('should create correct placeholder text', () => {
-      expect(component.searchPlaceholderText).toEqual('Search 30 monitors');
+      expect(component.monitorSearchPlaceholderText).toEqual('Search 30 monitors');
     });
 
     it('should add MonUtil to project', () => {
