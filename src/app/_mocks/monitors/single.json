@@ -16,7 +16,6 @@
         "type": "local",
         "plugin": {
             "type": "net_response",
-            "additional": "add0",
             "expect": "done",
             "host": "rackspace.com",
             "port": 6000,
