@@ -44,7 +44,8 @@ const routes: Routes = [
     ValidateResource
   ],
   exports: [
-    ResourcesListComponent
+    ResourcesListComponent,
+    MonitorListComponent
   ]
 })
 export class ResourcesModule { }
