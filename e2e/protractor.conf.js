@@ -13,7 +13,7 @@ exports.config = {
     },
   },
   directConnect: true,
-  baseUrl: "http://dev.i.rax.io:4200/",
+  baseUrl:"http://dev.i.rax.io:4200/",
   framework: "jasmine",
   jasmineNodeOpts: {
     showColors: true,
