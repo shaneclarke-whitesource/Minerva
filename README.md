@@ -79,11 +79,11 @@ Run `npm run build` to build the project. The build artifacts will be stored in 
 
 ## Running unit tests
 
-Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm run test:unit` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
 
-Run `npm run e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Run `npm run test:e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Documentation
 We are using [Compodoc](https://compodoc.app) to create app structural documentation. It compiles a set of html files based on the `tsconfig.json` file. To view these run `npm run docs` and the files will populate in a folder labeled `docs`.

@@ -15,9 +15,12 @@ steps:
     args:
       - '-c'
       - |
+        echo "0.0.0.0    dev.i.rax.io" >> /etc/hosts
         npm rebuild node-sass
         node ./localenv/helpers/createMocks.js
-        npm run e2e-ci
+        npm run test:e2e-ci
+        npm run test:unit-ci
+        npm run test:admin-ci
 
 timeout: 3600s
 images: ['gcr.io/$PROJECT_ID/minerva-testing:latest']

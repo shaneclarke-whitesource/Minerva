@@ -4,7 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "minerva": {
-      "root": "",
+      "root": "src",
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
@@ -92,12 +92,25 @@
                 "localenv/scripts/portaldata.js",
                 "localenv/scripts/pilotdata.js"
               ]
+            },
+            "local": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "scripts": [
+                "localenv/scripts/portaldata.js",
+                "localenv/scripts/pilotdata.js"
+              ]
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "browserTarget": "minerva:build",
             "host": "dev.i.rax.io"
           },
           "configurations": {
@@ -106,6 +119,9 @@
             },
             "mock": {
               "browserTarget": "minerva:build:mock"
+            },
+            "local": {
+              "browserTarget": "minerva:build:local"
             }
         }
       },
@@ -189,7 +205,8 @@
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js"
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "minerva:serve"
           },
           "configurations": {
             "production": {
@@ -220,15 +237,6 @@
             "mock": {
               "devServerTarget": "minerva:serve:mock"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }

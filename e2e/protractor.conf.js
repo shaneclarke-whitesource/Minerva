@@ -9,7 +9,7 @@ exports.config = {
   capabilities: {
     browserName: "chrome",
     chromeOptions: {
-      args: ["--no-sandbox", "--disable-gpu", "--headless", "--disable-web-security"],
+      args: ["no-sandbox", "--disable-gpu", "--headless", "--disable-web-security"],
     },
   },
   directConnect: true,
