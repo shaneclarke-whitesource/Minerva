@@ -5,18 +5,17 @@ import { Observable, Subject, Subscription, of } from 'rxjs';
 import { MonitorService } from 'src/app/_services/monitors/monitor.service';
 import { Monitor, Label } from 'src/app/_models/monitors';
 import { SchemaService } from 'src/app/_services/monitors/schema.service';
-import { MonitorUtil, CntrlAttribute } from '../../mon.utils';
-import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { tap } from 'rxjs/operators';
-import { FieldConfig, FieldSet } from '../../interfaces/field.interface';
 import { SpinnerService } from 'src/app/_services/spinner/spinner.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { AdditionalSettingsComponent } from '../../components/additional-settings/additional-settings.component';
 import { DurationSecondsPipe } from 'src/app/_shared/pipes/duration-seconds.pipe';
 import { transformKeyPairs } from 'src/app/_shared/utils';
 import { LabelService } from 'src/app/_services/labels/label.service';
 import { AddFieldsComponent } from 'src/app/_shared/components/add-fields/add-fields.component';
-import { duration } from 'moment';
+import { DynamicFormComponent } from 'src/app/_features/monitors/components/dynamic-form/dynamic-form.component';
+import { AdditionalSettingsComponent } from 'src/app/_features/monitors/components/additional-settings/additional-settings.component';
+import { MonitorUtil, CntrlAttribute } from 'src/app/_features/monitors/mon.utils';
+import { FieldSet } from 'src/app/_features/monitors/interfaces/field.interface';
 
 
 declare const window: any;
@@ -29,30 +28,30 @@ export enum UpdateSection {
 
 @Component({
   selector: 'app-monitor-detail',
-  templateUrl: './monitor-details.page.html',
-  styleUrls: ['./monitor-details.page.scss'],
+  templateUrl: './details.component.html',
+  styleUrls: ['./details.component.scss'],
   animations: [
     Animations.slideUpDownTrigger
   ]
 })
-export class MonitorDetailsPage implements OnInit {
+export class DetailsComponent implements OnInit {
   id: string;
   dynamicFormSubmit: Subject<void> = new Subject<void>();
   dynamicFormValid: Subject<boolean> = new Subject<boolean>();
   private labelsSubmit: Subject<void> = new Subject<void>();
   private labelFormSubmit: Subject<boolean> = new Subject<boolean>();
-  private resetLabelSubject: Subject<{[key:string]: any}> = new Subject<{[key:string]: any}>();
+  private resetLabelSubject: Subject<{ [key: string]: any }> = new Subject<{ [key: string]: any }>();
   @ViewChild(DynamicFormComponent) subForm: DynamicFormComponent;
   @ViewChild(AddFieldsComponent) labelsForm: AddFieldsComponent;
   @ViewChild(AdditionalSettingsComponent) additionalSettingsForm: AdditionalSettingsComponent;
   monitorUpdateLoad: boolean;
   @ViewChild('monitorPopup') monitorPopPencil: ElementRef;
-  @ViewChild('updateMonPen') updateMonNamePencil:ElementRef;
+  @ViewChild('updateMonPen') updateMonNamePencil: ElementRef;
   @ViewChild('pencilAddSettings') updateSettingPencil: ElementRef;
 
   @ViewChild('delMonLink') delMonitor: ElementRef;
   @ViewChild('delMonitorFail') delMonitorFailure: ElementRef;
-  @ViewChild('updateLabelPen') labelPopPencil:ElementRef;
+  @ViewChild('updateLabelPen') labelPopPencil: ElementRef;
   monitor$: Observable<Monitor>;
   Object = window.Object;
   additionalSettings: string = 'out';
@@ -60,9 +59,9 @@ export class MonitorDetailsPage implements OnInit {
   deleteLoading: boolean = false;
   isUpdtPnlActive = false;
   updateMonNameLoading: boolean = false;
-  updateAdditionalLoading:boolean = false;
-  definitions:any;
-  monitorTypeTitle:any;
+  updateAdditionalLoading: boolean = false;
+  definitions: any;
+  monitorTypeTitle: any;
 
   dynaConfig: FieldSet;
   monDetails: Monitor;
@@ -70,20 +69,20 @@ export class MonitorDetailsPage implements OnInit {
   additionalSettingEdit = false;
   updateMonNameForm: FormGroup;
   udpateSettingForm: FormGroup;
-  formatProp=[];
+  formatProp = [];
 
   updateBody = [];
   monitorUtil = MonitorUtil;
   updatedLabelFields: any;
-  labelsLoading:boolean = false;
+  labelsLoading: boolean = false;
   listOfKeys = [];
 
   listOfValues = [];
   monLabels: Label;
-  constructor(private route: ActivatedRoute, private router: Router,private readonly schemaService: SchemaService,
+  constructor(private route: ActivatedRoute, private router: Router, private readonly schemaService: SchemaService,
     private fb: FormBuilder, private monitorService: MonitorService, private spnService: SpinnerService,
     private pipeSeconds: DurationSecondsPipe, private labelService: LabelService) {
-      this.spnService.changeLoadingStatus(true);
+    this.spnService.changeLoadingStatus(true);
   }
 
   ngOnInit() {
@@ -95,7 +94,8 @@ export class MonitorDetailsPage implements OnInit {
     this.udpateSettingForm = this.fb.group({
       interval: [''],
       excludedResourceIds: this.fb.array([this.fb.group({
-        resource: new FormControl('')})]),
+        resource: new FormControl('')
+      })]),
       labelSelectorMethod: [''],
       resourceId: ['']
     });
@@ -124,51 +124,51 @@ export class MonitorDetailsPage implements OnInit {
         this.labelsLoading = false;
       }
       else {
-        let patchBody = [{op: "replace", path: `/labelSelector`, value: this.updatedLabelFields }];
+        let patchBody = [{ op: "replace", path: `/labelSelector`, value: this.updatedLabelFields }];
         this.monitorUpdate(patchBody, UpdateSection.label);
       }
     }));
 
     this.gc.add(this.dynamicFormValid.subscribe((valid) => {
-        if (valid) {
-          let updateBody = this.pluginProps(this.subForm);
-          if (updateBody.length > 0) {
-            this.monitorUpdate(updateBody, UpdateSection.plugin);
-          } else {
-            this.monitorUpdateLoad = false;
-            this.isUpdtPnlActive = false;
-          }
-        } else{
-          this.monitorUpdateLoad=false;
-          throw "Form is not valid!";
+      if (valid) {
+        let updateBody = this.pluginProps(this.subForm);
+        if (updateBody.length > 0) {
+          this.monitorUpdate(updateBody, UpdateSection.plugin);
+        } else {
+          this.monitorUpdateLoad = false;
+          this.isUpdtPnlActive = false;
         }
-      })
+      } else {
+        this.monitorUpdateLoad = false;
+        throw "Form is not valid!";
+      }
+    })
     );
   }
 
-   /**
-   * @description parse interval numeric time values and convert to ISO Duration
-   */
+  /**
+  * @description parse interval numeric time values and convert to ISO Duration
+  */
   setDefinition(): void {
     for (const key of Object.keys(this.schemaService.schema.definitions)) {
-      let schemaItem=this.schemaService.schema.definitions[key];
+      let schemaItem = this.schemaService.schema.definitions[key];
       if (schemaItem.title === this.monDetails.details.plugin.type) {
         this.definitions = schemaItem;
-        this.monitorTypeTitle=schemaItem.title;
+        this.monitorTypeTitle = schemaItem.title;
       }
     }
   }
 
-/**
- * Check timeduration field 
- * @param pluginField 
- */
-  isTimeduration(pluginField){
-    if(pluginField){
+  /**
+   * Check timeduration field 
+   * @param pluginField 
+   */
+  isTimeduration(pluginField) {
+    if (pluginField) {
       if (this.definitions.properties[pluginField].hasOwnProperty(CntrlAttribute.format))
-      if (this.monDetails.details.plugin.hasOwnProperty(pluginField)) {
-       return true
-      }
+        if (this.monDetails.details.plugin.hasOwnProperty(pluginField)) {
+          return true
+        }
     }
     return false;
   }
@@ -201,17 +201,17 @@ export class MonitorDetailsPage implements OnInit {
    * @param updateBody any
    * @param updateSection string - section of the monitor being updated
    */
-  monitorUpdate(updateBody:any, updateSection: string) {
-    this.monitorService.updateMonitor(this.id, updateBody).subscribe(data =>{
+  monitorUpdate(updateBody: any, updateSection: string) {
+    this.monitorService.updateMonitor(this.id, updateBody).subscribe(data => {
       this.monitor$ = of<Monitor>(this.monitorService.monitor).pipe(
         tap((data) => {
           this.monDetails = data;
         })
       );
-      switch(updateSection) {
+      switch (updateSection) {
         case UpdateSection.plugin:
-          this.monitorUpdateLoad=false;
-          this.isUpdtPnlActive=false;
+          this.monitorUpdateLoad = false;
+          this.isUpdtPnlActive = false;
           break;
         case UpdateSection.name:
           this.updateMonNameLoading = false;
@@ -250,8 +250,8 @@ export class MonitorDetailsPage implements OnInit {
     });
 
     if (this.monDetails.details.type === "remote" &&
-    JSON.stringify(formZones) != JSON.stringify(this.monDetails.details.monitoringZones)) {
-      patchBody.push({ op: "replace", path: "/details/monitoringZones", value: formZones});
+      JSON.stringify(formZones) != JSON.stringify(this.monDetails.details.monitoringZones)) {
+      patchBody.push({ op: "replace", path: "/details/monitoringZones", value: formZones });
     }
 
     return patchBody;
@@ -268,7 +268,7 @@ export class MonitorDetailsPage implements OnInit {
    */
   updateMonitorName(monitorName: FormGroup) {
     this.updateMonNameLoading = true;
-    let patchBody = [{op: "replace", path: `/name`, value: monitorName.value.name }];
+    let patchBody = [{ op: "replace", path: `/name`, value: monitorName.value.name }];
     this.monitorUpdate(patchBody, UpdateSection.name);
   }
 
@@ -282,23 +282,23 @@ export class MonitorDetailsPage implements OnInit {
     let addForm = Object.assign({}, this.additionalSettingsForm.value);
     Object.keys(addForm).map((value) => {
       if (value === 'interval') {
-        this.updateBody.push({ op: "replace", path: `/${value}`, value: addForm[value]});
+        this.updateBody.push({ op: "replace", path: `/${value}`, value: addForm[value] });
       }
       else if (value === 'excludedResourceIds') {
-        this.updateBody.push({ op: "replace", path: `/${value}`, value: addForm[value]});
-        this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.resourceId}`, value: null});
+        this.updateBody.push({ op: "replace", path: `/${value}`, value: addForm[value] });
+        this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.resourceId}`, value: null });
 
         if (this.monDetails.labelSelector === ("" || null)) {
-          this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.labelSelector}`, value: {}});
+          this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.labelSelector}`, value: {} });
         }
       }
       else if (value === 'resourceId') {
-        this.updateBody.push({ op: "replace", path: `/${value}`, value: `${addForm[value]}`});
-        this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.labelSelector}`, value: null});
-        this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.excludedResourceIds}`, value: []});
+        this.updateBody.push({ op: "replace", path: `/${value}`, value: `${addForm[value]}` });
+        this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.labelSelector}`, value: null });
+        this.updateBody.push({ op: "replace", path: `/${CntrlAttribute.excludedResourceIds}`, value: [] });
       }
       else {
-        this.updateBody.push({ op: "replace", path: `/${value}`, value: `${addForm[value]}`});
+        this.updateBody.push({ op: "replace", path: `/${value}`, value: `${addForm[value]}` });
       }
     });
 
@@ -316,8 +316,8 @@ export class MonitorDetailsPage implements OnInit {
   /**
    * Toggle additional settings panel
    */
-  additionlSettingClick(){
-    this.additionalSettings = this.additionalSettings === 'in' ? 'out': 'in';
+  additionlSettingClick() {
+    this.additionalSettings = this.additionalSettings === 'in' ? 'out' : 'in';
   }
 
   /**
@@ -339,7 +339,7 @@ export class MonitorDetailsPage implements OnInit {
       }
     }
   }
-  
+
   /**
    * Set Default value for dynamic form
    * @param definitions
@@ -363,7 +363,7 @@ export class MonitorDetailsPage implements OnInit {
    * @description Whenever updates are made to the form we retrieve values here
    * @param labelValues {[key: string] : any}
    */
-  labelsUpdated(labelValues: {[key: string] : any}): void {
+  labelsUpdated(labelValues: { [key: string]: any }): void {
     this.updatedLabelFields = transformKeyPairs(labelValues.keysandvalues);
   }
 

@@ -4,6 +4,7 @@ import { MonitorService } from '../../../../_services/monitors/monitor.service';
 import { Monitor, Monitors } from '../../../../_models/monitors';
 import { MonitorUtil } from '../../mon.utils';
 import { SpinnerService } from '../../../../_services/spinner/spinner.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-monitorslist',
@@ -21,7 +22,9 @@ export class MonitorslistComponent implements OnInit {
   selectedMonitors: any = [];
 
   monitorUtil = MonitorUtil;
-  constructor(private monitorService: MonitorService, private spnService: SpinnerService) { this.spnService.changeLoadingStatus(true); }
+  constructor(private monitorService: MonitorService, 
+    private spnService: SpinnerService,
+    private router: Router) { this.spnService.changeLoadingStatus(true); }
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -48,6 +51,9 @@ export class MonitorslistComponent implements OnInit {
     this.fetchMonitors();
   }
 
+  isAdminRoute(monId) {
+    return this.router.url === '/admin' ? `/admin/monitors/details/${monId}`  : `/monitors/details/${monId}`
+  }
 
   /**
    * Check when search is in progress

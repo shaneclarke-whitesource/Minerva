@@ -1,17 +1,30 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TabsetComponent } from './tabset.component';
-import { AdminResourceDetailsPage } from './../../app/_features/resources/pages/details/admin-resource-details.page';
+import { AdminResourceDetailsPage } from './_features/resources/pages/details/admin-resource-details.page';
+import { DetailsComponent } from './_features/monitors/pages/details/details.component';
+
 
 const routes: Routes = [
   {
     path: '', 
     component: TabsetComponent,
+    data: {
+      breadcrumb: ''
+    } 
  },
  {
   path: 'resources/:id', 
-  component: AdminResourceDetailsPage,
-}
+  component: AdminResourceDetailsPage, 
+  data: {
+    breadcrumb: ''
+  } 
+},
+{ path: 'monitors/details/:id', component: DetailsComponent,   
+data: {
+  breadcrumb: ''
+} 
+  },
 
 
 

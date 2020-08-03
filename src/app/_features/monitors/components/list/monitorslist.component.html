@@ -50,7 +50,7 @@
               </label>
             </hx-checkbox-control>
       </td>
-      <td><a [routerLink]="['/monitors/details', monitor.id]">{{monitor.name || monitorUtil.formatSummaryField(monitor)}}</a></td>
+      <td><a routerLink="{{isAdminRoute(monitor.id)}}">{{monitor.name || monitorUtil.formatSummaryField(monitor)}}</a></td>
       <td><hx-status *ngFor="let label of Object.keys(monitor.labelSelector || {})">
         {{monitor.labelSelector[label]}}</hx-status></td>
       <td>{{monitor.details.type}}</td>

@@ -64,7 +64,9 @@ export function createAjvInstance(AjvClass: any, config: Options) {
   ],
   exports: [
     MonitorslistComponent,
-    MonitorCreatePage
+    MonitorCreatePage,
+    DynamicFormComponent,
+    ResourceListComponent
   ]
 })
 export class MonitorsModule { }

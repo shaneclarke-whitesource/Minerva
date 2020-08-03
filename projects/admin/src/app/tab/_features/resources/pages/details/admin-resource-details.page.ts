@@ -1,11 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourcesService } from '../../../../../../../../src/app/_services/resources/resources.service';
+import { ResourcesService } from '../../../../../../../../../src/app/_services/resources/resources.service';
 import { Observable, Subject, Subscription } from 'rxjs';
-import  { transformKeyPairs } from '../../../../../../../../src/app/_shared/utils';
-import { Resource } from '../../../../../../../../src/app/_models/resources';
+import  { transformKeyPairs } from '../../../../../../../../../src/app/_shared/utils';
+import { Resource } from '../../../../../../../../../src/app/_models/resources';
 import { tap } from 'rxjs/operators';
-import { SpinnerService } from '../../../../../../../../src/app/_services/spinner/spinner.service';
+import { SpinnerService } from '../../../../../../../../../src/app/_services/spinner/spinner.service';
 
 
 declare const window: any;

@@ -3,15 +3,18 @@ import { CommonModule } from '@angular/common';
 
 import { TabRoutingModule } from './tabset-routing.module';
 import { TabsetComponent } from './tabset.component';
-import { AdminResourceDetailsPage } from './../_features/resources/pages/details/admin-resource-details.page';
+import { AdminResourceDetailsPage } from './_features/resources/pages/details/admin-resource-details.page';
 import { MonitorsModule } from 'src/app/_features/monitors/monitors.module';
 import { ResourcesModule } from 'src/app/_features/resources/resources.module';
+import { DetailsComponent } from './_features/monitors/pages/details/details.component';
+import { SharedModule } from 'src/app/_shared/shared.module';
 
 
 @NgModule({
-  declarations: [TabsetComponent, AdminResourceDetailsPage],
+  declarations: [TabsetComponent, AdminResourceDetailsPage, DetailsComponent],
   imports: [
     CommonModule,
+    SharedModule,
     TabRoutingModule,
     MonitorsModule,
     ResourcesModule

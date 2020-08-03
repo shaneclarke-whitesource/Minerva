@@ -35,10 +35,6 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
     private validateResource: ValidateResource, private fb: FormBuilder,
     private router: Router, private spnService: SpinnerService, private logService: LoggingService) { this.spnService.changeLoadingStatus(true); }
   ngOnInit() {
-    if(this.router.url === '/admin')
-      this.isAdmin = true;
-    else
-      this.isAdmin = false;
     this.fetchResources = () => {
       return this.resourceService.getResources(this.defaultAmount, this.page)
         .pipe(
@@ -57,6 +53,11 @@ export class ResourcesListComponent implements OnInit, OnDestroy {
       enabled: ['']
     });
   }
+
+  isAdminRoute(recourceId) {
+    return this.router.url === '/admin' ? `/admin/resources/${recourceId}`  : `/resources/${recourceId}`
+  }
+
   /**
    * @description check column event for items in tables, selects resource item
    * @param event any
