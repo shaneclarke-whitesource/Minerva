@@ -294,6 +294,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "mock": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/admin/src/environments/environment.ts",
+                  "with": "src/environments/environment.mock.ts"
+                }
+              ]
             }
           }
         },
@@ -305,6 +313,9 @@
           "configurations": {
             "production": {
               "browserTarget": "admin:build:production"
+            },
+            "mock": {
+              "browserTarget": "minerva:build:mock"
             }
           }
         },
@@ -316,6 +327,19 @@
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
+          "configurations": {
+            "mock": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/admin/src/environments/environment.ts",
+                  "with": "src/environments/environment.mock.ts"
+                }
+              ],
+              "scripts": [
+                "localenv/scripts/portaldata.js"
+              ]
+            }
+          },
           "options": {
             "main": "projects/admin/src/test.ts",
             "polyfills": "projects/admin/src/polyfills.ts",

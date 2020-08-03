@@ -101,9 +101,6 @@ describe('AdminResourceDetailsPage', () => {
     injector = getTestBed();
     fixture = TestBed.createComponent(AdminResourceDetailsPage);
     component = fixture.componentInstance;
-
-    //console.log("component ", component);
-
     resourceService = injector.get(ResourcesService);
     fixture.detectChanges();
   });
@@ -153,18 +150,4 @@ describe('AdminResourceDetailsPage', () => {
     expect(spy).toHaveBeenCalled();
     done();
   });
-
-  it('should set to a single resource', () => {
-    let mocked = new resourcesMock().single;
-    component.resource$.subscribe((resource) => {
-      expect(resource).toEqual(mocked);
-    });
-  });
-
-  it('should delete a resource', (done) => {
-    let spy = spyOn(resourceService, 'deleteResource').and.returnValue(of());
-    component.deleteResource('resourceToDelete');
-    expect(spy).toHaveBeenCalled();
-    done();
-  })
 });
