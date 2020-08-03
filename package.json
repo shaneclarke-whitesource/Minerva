@@ -20,7 +20,7 @@
     "test:unit": "node ./localenv/helpers/createMocks.js && ng test --project=minerva -c=mock --watch=false",
     "test:unit-ci": "ng test --project=minerva -c=mock --watch=false",
     "test:admin": "ng test --project=admin -c=mock",
-    "test:admin-ci": "ng test --project=admin --watch=false",
+    "test:admin-ci": "ng test --project=admin -c=mock --watch=false",
     "lint": "ng lint",
     "test:e2e": "ng e2e --project=minerva -c=mock",
     "test:e2e-ci": "webdriver-manager update --standalone false --gecko false --versions.chrome 84.0.4147.30 && ng e2e --project=minerva -c=mock",
