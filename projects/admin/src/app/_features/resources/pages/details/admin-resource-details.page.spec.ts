@@ -116,38 +116,4 @@ describe('AdminResourceDetailsPage', () => {
     expect(component.deleteLoading).toEqual(false);
     expect(component.subManager).toBeDefined();
   });
-
-  it('should have a route param', () => {
-    expect(component.id).toEqual("uniqueId");
-  });
-
-  it('should update and format meta values', () => {
-    component.metaValueUpdated(keyPair);
-    expect(component.updatedMetaFields).toEqual(formattedKeyPair);
-  });
-
-  it('should finalize update of meta values finalizeMeta()', (done) => {
-
-    let spy = spyOn(resourceService, 'updateResource')
-    .and.returnValue(of(new resourcesMock().single));;
-    resourceService.resource = new resourcesMock().single;
-    component.metaValueUpdated(keyPair);
-    component.finalizeMeta();
-    expect(spy).toHaveBeenCalled();
-    done();
-  });
-
-  it('should update & format label values', () => {
-    component.labelsUpdated(keyPair);
-    expect(component.updatedLabelFields).toEqual(formattedKeyPair);
-  });
-
-  it('should finalize update of label values finalizeLabels()', (done) => {
-    let spy = spyOn(resourceService, 'updateResource').and.returnValue(of(new resourcesMock().single));
-    resourceService.resource = new resourcesMock().single;
-    component.labelsUpdated(keyPair);
-    component.finalizeLabels();
-    expect(spy).toHaveBeenCalled();
-    done();
-  });
 });
