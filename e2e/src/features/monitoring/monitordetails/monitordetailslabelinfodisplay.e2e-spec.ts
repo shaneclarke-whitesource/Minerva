@@ -38,7 +38,7 @@ describe("Test label field display on Monitor's details page", ()=> {
    using([{ key: labelKeys[0], value: obj.labelSelector[labelKeys[0]]}, { key: labelKeys[1], value: obj.labelSelector[labelKeys[1]] }, 
       { key: labelKeys[2], value: obj.labelSelector[labelKeys[2]] }, { key: labelKeys[3], value: obj.labelSelector[labelKeys[3]] }], (data) => {
 
-      fit(`Verify that monitor details page displays ${data.key} label info`, () => {
+      it(`Verify that monitor details page displays ${data.key} label info`, () => {
          expect(page2.labelsInfoKeyDisplay(data.key).isDisplayed()).toBe(true);
          expect(page2.labelsInfoValueDisplay(data.value).isDisplayed()).toBe(true);
          browser.sleep(3000);
