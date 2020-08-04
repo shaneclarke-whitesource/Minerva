@@ -20,7 +20,6 @@ steps:
         node ./localenv/helpers/createMocks.js
         npm run test:e2e-ci
         npm run test:unit-ci
-        npm run test:admin-ci
 
 timeout: 3600s
 images: ['gcr.io/$PROJECT_ID/minerva-testing:latest']
