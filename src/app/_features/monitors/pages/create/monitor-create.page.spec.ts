@@ -195,11 +195,11 @@ const addSettingsForm = jasmine.createSpyObj('AdditionalSettingsComponent', ['va
         }]
     };
     fixture.detectChanges();
-    fixture.ngZone.run(async() => {
+    async() => {
       updateForm('coolName', 'cpu');
       await component.addMonitor();
-      expect(monitorService.createMonitor);
-    });
+      expect(monitorService.createMonitor).toHaveBeenCalled();
+    };
   });
 
   it('should make selectedMonitor equal to dropdown selection', () => {
