@@ -10,7 +10,7 @@ const routes: Routes = [
     path:'',
     loadChildren: () => import('./tab/tabset.module').then(m => m.TabsetModule),
     data:{
-      breadcrumb: "DETAILS"
+      breadcrumb: null
     },resolve: {schema: SchemaResolver },
     canActivate:[AuthGuard],
   },

@@ -27,7 +27,7 @@ import { routes } from 'src/app/_features/monitors/monitors.routes';
 import { MonitorUtil } from 'src/app/_features/monitors/mon.utils';
 
 
-describe('MonitorDetailComponent', () => {
+describe('DetailComponent', () => {
   let injector: TestBed;
   let component: DetailsComponent;
   let monitorService: MonitorService;
