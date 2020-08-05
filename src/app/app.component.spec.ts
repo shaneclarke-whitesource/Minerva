@@ -20,19 +20,15 @@ describe('AppComponent', () => {
   }));
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;    
+    component = fixture.componentInstance;
   });
 
   it('should create the app', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
-  it('should have subscribeError call', () => {    
-    component.ngOnInit();
-    fixture.detectChanges();
-    fixture.whenStable().then(() =>{
-      expect(component.message).toBeUndefined;    
-    })
-    
+  it('should have subscribeError call', () => {
+    expect(component.message).toEqual(undefined);
   });
+
 });

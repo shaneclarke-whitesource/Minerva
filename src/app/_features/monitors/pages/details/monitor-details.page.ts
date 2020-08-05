@@ -160,8 +160,8 @@ export class MonitorDetailsPage implements OnInit {
   }
 
 /**
- * Check timeduration field 
- * @param pluginField 
+ * Check timeduration field
+ * @param pluginField
  */
   isTimeduration(pluginField){
     if(pluginField){
@@ -339,7 +339,7 @@ export class MonitorDetailsPage implements OnInit {
       }
     }
   }
-  
+
   /**
    * Set Default value for dynamic form
    * @param definitions

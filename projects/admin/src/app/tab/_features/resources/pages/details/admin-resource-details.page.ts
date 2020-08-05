@@ -45,7 +45,7 @@ export class AdminResourceDetailsPage implements OnInit {
     this.route.params.subscribe(params => {
       this.id = params['id'];
       this.resource$ = this.resourceService.getResource(this.id).pipe(
-        tap(() => {
+        tap((data) => {
           this.spnService.changeLoadingStatus(false);
         })
       );
