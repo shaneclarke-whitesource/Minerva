@@ -103,25 +103,12 @@ describe('VisualizePage', () => {
     .componentInstance).not.toBe(null);
   });
 
-  describe('- change selected parameters', () => {
-    it('should update subjects', () => {
-
-    });
-  });
-
-  it('should setup intial graph', () => {
-    let spy = spyOn(metricService, 'getInitialGraph');
-
-  });
-
   it('should add all subscriptions', async() => {
     let spy = spyOn(component.subManager, 'add');
     fixture.ngZone.run(() => {
       component.ngOnInit();
       fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        expect(spy).toHaveBeenCalledTimes(3);
-      });
+      expect(spy).toHaveBeenCalledTimes(3);
     });
   });
 

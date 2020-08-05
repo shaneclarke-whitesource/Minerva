@@ -107,10 +107,8 @@ describe('ResourcesListComponent', () => {
 
     it('ngOnInit should resolve resources', () => {
       fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        expect(component.resources).toEqual(new resourcesMock().collection.content
+      expect(component.resources).toEqual(new resourcesMock().collection.content
         .slice(0 * environment.pagination.resources.pageSize, 1 * environment.pagination.resources.pageSize));
-      });
     });
 
     it('should assign total amount of resources', () => {

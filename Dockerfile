@@ -12,7 +12,7 @@ RUN apt-get update -qqy \
 # Nodejs 10 with npm install
 # https://github.com/nodesource/distributions#installation-instructions
 # Latest Google Chrome installation package
-RUN curl -sL https://deb.nodesource.com/setup_10.x | /bin/bash \
+RUN curl -sL https://deb.nodesource.com/setup_12.x | /bin/bash \
         && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
         && sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 
@@ -74,16 +74,14 @@ RUN npm install -g @angular/cli
 COPY package.json .
 
 RUN npm install
-# Copy the run sript/s from local folder to the container's related folder
-#COPY /scripts/run-e2e-tests.sh /entrypoint.sh
+
 COPY . .
+
 # Set the HOME environment variable for the test project
 ENV HOME=/workspace
-# Set the file access permissions (read, write and access) recursively for the new folders
-#RUN chmod -Rf 777 .
 
 ENV DISPLAY=:10.0
-RUN npm install
+
 RUN node ./node_modules/protractor/bin/webdriver-manager update
 
 RUN node --version

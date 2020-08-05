@@ -35,7 +35,7 @@ describe("Test label field display on Monitor's details page", ()=> {
 
    var labelKeys = Object.keys(obj.labelSelector);
 
-   using([{ key: labelKeys[0], value: obj.labelSelector[labelKeys[0]]}, { key: labelKeys[1], value: obj.labelSelector[labelKeys[1]] }, 
+   using([{ key: labelKeys[0], value: obj.labelSelector[labelKeys[0]]}, { key: labelKeys[1], value: obj.labelSelector[labelKeys[1]] },
       { key: labelKeys[2], value: obj.labelSelector[labelKeys[2]] }, { key: labelKeys[3], value: obj.labelSelector[labelKeys[3]] }], (data) => {
 
       it(`Verify that monitor details page displays ${data.key} label info`, () => {
