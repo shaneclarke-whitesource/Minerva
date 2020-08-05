@@ -53,10 +53,6 @@ describe("Create Monitor Label Selector fields Testing", () => {
     var pluscount= element(by.xpath("//div[@class='hxRow hxSpan-10 nowrap ng-untouched ng-pristine ng-valid ng-star-inserted']//button[@class='hxBtn inline-button ng-star-inserted']")).click();
 
     element.all(by.xpath("//button[@class='hxBtn space-right inline-button ng-star-inserted']")).get(1).click();
-                    
-
-    element(by.xpath("//div[@class='hxCol hxSpan-12 ng-tns-c61-0']//div[2]//button[1]")).click();
-
     var pluscount1= element(by.xpath("//div[@class='hxRow hxSpan-10 nowrap ng-untouched ng-pristine ng-valid ng-star-inserted']//button[@class='hxBtn inline-button ng-star-inserted']"));
     browser.sleep(1000);
     let value1 = await pluscount1.getAttribute("childElementCount");
