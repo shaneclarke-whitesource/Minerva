@@ -160,12 +160,11 @@ export class MonitorDetailsPage implements OnInit {
   }
 
 /**
- * Check timeduration field 
- * @param pluginField 
+ * Check timeduration field
+ * @param pluginField
  */
   isTimeduration(pluginField){
     if(pluginField){
-      console.log(pluginField+ 'test');
       if (this.definitions.properties[pluginField].hasOwnProperty(CntrlAttribute.format))
       if (this.monDetails.details.plugin.hasOwnProperty(pluginField)) {
        return true
@@ -340,7 +339,7 @@ export class MonitorDetailsPage implements OnInit {
       }
     }
   }
-  
+
   /**
    * Set Default value for dynamic form
    * @param definitions

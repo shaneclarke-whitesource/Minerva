@@ -1,11 +1,9 @@
 steps:
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['install']
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
 
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['run', 'ng', '--', 'build', '--prod']
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'ng', '--', 'build', '--prod']
 
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/minerva-nginx:latest', '-f', './Dockerfile-build', '.']
-
-images: ['gcr.io/$PROJECT_ID/minerva-nginx:latest']
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['rsync', '-r', '-d', 'dist/intelligence/', 'gs://min-prod/intelligence/']
