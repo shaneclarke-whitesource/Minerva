@@ -32,4 +32,9 @@ export class monitorsListPage
     public monitorName(){
         return(element(by.xpath("//a[contains(text(),'Bandwidth Monitoring for eth0')]")));
     }
+
+    public spinner() {
+        return(element(by.xpath("//hx-busy[@class='gbl-spinner-show']")));
+        
+    }
 }
