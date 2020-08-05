@@ -1,6 +1,6 @@
-import { AppPage } from "../../../pages/app.po"
-import { navigations } from "../../../commons/navigations";
-import { monitorsListPage } from "../../../pages/monitorlistpage";
+import { AppPage } from "../../pages/app.po"
+import { navigations } from "../../commons/navigations";
+import { monitorsListPage } from "../../pages/monitorlistpage";
 import { browser, element, by, WebElement, ExpectedConditions, protractor} from "protractor";
 
 
