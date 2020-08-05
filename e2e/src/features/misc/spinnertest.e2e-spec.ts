@@ -1,7 +1,7 @@
 import { AppPage } from "../../pages/app.po"
 import { navigations } from "../../commons/navigations";
 import { monitorsListPage } from "../../pages/monitorlistpage";
-import { browser, element, by, WebElement, ExpectedConditions, protractor} from "protractor";
+import { browser, element, by} from "protractor";
 
 
 describe("Test page loading/spinner functionality",()=>{
